@@ -31,3 +31,24 @@ void presentScene(void)
 {
 	SDL_RenderPresent(app.renderer);
 }
+
+/* load an image and return it as a texture */
+SDL_Texture* loadTexture(char* filename)
+{
+	SDL_Texture* texture;
+	SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "Chargement de %s", filename);
+	texture = IMG_LoadTexture(app.renderer, filename);
+	return texture;
+}
+
+/* draws the specified texture on screen at the specified x and y coordinates.*/
+void blit(SDL_Texture* texture, int x, int y)
+{
+	SDL_Rect dest;
+	
+	dest.x = x;
+	dest.y = y;
+
+	SDL_QueryTexture(texture, NULL, NULL, &dest.w, &dest.h);
+	SDL_RenderCopy(app.renderer, texture, NULL, &dest);
+}

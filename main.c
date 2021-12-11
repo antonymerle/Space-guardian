@@ -25,13 +25,22 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 int main(int argc, char *argv[])
 {
 	memset(&app, 0, sizeof(App));
+	memset(&player, 0, sizeof(Entity));
+
 	initSDL();
+
+	player.x = 100;
+	player.y = 100;
+
+	player.texture = loadTexture("gfx/player.png");
+
 	atexit(cleanup);
 
 	while (1)
 	{
 		prepareScene();
 		doInput();
+		blit(player.texture, player.x, player.y);
 		presentScene();
 		SDL_Delay(16);
 	}

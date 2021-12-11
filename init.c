@@ -50,6 +50,8 @@ void initSDL(void)
 		exit(1);
 	}
 
+	IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
+
 }
 
 void cleanup(void)
