@@ -31,3 +31,4 @@ extern void blit(SDL_Texture* texture, int x, int y);
 
 App app;
 Entity player;
+Entity bullet;

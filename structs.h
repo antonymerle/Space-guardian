@@ -18,17 +18,21 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 
-typedef struct App {
+typedef struct {
 	SDL_Renderer* renderer;
 	SDL_Window* window;
 	int up;
 	int down;
 	int left;
 	int right;
+	int fire;
 } App;
 
-typedef struct Entity {
+typedef struct {
 	int x;
 	int y;
+	int dx;
+	int dy;
+	int health;
 	SDL_Texture* texture;
 } Entity;
