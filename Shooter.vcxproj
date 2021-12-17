@@ -95,8 +95,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>D:\vclib\SDL2-2.0.18\include;D:\vclib\SDL2_image-2.0.5\include;$(ExternalIncludePath)</IncludePath>
-    <LibraryPath>D:\vclib\SDL2-2.0.18\lib\x64;D:\vclib\SDL2_image-2.0.5\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>W:\vclibs\SDL2-2.0.18\include;W:\vclibs\SDL2_image-2.0.5\include;$(ExternalIncludePath)</IncludePath>
+    <LibraryPath>W:\vclibs\SDL2-2.0.18\lib\x64;W:\vclibs\SDL2_image-2.0.5\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>

@@ -1,3 +1,5 @@
+typedef struct Entity Entity;
+
 typedef struct {
 	void (*logic)(void);
 	void (*draw)(void);
@@ -10,7 +12,7 @@ typedef struct {
 	int keyboard[MAX_KEYBOARD_KEYS];
 } App;
 
-typedef struct {
+struct Entity {
 	float x;
 	float y;
 	int w;
@@ -21,7 +23,7 @@ typedef struct {
 	int reload;
 	SDL_Texture* texture;
 	Entity* next;
-} Entity;
+};
 
 typedef struct {
 	Entity fighterHead;
