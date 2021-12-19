@@ -9,6 +9,7 @@ static void initPlayer(void);
 static void doPlayer(void);
 static void doBullets(void);
 static void fireBullet(void);
+static int generateRandomNumber(unsigned int top);
 
 
 static Entity* player = NULL;
@@ -33,7 +34,7 @@ void initStage(void)
 static void initPlayer(void)
 {
 	player = malloc(sizeof(Entity));
-	if(player) memset(player, 0, sizeof(Entity));
+	if (player) memset(player, 0, sizeof(Entity));
 
 	stage.fighterTail->next = player;
 	stage.fighterTail = player;
@@ -62,7 +63,7 @@ static void doPlayer()
 	if (app.keyboard[SDL_SCANCODE_LEFT]) player->dx = -PLAYER_SPEED;
 	if (app.keyboard[SDL_SCANCODE_RIGHT]) player->dx = PLAYER_SPEED;
 	if (app.keyboard[SDL_SCANCODE_LCTRL] && player->reload == 0) fireBullet();
-	
+
 	player->x += player->dx;
 	player->y += player->dy;
 }
@@ -71,11 +72,13 @@ static void fireBullet(void)
 {
 	Entity* bulletL;
 	Entity* bulletR;
+	float randomDY;
 
 	bulletL = malloc(sizeof(Entity));
 	bulletR = malloc(sizeof(Entity));
-	if(bulletL) memset(bulletL, 0, sizeof(Entity));
-	if(bulletR) memset(bulletR, 0, sizeof(Entity));
+	if (bulletL) memset(bulletL, 0, sizeof(Entity));
+	if (bulletR) memset(bulletR, 0, sizeof(Entity));
+	randomDY = (float)generateRandomNumber(PLAYER_BULLET_SPEED);
 
 	stage.bulletTail->next = bulletL;
 	stage.bulletTail = bulletL;
@@ -86,7 +89,7 @@ static void fireBullet(void)
 	bulletL->x = player->x + player->w / 2;
 	bulletL->y = player->y;
 	bulletL->dx = PLAYER_BULLET_SPEED;
-	bulletL->dy = 0;
+	bulletL->dy = randomDY;
 	bulletL->health = 1;
 	bulletL->texture = bulletTexture;
 	SDL_QueryTexture(bulletL->texture, NULL, NULL, &bulletL->w, &bulletL->h);
@@ -94,7 +97,7 @@ static void fireBullet(void)
 	bulletR->x = player->x + player->w / 2;
 	bulletR->y = player->y + player->h;
 	bulletR->dx = PLAYER_BULLET_SPEED;
-	bulletR->dy = 0;
+	bulletR->dy = randomDY;
 	bulletR->health = 1;
 	bulletR->texture = bulletTexture;
 	bulletR->w = bulletL->w;
@@ -136,7 +139,7 @@ static void draw(void)
 
 static void drawPlayer(void)
 {
-	blit(player->texture, player->x, player->y);
+	blit(player->texture, (int)player->x, (int)player->y);
 }
 
 static void drawBullets(void)
@@ -145,7 +148,18 @@ static void drawBullets(void)
 
 	for (b = stage.bulletHead.next; b != NULL; b = b->next)
 	{
-		blit(b->texture, b->x, b->y);
+		blit(b->texture, (int)b->x, (int)b->y);
 	}
 }
 
+static int generateRandomNumber(unsigned int top)
+{
+	/* Intializes random number generator */
+	unsigned int seed;
+	char randomNegativeSwitch;
+
+	seed = SDL_GetTicks();
+	randomNegativeSwitch = seed % 2 ? 1 : -1;
+
+	return (rand() % top) * randomNegativeSwitch;
+}
