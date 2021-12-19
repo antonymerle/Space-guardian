@@ -33,7 +33,7 @@ void initStage(void)
 static void initPlayer(void)
 {
 	player = malloc(sizeof(Entity));
-	memset(player, 0, sizeof(Entity));
+	if(player) memset(player, 0, sizeof(Entity));
 
 	stage.fighterTail->next = player;
 	stage.fighterTail = player;
@@ -67,6 +67,43 @@ static void doPlayer()
 	player->y += player->dy;
 }
 
+static void fireBullet(void)
+{
+	Entity* bulletL;
+	Entity* bulletR;
+
+	bulletL = malloc(sizeof(Entity));
+	bulletR = malloc(sizeof(Entity));
+	if(bulletL) memset(bulletL, 0, sizeof(Entity));
+	if(bulletR) memset(bulletR, 0, sizeof(Entity));
+
+	stage.bulletTail->next = bulletL;
+	stage.bulletTail = bulletL;
+
+	stage.bulletTail->next = bulletR;
+	stage.bulletTail = bulletR;
+
+	bulletL->x = player->x + player->w / 2;
+	bulletL->y = player->y;
+	bulletL->dx = PLAYER_BULLET_SPEED;
+	bulletL->dy = 0;
+	bulletL->health = 1;
+	bulletL->texture = bulletTexture;
+	SDL_QueryTexture(bulletL->texture, NULL, NULL, &bulletL->w, &bulletL->h);
+
+	bulletR->x = player->x + player->w / 2;
+	bulletR->y = player->y + player->h;
+	bulletR->dx = PLAYER_BULLET_SPEED;
+	bulletR->dy = 0;
+	bulletR->health = 1;
+	bulletR->texture = bulletTexture;
+	bulletR->w = bulletL->w;
+	bulletR->h = bulletL->h;
+
+	/* 8 frames (approx 0.133333 seconds) must pass before we can fire again. */
+	player->reload = 4;
+}
+
 static void doBullets()
 {
 	Entity* b;
@@ -89,28 +126,6 @@ static void doBullets()
 		}
 		prev = b;
 	}
-}
-
-static void fireBullet(void)
-{
-	Entity* bullet;
-
-	bullet = malloc(sizeof(Entity));
-	memset(bullet, 0, sizeof(Entity));
-
-	stage.bulletTail->next = bullet;
-	stage.bulletTail = bullet;
-
-	bullet->x = player->x;
-	bullet->y = player->y + (player->h / 2);
-	bullet->texture = bulletTexture;
-	bullet->dx = PLAYER_BULLET_SPEED;
-	bullet->dy = 0;
-	bullet->health = 1;
-	SDL_QueryTexture(player->texture, NULL, NULL, &bullet->w, &bullet->h);
-
-	/* 8 frames (approx 0.133333 seconds) must pass before we can fire again. */
-	player->reload = 8;
 }
 
 static void draw(void)

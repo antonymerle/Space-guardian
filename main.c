@@ -1,10 +1,10 @@
 #include "main.h"
 
-static void capFramerate(Uint64* then, float* remainder);
+static void capFramerate(unsigned int* topChrono, float* remainder);
 
 int main(int argc, char* argv[])
 {
-	Uint64 then;
+	unsigned int topChrono;
 	float remainder;
 
 	memset(&app, 0, sizeof(App));
@@ -15,7 +15,7 @@ int main(int argc, char* argv[])
 
 	initStage();
 
-	then = SDL_GetTicks64();
+	topChrono = SDL_GetTicks();
 	remainder = 0;
 
 	while (1)
@@ -26,23 +26,31 @@ int main(int argc, char* argv[])
 		app.delegate.draw();
 
 		presentScene();
-		capFramerate(&then, &remainder);
+		capFramerate(&topChrono, &remainder);
 	}
 
 	return 0;
 }
 
-static void capFramerate(Uint64* then, float* remainder)
+/* 
+* 1000 ms / 60 = 16.6667 ms
+* si nécessaire, attend jusqu'à 16.667 ms pour produire une image,
+* avec comme objectif 60 images/s 
+*/
+static void capFramerate(unsigned int* topChrono, float* remainder)
 {
-	Uint64 wait;
-	Uint64 frameTime;
+	unsigned int objectifTemporelPourProduireUneImageMs;		
+	unsigned int intervalleDepuisDernierChrono;
+	unsigned int attente;
 
-	wait = 16 + *remainder;
-	*remainder -= (Uint64)*remainder;
-	frameTime = SDL_GetTicks64() - *then;
-	wait -= frameTime;
-	if (wait < 1) wait = 1;
-	SDL_Delay(wait);
+	objectifTemporelPourProduireUneImageMs = 16 + *remainder;
+	*remainder -= (unsigned int)*remainder;
+	intervalleDepuisDernierChrono = SDL_GetTicks() - *topChrono;
+	attente = objectifTemporelPourProduireUneImageMs - intervalleDepuisDernierChrono;
+	if (attente < 1) attente = 1;
+
+	SDL_Delay(attente);
+
 	*remainder += 0.667;
-	*then = SDL_GetTicks64();
+	*topChrono = SDL_GetTicks();
 }
