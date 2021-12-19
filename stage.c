@@ -52,16 +52,16 @@ static void logic(void)
 	doBullets();
 }
 
-static void doPlayer()
+static void doPlayer(void)
 {
 	player->dx = 0;
 	player->dy = 0;
 
 	if (player->reload > 0) player->reload--;
-	if (app.keyboard[SDL_SCANCODE_UP]) player->dy = -PLAYER_SPEED;
-	if (app.keyboard[SDL_SCANCODE_DOWN]) player->dy = PLAYER_SPEED;
-	if (app.keyboard[SDL_SCANCODE_LEFT]) player->dx = -PLAYER_SPEED;
-	if (app.keyboard[SDL_SCANCODE_RIGHT]) player->dx = PLAYER_SPEED;
+	if (app.keyboard[SDL_SCANCODE_UP] && player->y) player->dy = -PLAYER_SPEED;
+	if (app.keyboard[SDL_SCANCODE_DOWN] && player->y + player->h < SCREEN_HEIGHT) player->dy = PLAYER_SPEED;
+	if (app.keyboard[SDL_SCANCODE_LEFT] && player->x > 0) player->dx = -PLAYER_SPEED;
+	if (app.keyboard[SDL_SCANCODE_RIGHT] && player->x + player->w < SCREEN_WIDTH) player->dx = PLAYER_SPEED;
 	if (app.keyboard[SDL_SCANCODE_LCTRL] && player->reload == 0) fireBullet();
 
 	player->x += player->dx;
