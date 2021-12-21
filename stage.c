@@ -10,10 +10,15 @@ static void doPlayer(void);
 static void doBullets(void);
 static void fireBullet(void);
 static int generateRandomNumber(unsigned int top);
+static void doFighters(void);
+static void spawnEnemies(void);
+static void drawFighters(void);
 
 
-static Entity* player = NULL;
-static SDL_Texture* bulletTexture = NULL;
+static Entity* player;
+static SDL_Texture* bulletTexture;
+static SDL_Texture* enemyTexture;
+static int enemySpawnTimer;
 
 
 void initStage(void)
@@ -29,6 +34,9 @@ void initStage(void)
 	initPlayer();
 
 	bulletTexture = loadTexture("gfx/playerBullet.png");
+	enemyTexture = loadTexture("gfx/enemy.png");
+
+	enemySpawnTimer = 0;
 }
 
 static void initPlayer(void)
@@ -49,11 +57,14 @@ static void initPlayer(void)
 static void logic(void)
 {
 	doPlayer();
+	doFighters();
 	doBullets();
+	spawnEnemies();
 }
 
 static void doPlayer(void)
 {
+
 	player->dx = 0;
 	player->dy = 0;
 
@@ -64,8 +75,11 @@ static void doPlayer(void)
 	if (app.keyboard[SDL_SCANCODE_RIGHT] && player->x + player->w < SCREEN_WIDTH) player->dx = PLAYER_SPEED;
 	if (app.keyboard[SDL_SCANCODE_LCTRL] && player->reload == 0) fireBullet();
 
+	/*
+	* This part is done in doFighters() now
 	player->x += player->dx;
 	player->y += player->dy;
+	*/
 }
 
 static void fireBullet(void)
@@ -135,6 +149,7 @@ static void draw(void)
 {
 	drawPlayer();
 	drawBullets();
+	drawFighters();
 }
 
 static void drawPlayer(void)
@@ -162,4 +177,58 @@ static int generateRandomNumber(unsigned int top)
 	randomNegativeSwitch = seed % 2 ? 1 : -1;
 
 	return (rand() % top) * randomNegativeSwitch;
+}
+
+static void doFighters(void)
+{
+	Entity* e;
+	Entity* prev;
+
+	prev = &stage.fighterHead;
+
+	for (e = stage.fighterHead.next; e != NULL; e = e->next)
+	{
+		e->x += e->dx;
+		e->y += e->dy;
+
+		if (e != player && e->x < -e->w)
+		{
+			if (e == stage.fighterTail) stage.fighterTail = prev;
+			prev->next = e->next;
+			free(e);
+			e = prev;
+		}
+		prev = e;
+	}
+}
+
+void spawnEnemies(void)
+{
+	Entity* enemy;
+
+	if (--enemySpawnTimer <= 0)
+	{
+		enemy = malloc(sizeof(Entity));
+		if(enemy) memset(enemy, 0, sizeof(Entity));
+		stage.fighterTail->next = enemy;
+		stage.fighterTail = enemy;
+
+		enemy->x = SCREEN_WIDTH;
+		enemy->y = rand() % SCREEN_HEIGHT;
+		enemy->dx = -(2 + (rand() % 4));
+		enemy->texture = enemyTexture;
+		SDL_QueryTexture(enemy->texture, NULL, NULL, &enemy->w, &enemy->h);
+
+		enemySpawnTimer = 30 + (rand() % 60); /* creates an enemy every 30 <-> 90 ms */
+	}
+}
+
+static void drawFighters(void)
+{
+	Entity* e;
+
+	for (e = stage.fighterHead.next; e != NULL; e = e->next)
+	{
+		blit(e->texture, e->x, e->y);
+	}
 }
