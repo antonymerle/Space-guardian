@@ -43,7 +43,7 @@ static void capFramerate(unsigned int* topChrono, float* remainder)
 	unsigned int intervalleDepuisDernierChrono;
 	unsigned int attente;
 
-	objectifTemporelPourProduireUneImageMs = 16 + *remainder;
+	objectifTemporelPourProduireUneImageMs = (unsigned int)(16 + *remainder);
 	*remainder -= (unsigned int)*remainder;
 	intervalleDepuisDernierChrono = SDL_GetTicks() - *topChrono;
 	attente = objectifTemporelPourProduireUneImageMs - intervalleDepuisDernierChrono;
@@ -51,6 +51,6 @@ static void capFramerate(unsigned int* topChrono, float* remainder)
 
 	SDL_Delay(attente);
 
-	*remainder += 0.667;
+	*remainder += (float)0.667;
 	*topChrono = SDL_GetTicks();
 }
