@@ -9,6 +9,7 @@ static void initPlayer(void);
 static void doPlayer(void);
 static void doBullets(void);
 static void fireBullet(void);
+static int bulletHitFighter(Entity* b);
 static int generateRandomNumber(unsigned int top);
 static void doFighters(void);
 static void spawnEnemies(void);
@@ -19,6 +20,8 @@ static Entity* player;
 static SDL_Texture* bulletTexture;
 static SDL_Texture* enemyTexture;
 static int enemySpawnTimer;
+
+static unsigned int pause;
 
 
 void initStage(void)
@@ -37,6 +40,7 @@ void initStage(void)
 	enemyTexture = loadTexture("gfx/enemy.png");
 
 	enemySpawnTimer = 0;
+	pause = 0;
 }
 
 static void initPlayer(void)
@@ -47,6 +51,8 @@ static void initPlayer(void)
 	stage.fighterTail->next = player;
 	stage.fighterTail = player;
 
+	//player->health = 1;
+	player->side = SIDE_PLAYER;
 	player->x = 100;
 	player->y = 100;
 	player->texture = loadTexture("gfx/player.png");
@@ -56,10 +62,10 @@ static void initPlayer(void)
 
 static void logic(void)
 {
-	doPlayer();
-	doFighters();
-	doBullets();
-	spawnEnemies();
+		doPlayer();
+		doFighters();
+		doBullets();
+		spawnEnemies();
 }
 
 static void doPlayer(void)
@@ -86,13 +92,13 @@ static void fireBullet(void)
 {
 	Entity* bulletL;
 	Entity* bulletR;
-	float randomDY;
+	//float randomDY;
 
 	bulletL = malloc(sizeof(Entity));
 	bulletR = malloc(sizeof(Entity));
 	if (bulletL) memset(bulletL, 0, sizeof(Entity));
 	if (bulletR) memset(bulletR, 0, sizeof(Entity));
-	randomDY = (float)generateRandomNumber(PLAYER_BULLET_SPEED);
+	//randomDY = (float)generateRandomNumber(PLAYER_BULLET_SPEED);
 
 	stage.bulletTail->next = bulletL;
 	stage.bulletTail = bulletL;
@@ -100,25 +106,29 @@ static void fireBullet(void)
 	stage.bulletTail->next = bulletR;
 	stage.bulletTail = bulletR;
 
+	bulletL->side = SIDE_PLAYER;
 	bulletL->x = player->x + player->w / 2;
 	bulletL->y = player->y;
 	bulletL->dx = PLAYER_BULLET_SPEED;
-	bulletL->dy = randomDY;
+	//bulletL->dy = randomDY;
+	bulletL->dy = 0;
 	bulletL->health = 1;
 	bulletL->texture = bulletTexture;
 	SDL_QueryTexture(bulletL->texture, NULL, NULL, &bulletL->w, &bulletL->h);
 
+	bulletR->side = SIDE_PLAYER;
 	bulletR->x = player->x + player->w / 2;
 	bulletR->y = player->y + player->h;
 	bulletR->dx = PLAYER_BULLET_SPEED;
-	bulletR->dy = randomDY;
+	//bulletR->dy = randomDY;
+	bulletR->dy = 0;
 	bulletR->health = 1;
 	bulletR->texture = bulletTexture;
 	bulletR->w = bulletL->w;
 	bulletR->h = bulletL->h;
 
 	/* 8 frames (approx 0.133333 seconds) must pass before we can fire again. */
-	player->reload = 4;
+	player->reload = 8;
 }
 
 static void doBullets()
@@ -133,7 +143,7 @@ static void doBullets()
 		b->x += b->dx;
 		b->y += b->dy;
 
-		if (b->x > SCREEN_WIDTH)
+		if (bulletHitFighter(b) || b->x > SCREEN_WIDTH)
 		{
 			if (b == stage.bulletTail) stage.bulletTail = prev;
 
@@ -145,9 +155,27 @@ static void doBullets()
 	}
 }
 
+static int bulletHitFighter(Entity* b)
+{
+	Entity* e;
+
+	for (e = stage.fighterHead.next; e != NULL; e = e->next)
+	{
+		if(e->side != b->side 
+			&& collision(e->x, e->y, e->w, e->h, b->x, b->y, b->w, b->h))
+		{
+			b->health = 0;
+			e->health--;
+
+			return 1;
+		}
+	}
+	return 0;
+}
+
 static void draw(void)
 {
-	drawPlayer();
+	//drawPlayer();
 	drawBullets();
 	drawFighters();
 }
@@ -188,13 +216,16 @@ static void doFighters(void)
 
 	for (e = stage.fighterHead.next; e != NULL; e = e->next)
 	{
+		if ( e->side == SIDE_ALIEN && (e->y >= (SCREEN_HEIGHT - e->h) || e->y < 0)) 
+			e->dy = -(e->dy);
+
 		e->x += e->dx;
-		if (e->y >= (SCREEN_HEIGHT - e->h) || e->y < 0) e->dy = -(e->dy);
 		e->y += e->dy;
 
-		if (e != player && e->x < -e->w)
+		if (e != player && (e->x < -e->w || e->health <= 0))
 		{
 			if (e == stage.fighterTail) stage.fighterTail = prev;
+
 			prev->next = e->next;
 			free(e);
 			e = prev;
@@ -218,8 +249,10 @@ void spawnEnemies(void)
 		enemy->texture = enemyTexture;
 		SDL_QueryTexture(enemy->texture, NULL, NULL, &enemy->w, &enemy->h);
 
+		enemy->side = SIDE_ALIEN;
+		enemy->health = 3;
 		enemy->x = SCREEN_WIDTH;
-		enemy->y = 5 + (rand() % SCREEN_HEIGHT - enemy->h); /* TODO : bug car vaisseau peut apparaître trop haut*/
+		enemy->y = 5 + (rand() % SCREEN_HEIGHT - enemy->h);
 		enemy->dx = -(2 + (rand() % 4));
 		randomDy = rand() % 2;
 		enemy->dy = randomDy ? 1 : -1;;

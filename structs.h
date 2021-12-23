@@ -19,6 +19,7 @@ struct Entity {
 	int h;
 	float dx;
 	float dy;
+	int side;
 	int health;
 	int reload;
 	SDL_Texture* texture;

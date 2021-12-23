@@ -24,6 +24,7 @@
     <ClCompile Include="input.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="stage.c" />
+    <ClCompile Include="util.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h" />
@@ -34,6 +35,7 @@
     <ClInclude Include="main.h" />
     <ClInclude Include="stage.h" />
     <ClInclude Include="structs.h" />
+    <ClInclude Include="util.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -100,8 +102,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <LibraryPath>D:\vclib\SDL2-2.0.18\lib\x64;D:\vclib\SDL2_image-2.0.5\lib\x64;$(LibraryPath)</LibraryPath>
-    <IncludePath>D:\vclib\SDL2-2.0.18\include;D:\vclib\SDL2_image-2.0.5\include;$(ExternalIncludePath)</IncludePath>
+    <LibraryPath>W:\vclibs\SDL2-2.0.18\lib\x64;W:\vclibs\SDL2_image-2.0.5\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>W:\vclibs\SDL2-2.0.18\include;W:\vclibs\SDL2_image-2.0.5\include;$(ExternalIncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
