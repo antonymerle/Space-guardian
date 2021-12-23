@@ -189,6 +189,7 @@ static void doFighters(void)
 	for (e = stage.fighterHead.next; e != NULL; e = e->next)
 	{
 		e->x += e->dx;
+		if (e->y >= (SCREEN_HEIGHT - e->h) || e->y < 0) e->dy = -(e->dy);
 		e->y += e->dy;
 
 		if (e != player && e->x < -e->w)
@@ -205,6 +206,7 @@ static void doFighters(void)
 void spawnEnemies(void)
 {
 	Entity* enemy;
+	char randomDy;
 
 	if (--enemySpawnTimer <= 0)
 	{
@@ -213,11 +215,16 @@ void spawnEnemies(void)
 		stage.fighterTail->next = enemy;
 		stage.fighterTail = enemy;
 
-		enemy->x = SCREEN_WIDTH;
-		enemy->y = rand() % SCREEN_HEIGHT;
-		enemy->dx = -(2 + (rand() % 4));
 		enemy->texture = enemyTexture;
 		SDL_QueryTexture(enemy->texture, NULL, NULL, &enemy->w, &enemy->h);
+
+		enemy->x = SCREEN_WIDTH;
+		enemy->y = 5 + (rand() % SCREEN_HEIGHT - enemy->h); /* TODO : bug car vaisseau peut apparaître trop haut*/
+		enemy->dx = -(2 + (rand() % 4));
+		randomDy = rand() % 2;
+		enemy->dy = randomDy ? 1 : -1;;
+
+		
 
 		enemySpawnTimer = 30 + (rand() % 60); /* creates an enemy every 30 <-> 90 ms */
 	}
