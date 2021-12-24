@@ -51,7 +51,7 @@ static void initPlayer(void)
 	stage.fighterTail->next = player;
 	stage.fighterTail = player;
 
-	//player->health = 1;
+	player->health = 1;
 	player->side = SIDE_PLAYER;
 	player->x = 100;
 	player->y = 100;
@@ -70,22 +70,18 @@ static void logic(void)
 
 static void doPlayer(void)
 {
+	if (player)
+	{
+		player->dx = 0;
+		player->dy = 0;
 
-	player->dx = 0;
-	player->dy = 0;
-
-	if (player->reload > 0) player->reload--;
-	if (app.keyboard[SDL_SCANCODE_UP] && player->y) player->dy = -PLAYER_SPEED;
-	if (app.keyboard[SDL_SCANCODE_DOWN] && player->y + player->h < SCREEN_HEIGHT) player->dy = PLAYER_SPEED;
-	if (app.keyboard[SDL_SCANCODE_LEFT] && player->x > 0) player->dx = -PLAYER_SPEED;
-	if (app.keyboard[SDL_SCANCODE_RIGHT] && player->x + player->w < SCREEN_WIDTH) player->dx = PLAYER_SPEED;
-	if (app.keyboard[SDL_SCANCODE_LCTRL] && player->reload == 0) fireBullet();
-
-	/*
-	* This part is done in doFighters() now
-	player->x += player->dx;
-	player->y += player->dy;
-	*/
+		if (player->reload > 0) player->reload--;
+		if (app.keyboard[SDL_SCANCODE_UP] && player->y) player->dy = -PLAYER_SPEED;
+		if (app.keyboard[SDL_SCANCODE_DOWN] && player->y + player->h < SCREEN_HEIGHT) player->dy = PLAYER_SPEED;
+		if (app.keyboard[SDL_SCANCODE_LEFT] && player->x > 0) player->dx = -PLAYER_SPEED;
+		if (app.keyboard[SDL_SCANCODE_RIGHT] && player->x + player->w < SCREEN_WIDTH) player->dx = PLAYER_SPEED;
+		if (app.keyboard[SDL_SCANCODE_LCTRL] && player->reload == 0) fireBullet();
+	}
 }
 
 static void fireBullet(void)
@@ -222,12 +218,24 @@ static void doFighters(void)
 		e->x += e->dx;
 		e->y += e->dy;
 
-		if (e != player && (e->x < -e->w || e->health <= 0))
+		if (e != player && (e->x < -e->w || e->health <= 0 || testVesselsCollision(e)))
+		{
+			if (e == stage.fighterTail) stage.fighterTail = prev;
+
+			prev->next = e->next;
+			
+			free(e);
+			memset(e, 0, sizeof(Entity));
+			e = prev;
+		}
+		else if(e == player && e->health == 0)
 		{
 			if (e == stage.fighterTail) stage.fighterTail = prev;
 
 			prev->next = e->next;
 			free(e);
+			memset(e, 0, sizeof(Entity));
+
 			e = prev;
 		}
 		prev = e;
@@ -271,4 +279,20 @@ static void drawFighters(void)
 	{
 		blit(e->texture, e->x, e->y);
 	}
+}
+
+static int testVesselsCollision(Entity* e)
+{
+	if (player)
+	{
+		if (collision(player->x, player->y, player->h, player->w, e->x, e->y, e->w, e->h))
+		{
+			player->health = 0;
+			e->health = 0;
+
+			return 1;
+		}
+		return 0;
+	}
+	return 0;
 }
