@@ -1,6 +1,5 @@
 #include "stage.h"
 
-
 static void logic(void);
 static void draw(void);
 static void drawPlayer(void);
@@ -21,9 +20,6 @@ static SDL_Texture* bulletTexture;
 static SDL_Texture* enemyTexture;
 static int enemySpawnTimer;
 
-static unsigned int pause;
-
-
 void initStage(void)
 {
 	app.delegate.logic = logic;
@@ -40,7 +36,6 @@ void initStage(void)
 	enemyTexture = loadTexture("gfx/enemy.png");
 
 	enemySpawnTimer = 0;
-	pause = 0;
 }
 
 static void initPlayer(void)
@@ -88,13 +83,11 @@ static void fireBullet(void)
 {
 	Entity* bulletL;
 	Entity* bulletR;
-	//float randomDY;
 
 	bulletL = malloc(sizeof(Entity));
 	bulletR = malloc(sizeof(Entity));
 	if (bulletL) memset(bulletL, 0, sizeof(Entity));
 	if (bulletR) memset(bulletR, 0, sizeof(Entity));
-	//randomDY = (float)generateRandomNumber(PLAYER_BULLET_SPEED);
 
 	stage.bulletTail->next = bulletL;
 	stage.bulletTail = bulletL;
@@ -106,7 +99,6 @@ static void fireBullet(void)
 	bulletL->x = player->x + player->w / 2;
 	bulletL->y = player->y;
 	bulletL->dx = PLAYER_BULLET_SPEED;
-	//bulletL->dy = randomDY;
 	bulletL->dy = 0;
 	bulletL->health = 1;
 	bulletL->texture = bulletTexture;
@@ -116,7 +108,6 @@ static void fireBullet(void)
 	bulletR->x = player->x + player->w / 2;
 	bulletR->y = player->y + player->h;
 	bulletR->dx = PLAYER_BULLET_SPEED;
-	//bulletR->dy = randomDY;
 	bulletR->dy = 0;
 	bulletR->health = 1;
 	bulletR->texture = bulletTexture;
@@ -171,7 +162,6 @@ static int bulletHitFighter(Entity* b)
 
 static void draw(void)
 {
-	//drawPlayer();
 	drawBullets();
 	drawFighters();
 }
@@ -234,7 +224,6 @@ static void doFighters(void)
 
 			prev->next = e->next;
 			free(e);
-			//memset(e, 0, sizeof(Entity));
 			e = NULL;
 
 			e = prev;

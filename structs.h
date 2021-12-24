@@ -17,8 +17,8 @@ struct Entity {
 	int y;
 	int w;
 	int h;
-	float dx;
-	float dy;
+	int dx;
+	int dy;
 	int side;
 	int health;
 	int reload;
