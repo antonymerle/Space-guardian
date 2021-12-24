@@ -13,8 +13,8 @@ typedef struct {
 } App;
 
 struct Entity {
-	float x;
-	float y;
+	int x;
+	int y;
 	int w;
 	int h;
 	float dx;
