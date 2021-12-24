@@ -178,7 +178,7 @@ static void draw(void)
 
 static void drawPlayer(void)
 {
-	blit(player->texture, (int)player->x, (int)player->y);
+	blit(player->texture, player->x, player->y);
 }
 
 static void drawBullets(void)
@@ -187,7 +187,7 @@ static void drawBullets(void)
 
 	for (b = stage.bulletHead.next; b != NULL; b = b->next)
 	{
-		blit(b->texture, (int)b->x, (int)b->y);
+		blit(b->texture, b->x, b->y);
 	}
 }
 
@@ -225,7 +225,7 @@ static void doFighters(void)
 			prev->next = e->next;
 			
 			free(e);
-			memset(e, 0, sizeof(Entity));
+			e = NULL;
 			e = prev;
 		}
 		else if(e == player && e->health == 0)
@@ -234,7 +234,8 @@ static void doFighters(void)
 
 			prev->next = e->next;
 			free(e);
-			memset(e, 0, sizeof(Entity));
+			//memset(e, 0, sizeof(Entity));
+			e = NULL;
 
 			e = prev;
 		}
@@ -260,10 +261,10 @@ void spawnEnemies(void)
 		enemy->side = SIDE_ALIEN;
 		enemy->health = 3;
 		enemy->x = SCREEN_WIDTH;
-		enemy->y = 5 + (rand() % SCREEN_HEIGHT - enemy->h);
-		enemy->dx = -(2 + (rand() % 4));
+		enemy->y = (float)(5 + (rand() % SCREEN_HEIGHT - enemy->h));
+		enemy->dx = (float)(-(2 + (rand() % 4)));
 		randomDy = rand() % 2;
-		enemy->dy = randomDy ? 1 : -1;;
+		enemy->dy = (float)(randomDy ? 1.0 : 1.0);
 
 		
 
