@@ -1,4 +1,5 @@
 typedef struct Entity Entity;
+typedef enum { normal, powerful } ShotMode;
 
 typedef struct {
 	void (*logic)(void);
@@ -17,11 +18,12 @@ struct Entity {
 	int y;
 	int w;
 	int h;
-	int dx;
-	int dy;
+	float dx;
+	float dy;
 	int side;
 	int health;
 	int reload;
+	ShotMode shotMode;
 	SDL_Texture* texture;
 	Entity* next;
 };

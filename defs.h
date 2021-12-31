@@ -10,3 +10,6 @@
 
 #define MIN(a,b)				(((a)<(b))?(a):(b))
 #define MAX(a,b)				(((a)>(b))?(a):(b))
+
+#define FPS						60
+#define ALIEN_BULLET_SPEED		6
