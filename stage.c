@@ -50,7 +50,6 @@ void initStage(void)
 	alienBulletTexture = loadTexture("gfx/alienBullet.png");
 	megaShot = loadTexture("gfx/MegaShot.png");
 
-	//enemySpawnTimer = 0;
 	bulletNumber = 0;
 	hitCount = 0;
 
@@ -278,24 +277,14 @@ static void doFighters(void)
 	{
 		if ((e->side == SIDE_ALIEN && (e->y >= (SCREEN_HEIGHT - e->h)) || (e->side == SIDE_ALIEN && e->y == 0)))
 		{
-			printf("%d\n", e->y);
-			//e->y = 0;
 			e->dy *= -1;
 		} 
 
-			//printf("%d\n", e->y);
-
 		e->x += e->dx;
 		e->y += e->dy;
-		
-			/*e->dy = -(e->dy);*/
-
-	
 
 		if(e != player) testVesselsCollision(e);
 
-
-		/* TODO : ajouter test collision */
 		if (e != player && e->x < -e->w)
 		{
 			e->health = 0;
