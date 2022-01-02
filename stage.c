@@ -22,6 +22,9 @@ static void doBackground(void);
 static void doStarfield(void);
 static void doExplosions(void);
 static void doStarfield(void);
+static void doDebris(void);
+static void addExplosions(int x, int y, int num);
+
 
 
 static Entity* player;
@@ -32,7 +35,7 @@ static SDL_Texture* alienBulletTexture;
 static SDL_Texture* megaShot;
 static SDL_Texture* background;
 static SDL_Texture* explosionTexture;
-static Star stars [MAX_STARS];
+static Star stars[MAX_STARS];
 
 static int enemySpawnTimer;
 static int stageResetTimer;
@@ -52,7 +55,7 @@ void initStage(void)
 	stage.fighterTail = &stage.fighterHead;
 	stage.bulletTail = &stage.bulletHead;
 	stage.explosionTail = &stage.explosionHead;
-	stage.debrisTail = &stage.debrisTail;
+	stage.debrisTail = &stage.debrisHead;
 
 	initPlayer();
 
@@ -254,7 +257,7 @@ static int bulletHitFighter(Entity* b)
 
 	for (e = stage.fighterHead.next; e != NULL; e = e->next)
 	{
-		if(e->side != b->side 
+		if (e->side != b->side
 			&& collision(e->x, e->y, e->w, e->h, b->x, b->y, b->w, b->h))
 		{
 			hitCount++;
@@ -273,8 +276,12 @@ static int bulletHitFighter(Entity* b)
 
 static void draw(void)
 {
+	drawBackground();
+	drawStarfield();
 	drawBullets();
 	drawFighters();
+	drawDebris();
+	drawExplosions();
 }
 
 static void drawBullets(void)
@@ -311,12 +318,12 @@ static void doFighters(void)
 		if ((e->side == SIDE_ALIEN && (e->y >= (SCREEN_HEIGHT - e->h)) || (e->side == SIDE_ALIEN && e->y == 0)))
 		{
 			e->dy *= -1;
-		} 
+		}
 
 		e->x += e->dx;
 		e->y += e->dy;
 
-		if(e != player) testVesselsCollision(e);
+		if (e != player) testVesselsCollision(e);
 
 		if (e != player && e->x < -e->w)
 		{
@@ -352,7 +359,7 @@ void spawnEnemies(void)
 	if (--enemySpawnTimer <= 0)
 	{
 		enemy = malloc(sizeof(Entity));
-		if(enemy) memset(enemy, 0, sizeof(Entity));
+		if (enemy) memset(enemy, 0, sizeof(Entity));
 		stage.fighterTail->next = enemy;
 		stage.fighterTail = enemy;
 
@@ -500,8 +507,110 @@ static void doExplosions(void)
 			}
 			prev->next = e->next;
 			free(e);
-			
+			e = prev;
+		}
+		prev = e;
+	}
+}
+
+static void doDebris(void)
+{
+	Debris* d;
+	Debris* prev;
+
+	prev = stage.debrisHead.next;
+
+	for (d = stage.debrisHead.next; d != NULL; d = d->next)
+	{
+		d->x += d->dx;
+		d->y += d->dy;
+
+		d->dy += 0.5;
+
+		if (--d->life <= 0)
+		{
+			prev->next = d->next;
+			free(d);
+			d = prev;
+		}
+		prev = d;
+	}
+}
+
+static void addExplosions(int x, int y, int num)
+{
+	Explosion* e;
+	int i;
+
+	for (i = 0; i < num; i++)
+	{
+		e = malloc(sizeof(Explosion));
+		if (e) memset(e, 0, sizeof(Explosion));
+		stage.explosionTail->next = e;
+		stage.explosionTail = e;
+
+		e->x = x + (rand() % 32) - (rand() % 32);
+		e->y = y + (rand() % 32) - (rand() % 32);
+		e->dx = (rand() % 10) - (rand() % 10);
+		e->dy = (rand() % 10) - (rand() % 10);
+
+		e->dx /= 10;
+		e->dy /= 10;
+
+		switch (rand() % 4)
+		{
+		case 0:
+			e->r = 255;
+			break;
+		case 1:
+			e->r = 255;
+			e->g = 128;
+			break;
+		case 2:
+			e->r = 255;
+			e->g = 255;
+			break;
+		default:
+			e->r = 255;
+			e->g = 255;
+			e->b = 255;
+			break;
+		}
+		e->a = rand() % FPS - 3;
+	}
+}
+
+static void addDebris(Entity* e)
+{
+	Debris* d;
+	int x;
+	int y;
+	int w;
+	int h;
+
+	w = e->w / 2;
+	h = e->h / 2;
+
+	for (y = 0; y <= h; y += h)
+	{
+		for (x = 0; x <= w; x += w)
+		{
+			d = malloc(sizeof(Debris));
+			if (d) memset(d, 0, sizeof(Debris));
+			stage.debrisTail->next = d;
+			stage.debrisTail = d;
+
+			d->x = e->x + e->w / 2;
+			d->y = e->y + e->h / 2;
+			d->dx = (rand() % 5) - (rand() % 5);
+			d->dy = -(5 + (rand() % 12));
+			d->life = FPS * 2;
+			d->texture = e->texture;
+
+			d->rect.x = x;
+			d->rect.y = y;
+			d->rect.w = w;
+			d->rect.h = h;
 		}
 	}
-
 }
