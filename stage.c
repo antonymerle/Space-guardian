@@ -17,6 +17,11 @@ static void resetStage(void);
 static void doEnemies(void);
 static void fireAlienBullet(Entity* e);
 static void cadrePlayer(void);
+static void initStarField(void);
+static void doBackground(void);
+static void doStarfield(void);
+static void doExplosions(void);
+static void doStarfield(void);
 
 
 static Entity* player;
@@ -25,8 +30,13 @@ static SDL_Texture* bulletTexture;
 static SDL_Texture* enemyTexture;
 static SDL_Texture* alienBulletTexture;
 static SDL_Texture* megaShot;
+static SDL_Texture* background;
+static SDL_Texture* explosionTexture;
+static Star stars [MAX_STARS];
+
 static int enemySpawnTimer;
 static int stageResetTimer;
+static int backgroundX;
 
 /* DEBUG */
 static unsigned int bulletNumber;
@@ -41,6 +51,8 @@ void initStage(void)
 
 	stage.fighterTail = &stage.fighterHead;
 	stage.bulletTail = &stage.bulletHead;
+	stage.explosionTail = &stage.explosionHead;
+	stage.debrisTail = &stage.debrisTail;
 
 	initPlayer();
 
@@ -49,6 +61,9 @@ void initStage(void)
 	enemyTexture = loadTexture("gfx/enemy.png");
 	alienBulletTexture = loadTexture("gfx/alienBullet.png");
 	megaShot = loadTexture("gfx/MegaShot.png");
+	background = loadTexture("gfx/background.png");
+	explosionTexture = loadTexture("gfx/explosion.png");
+
 
 	bulletNumber = 0;
 	hitCount = 0;
@@ -59,6 +74,8 @@ void initStage(void)
 static void resetStage(void)
 {
 	Entity* e;
+	Explosion* ex;
+	Debris* d;
 
 	while (stage.fighterHead.next)
 	{
@@ -75,14 +92,32 @@ static void resetStage(void)
 		bulletNumber--;
 	}
 
+	while (stage.explosionHead.next)
+	{
+		ex = stage.explosionHead.next;
+		stage.explosionHead.next = ex->next;
+		free(ex);
+	}
+
+	while (stage.debrisHead.next)
+	{
+		d = stage.debrisHead.next;
+		stage.debrisHead.next = d->next;
+		free(d);
+	}
+
 	memset(&stage, 0, sizeof(Stage));
 	stage.fighterTail = &stage.fighterHead;
 	stage.bulletTail = &stage.bulletHead;
+	stage.explosionTail = &stage.explosionHead;
+	stage.debrisTail = &stage.debrisHead;
 
 	initPlayer();
 
+	initStarfield();
+
 	enemySpawnTimer = 0;
-	stageResetTimer = FPS * 2;
+	stageResetTimer = FPS * 3;
 }
 
 static void initPlayer(void)
@@ -105,14 +140,17 @@ static void initPlayer(void)
 
 static void logic(void)
 {
-		doPlayer();
-		doEnemies();
-		doFighters();
-		doBullets();
-		spawnEnemies();
-		cadrePlayer();
-		/*printf("%u\n", bulletNumber);*/
-		if (player == NULL && --stageResetTimer <= 0) resetStage();
+	doBackground();
+	doStarfield();
+	doPlayer();
+	doEnemies();
+	doFighters();
+	doBullets();
+	spawnEnemies();
+	cadrePlayer();
+	doExplosions();
+	doDebris();
+	if (player == NULL && --stageResetTimer <= 0) resetStage();
 }
 
 static void doPlayer(void)
@@ -237,11 +275,6 @@ static void draw(void)
 {
 	drawBullets();
 	drawFighters();
-}
-
-static void drawPlayer(void)
-{
-	blit(player->texture, player->x, player->y);
 }
 
 static void drawBullets(void)
@@ -413,4 +446,62 @@ static void fireAlienBullet(Entity* e)
 
 		bulletNumber++;
 	}
+}
+
+static void initStarField(void)
+{
+	int i;
+
+	for (i = 0; i < MAX_STARS; i++)
+	{
+		stars[i].x = rand() % SCREEN_WIDTH;
+		stars[i].y = rand() % SCREEN_HEIGHT;
+		stars[i].speed = 1 + rand() % 8;
+	}
+}
+
+
+static void doBackground(void)
+{
+	if (--backgroundX < -SCREEN_WIDTH) backgroundX = 0;
+}
+
+static void doStarfield(void)
+{
+	int i;
+
+	for (i = 0; i < MAX_STARS; i++)
+	{
+		stars[i].x -= stars[i].speed;
+		if (stars[i].x < 0)
+		{
+			stars[i].x += SCREEN_WIDTH;
+		}
+	}
+}
+
+static void doExplosions(void)
+{
+	Explosion* e;
+	Explosion* prev;
+
+	prev = &stage.explosionHead;
+
+	for (e = stage.explosionHead.next; e != NULL; e = e->next)
+	{
+		e->x += e->dx;
+		e->y += e->dy;
+
+		if (--e->a <= 0)
+		{
+			if (e == stage.explosionTail)
+			{
+				stage.explosionTail = prev;
+			}
+			prev->next = e->next;
+			free(e);
+			
+		}
+	}
+
 }

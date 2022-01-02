@@ -1,4 +1,6 @@
 typedef struct Entity Entity;
+typedef struct Explosion Explosion;
+typedef struct Debris Debris;
 typedef enum { normal, powerful } ShotMode;
 
 typedef struct {
@@ -28,9 +30,41 @@ struct Entity {
 	Entity* next;
 };
 
+struct Explosion {
+	float x;
+	float y;
+	float dx;
+	float dy;
+	int r, g, b, a;
+	Explosion* next;
+};
+
+struct Debris {
+	float x;
+	float y;
+	float dx;
+	float dy;
+	SDL_Rect rect;
+	SDL_Texture* texture;
+	int life;
+	Debris* next;
+};
+
 typedef struct {
 	Entity fighterHead;
 	Entity* fighterTail;
 	Entity bulletHead;
 	Entity* bulletTail;
+	Explosion explosionHead;
+	Explosion* explosionTail;
+	Debris debrisHead;
+	Debris* debrisTail;
 } Stage;
+
+
+
+typedef struct {
+	int x;
+	int y;
+	int speed;
+} Star;
