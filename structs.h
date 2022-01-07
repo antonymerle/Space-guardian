@@ -15,6 +15,11 @@ typedef struct {
 	int keyboard[MAX_KEYBOARD_KEYS];
 } App;
 
+//typedef struct {
+//	SDL_Texture* trailerTexture;
+//	int a;
+//} Trailer;
+
 struct Entity {
 	int x;
 	int y;

@@ -47,6 +47,7 @@ static Star stars[MAX_STARS];
 static int enemySpawnTimer;
 static int stageResetTimer;
 static int backgroundX;
+static uint8_t trailerAlpha;
 
 /* DEBUG */
 static unsigned int bulletNumber;
@@ -175,11 +176,28 @@ static void doPlayer(void)
 		player->dx = 0;
 		player->dy = 0;
 
+		// TODO make a trailerAlpha function
+		if (trailerAlpha > 0 && (!app.keyboard[SDL_SCANCODE_RIGHT] || !app.keyboard[SDL_SCANCODE_UP] || app.keyboard[SDL_SCANCODE_DOWN])) trailerAlpha -= 5;
+
+		SDL_SetTextureAlphaMod(player->trailer, trailerAlpha);
+
 		if (player->reload > 0) player->reload--;
-		if (app.keyboard[SDL_SCANCODE_UP]) player->dy = -PLAYER_SPEED;
-		if (app.keyboard[SDL_SCANCODE_DOWN]) player->dy = PLAYER_SPEED;
+		if (app.keyboard[SDL_SCANCODE_UP])
+		{
+			player->dy = -PLAYER_SPEED;
+			if (trailerAlpha <= SDL_MAX_UINT8 - 10) trailerAlpha += 10;
+		}
+		if (app.keyboard[SDL_SCANCODE_DOWN])
+		{
+		player->dy = PLAYER_SPEED;
+		if (trailerAlpha <= SDL_MAX_UINT8 - 10) trailerAlpha += 10;
+		}
 		if (app.keyboard[SDL_SCANCODE_LEFT]) player->dx = -PLAYER_SPEED;
-		if (app.keyboard[SDL_SCANCODE_RIGHT]) player->dx = PLAYER_SPEED;
+		if (app.keyboard[SDL_SCANCODE_RIGHT])
+		{
+			player->dx = PLAYER_SPEED;
+			if (trailerAlpha <= SDL_MAX_UINT8 - 10) trailerAlpha += 10;
+		}
 		if (app.keyboard[SDL_SCANCODE_LCTRL] && player->reload == 0) fireBullet();
 	}
 }
