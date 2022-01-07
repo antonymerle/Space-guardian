@@ -2,7 +2,8 @@
 
 void initSDL(void)
 {
-	int rendererFlags, windowFlags;
+	int rendererFlags;
+	int windowFlags;
 
 	rendererFlags = SDL_RENDERER_ACCELERATED;
 	windowFlags = 0;
@@ -32,13 +33,15 @@ void initSDL(void)
 
 	IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
 
+	/*SDL_ShowCursor(0);*/
+
 }
 
 void cleanup(void)
 {
 	SDL_DestroyRenderer(app.renderer);
-	
+
 	SDL_DestroyWindow(app.window);
-	
+
 	SDL_Quit();
 }

@@ -27,6 +27,7 @@ struct Entity {
 	int reload;
 	ShotMode shotMode;
 	SDL_Texture* texture;
+	SDL_Texture* trailer;
 	Entity* next;
 };
 
