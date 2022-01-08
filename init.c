@@ -14,6 +14,14 @@ void initSDL(void)
 		exit(1);
 	}
 
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) == -1)
+	{
+		printf("Impossible d'initialiser SDL_mixer : %s\n", SDL_GetError());
+		exit(1);
+	}
+
+	Mix_AllocateChannels(MAX_SND_CHANNELS);
+
 	app.window = SDL_CreateWindow("Shooter", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, windowFlags);
 
 	if (!app.window)

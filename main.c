@@ -13,6 +13,8 @@ int main(int argc, char* argv[])
 
 	atexit(cleanup);
 
+	initSounds();
+
 	initStage();
 
 	topChrono = SDL_GetTicks();

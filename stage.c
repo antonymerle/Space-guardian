@@ -77,6 +77,8 @@ void initStage(void)
 	explosionTexture = loadTexture("gfx/explosion.png");
 	trailerTexture = loadTexture("gfx/trailerPlayer.png");
 
+	loadMusic("music/Mercury.ogg");
+	playMusic(1);
 
 	bulletNumber = 0;
 	hitCount = 0;
@@ -233,7 +235,11 @@ static void doPlayer(void)
 			player->dx = PLAYER_SPEED;
 			if (trailerAlpha <= SDL_MAX_UINT8 - 10) trailerAlpha += 10;
 		}
-		if (app.keyboard[SDL_SCANCODE_LCTRL] && player->reload == 0) fireBullet();
+		if (app.keyboard[SDL_SCANCODE_LCTRL] && player->reload == 0)
+		{
+			fireBullet();
+			playSound(SND_PLAYER_FIRE, CH_PLAYER);
+		}
 	}
 }
 
@@ -326,16 +332,21 @@ static int bulletHitFighter(Entity* b)
 			&& collision(e->x, e->y, e->w, e->h, b->x, b->y, b->w, b->h))
 		{
 			hitCount++;
-			// printf("%u hit\n", hitCount);
 			b->health = 0;
 			e->health--;
+			
+			if (e == player)
+			{
+				playSound(SND_PLAYER_DIE, CH_PLAYER);
+			}
+			else
+			{
+				playSound(SND_ALIEN_DIE, CH_ANY);
+			}
 
 			return 1;
 		}
-		//printf("miss\n");
 	}
-	//SDL_Log("hum\n");
-
 	return 0;
 }
 
@@ -361,7 +372,7 @@ static void drawBullets(void)
 
 static int generateRandomNumber(unsigned int top)
 {
-	/* Intializes random number generator */
+	/* Initializes random number generator */
 	unsigned int seed;
 	char randomNegativeSwitch;
 
@@ -490,7 +501,11 @@ static void doEnemies(void)
 
 	for (e = stage.fighterHead.next; e != NULL; e = e->next)
 	{
-		if (e != player && player != NULL && --(e->reload) <= 0) fireAlienBullet(e);
+		if (e != player && player != NULL && --(e->reload) <= 0)
+		{
+			fireAlienBullet(e);
+			playSound(SND_ALIEN_FIRE, CH_ALIEN_FIRE);
+		}
 	}
 }
 
