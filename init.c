@@ -33,7 +33,7 @@ void initSDL(void)
 
 	IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
 
-	/*SDL_ShowCursor(0);*/
+	SDL_ShowCursor(0);
 
 }
 

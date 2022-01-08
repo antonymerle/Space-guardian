@@ -48,6 +48,7 @@ static int enemySpawnTimer;
 static int stageResetTimer;
 static int backgroundX;
 static uint8_t trailerAlpha;
+static uint8_t trailerColourModifierCount = FPS;
 
 /* DEBUG */
 static unsigned int bulletNumber;
@@ -171,12 +172,46 @@ static void logic(void)
 
 static void doPlayer(void)
 {
+	int r, g, b;
+
 	if (player)
 	{
 		player->dx = 0;
 		player->dy = 0;
 
 		// TODO make a trailerAlpha function
+		r = g = b = 0;
+		if (--trailerColourModifierCount == 0)
+		{
+			switch (rand() % 3)
+			{
+			//case 1:
+			//	r = 255;
+			//	break;
+			case 0:
+				r = 255;
+				g = 128;
+				break;
+			case 1:
+				r = 255;
+				g = 255;
+				break;
+			default:
+				r = 255;
+				g = 255;
+				b = 255;
+				break;
+			}
+
+			SDL_SetRenderDrawBlendMode(app.renderer, SDL_BLENDMODE_ADD);
+			SDL_SetTextureBlendMode(trailerTexture, SDL_BLENDMODE_ADD);
+			SDL_SetTextureColorMod(trailerTexture, r, g, b);
+			SDL_SetTextureBlendMode(app.renderer, SDL_BLENDMODE_NONE);
+
+			trailerColourModifierCount = 4;
+		}
+		
+
 		if (trailerAlpha > 0 && (!app.keyboard[SDL_SCANCODE_RIGHT] || !app.keyboard[SDL_SCANCODE_UP] || app.keyboard[SDL_SCANCODE_DOWN])) trailerAlpha -= 5;
 
 		SDL_SetTextureAlphaMod(player->trailer, trailerAlpha);
