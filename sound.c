@@ -10,6 +10,7 @@ void initSounds(void)
 	memset(sounds, 0, sizeof(Mix_Chunk*));
 	music = NULL;
 	loadSounds();
+
 }
 
 static void loadSounds(void)
@@ -42,10 +43,27 @@ void loadMusic(char const* filename)
 
 void playMusic(int loop)
 {
+	Mix_VolumeMusic(MIX_MAX_VOLUME / 2);
 	Mix_PlayMusic(music, loop ? -1 : 0);
 }
 
 void playSound(int id, int channel)
 {
-	Mix_PlayChannel(channel, sounds[id], 0);
+	/* TODO: ADD MORE CHANNELS */
+	switch (channel)
+	{
+	case CH_ALIEN_FIRE:
+		Mix_Volume(channel, 10);
+		Mix_PlayChannel(channel, sounds[id], 0);
+		break;
+
+	case CH_ANY:
+		Mix_Volume(channel, 10);
+		Mix_PlayChannel(channel, sounds[id], 0);
+		break;
+
+	default:
+		Mix_PlayChannel(channel, sounds[id], 0);
+		break;
+	}
 }
