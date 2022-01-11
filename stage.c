@@ -337,11 +337,18 @@ static int bulletHitFighter(Entity* b)
 			
 			if (e == player)
 			{
-				playSound(SND_PLAYER_DIE, CH_PLAYER);
+				if (player->health <= 0)
+				{
+					playSound(SND_PLAYER_DIE, CH_PLAYER);
+				}
+				else
+				{
+					playSound(SND_PLAYER_TAKE_DAMAGE, CH_PLAYER);
+				}
 			}
 			else
 			{
-				playSound(SND_ALIEN_DIE, CH_ANY);
+				playSound(SND_ALIEN_DIE, CH_EXPLOSION);
 			}
 
 			return 1;
