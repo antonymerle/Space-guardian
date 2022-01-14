@@ -64,6 +64,7 @@ void playSound(int id, int channel)
 		break;
 
 	default:
+		Mix_Volume(channel, 30);
 		Mix_PlayChannel(channel, sounds[id], 0);
 		break;
 	}
