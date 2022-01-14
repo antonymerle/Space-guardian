@@ -29,6 +29,7 @@ static void drawStarfield(void);
 static void drawDebris(void);
 static void drawExplosions(void);
 static void addDebris(Entity* e);
+static void drawHud(void);
 
 
 
@@ -47,8 +48,11 @@ static Star stars[MAX_STARS];
 static int enemySpawnTimer;
 static int stageResetTimer;
 static int backgroundX;
+
 static uint8_t trailerAlpha;
 static uint8_t trailerColourModifierCount = FPS;
+
+static uint32_t highscore;
 
 /* DEBUG */
 static unsigned int bulletNumber;
@@ -124,6 +128,7 @@ static void resetStage(void)
 	}
 
 	memset(&stage, 0, sizeof(Stage));
+	stage.score = 0;								/* Est-ce bien nécessaire ? cf memset*/
 	stage.fighterTail = &stage.fighterHead;
 	stage.bulletTail = &stage.bulletHead;
 	stage.explosionTail = &stage.explosionHead;
@@ -349,6 +354,8 @@ static int bulletHitFighter(Entity* b)
 			else
 			{
 				playSound(SND_ALIEN_DIE, CH_EXPLOSION);
+				stage.score++;
+				highscore = MAX(stage.score, highscore);
 			}
 
 			return 1;
@@ -365,6 +372,7 @@ static void draw(void)
 	drawDebris();
 	drawExplosions();
 	drawBullets();
+	drawHud();
 }
 
 static void drawBullets(void)
@@ -770,4 +778,18 @@ static void drawExplosions(void)
 		blit(explosionTexture, e->x, e->y);
 	}
 	SDL_SetRenderDrawBlendMode(app.renderer, SDL_BLENDMODE_NONE);
+}
+
+static void drawHud(void)
+{
+	drawText(10, 10, 255, 255, 255, "SCORE: %03d", stage.score);
+
+	if (stage.score > 0 && stage.score == highscore)
+	{
+		drawText(960, 10, 0, 255, 0, "HIGH SCORE: %03d", highscore);
+	}
+	else
+	{
+		drawText(960, 10, 255, 255, 255, "HIGH SCORE: %03d", highscore);
+	}
 }

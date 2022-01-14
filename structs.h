@@ -1,3 +1,4 @@
+#pragma once
 typedef struct Entity Entity;
 typedef struct Explosion Explosion;
 typedef struct Debris Debris;
@@ -65,6 +66,7 @@ typedef struct {
 	Explosion* explosionTail;
 	Debris debrisHead;
 	Debris* debrisTail;
+	int score;
 } Stage;
 
 

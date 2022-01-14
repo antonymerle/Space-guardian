@@ -1,3 +1,4 @@
+#pragma once
 #include "common.h"
 
 extern SDL_Texture* loadTexture(char* filename);
@@ -8,7 +9,7 @@ extern void calcAzimut(int srcX, int srcY, int destX, int destY, float* dx, floa
 extern void loadMusic(char const* filename);
 extern void playMusic(int loop);
 extern void playSound(int id, int channel);
-
+void drawText(int x, int y, int r, int g, int b, char* textToFormat, ...);
 
 
 

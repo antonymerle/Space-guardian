@@ -17,6 +17,8 @@ int main(int argc, char* argv[])
 
 	initStage();
 
+	initFonts();
+
 	topChrono = SDL_GetTicks();
 	remainder = 0;
 

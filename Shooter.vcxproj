@@ -25,6 +25,7 @@
     <ClCompile Include="main.c" />
     <ClCompile Include="sound.c" />
     <ClCompile Include="stage.c" />
+    <ClCompile Include="text.c" />
     <ClCompile Include="util.c" />
   </ItemGroup>
   <ItemGroup>
@@ -37,6 +38,7 @@
     <ClInclude Include="main.h" />
     <ClInclude Include="stage.h" />
     <ClInclude Include="structs.h" />
+    <ClInclude Include="text.h" />
     <ClInclude Include="util.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -139,7 +141,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
