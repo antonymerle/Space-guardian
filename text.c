@@ -37,7 +37,7 @@ void drawText(int x, int y, int r, int g, int b, char* textToFormat, ...)
 			/* This is because a space is the first character in font texture 
 			and therefore has an x position of 0. */
 			rect.x = (c - ' ') * GLYPH_WIDTH;
-			blitRect(fontTexture, &rect, x, y);
+			blitRectScale(fontTexture, &rect, x, y, 0.5);
 
 			x += GLYPH_WIDTH;
 		}

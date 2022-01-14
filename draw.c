@@ -44,3 +44,20 @@ void blitRect(SDL_Texture* texture, SDL_Rect* src, int x, int y)
 
 	SDL_RenderCopy(app.renderer, texture, src, &dest);
 }
+
+void blitRectScale(SDL_Texture* texture, SDL_Rect* src, int x, int y, float scale)
+{
+	SDL_Rect dest;
+
+	if (scale < 0) 
+	{ 
+		scale = abs(scale);
+	}
+
+	dest.x = x;
+	dest.y = y;
+	dest.w = src->w * scale;
+	dest.h = src->h * scale;
+
+	SDL_RenderCopy(app.renderer, texture, src, &dest);
+}
