@@ -25,7 +25,7 @@ SDL_Texture* loadTexture(char* filename)
 void blit(SDL_Texture* texture, int x, int y)
 {
 	SDL_Rect dest;
-	
+
 	dest.x = x;
 	dest.y = y;
 
@@ -45,12 +45,12 @@ void blitRect(SDL_Texture* texture, SDL_Rect* src, int x, int y)
 	SDL_RenderCopy(app.renderer, texture, src, &dest);
 }
 
-void blitRectScale(SDL_Texture* texture, SDL_Rect* src, int x, int y, float scale)
+void blitRectScale(SDL_Texture* texture, SDL_Rect* src, int x, int y, double scale)
 {
 	SDL_Rect dest;
 
-	if (scale < 0) 
-	{ 
+	if (scale < 0)
+	{
 		scale = abs(scale);
 	}
 

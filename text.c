@@ -8,7 +8,7 @@ void initFonts(void)
 	fontTexture = loadTexture("gfx/font.png");
 }
 
-void drawText(int x, int y, int r, int g, int b, char* textToFormat, ...)
+void drawText(int x, int y, int r, int g, int b, double scale, char* textToFormat, ...)
 {
 	int i, len, c;
 	SDL_Rect rect;				/* to specify what region of the texture to use */
@@ -34,10 +34,10 @@ void drawText(int x, int y, int r, int g, int b, char* textToFormat, ...)
 
 		if (c >= ' ' && c <= 'Z')
 		{
-			/* This is because a space is the first character in font texture 
+			/* This is because a space is the first character in font texture
 			and therefore has an x position of 0. */
 			rect.x = (c - ' ') * GLYPH_WIDTH;
-			blitRectScale(fontTexture, &rect, x, y, 0.5);
+			blitRectScale(fontTexture, &rect, x, y, scale);
 
 			x += GLYPH_WIDTH;
 		}

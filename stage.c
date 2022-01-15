@@ -53,6 +53,7 @@ static uint8_t trailerAlpha;
 static uint8_t trailerColourModifierCount = FPS;
 
 static uint32_t highscore;
+static uint32_t hudBlinkCounter;
 
 /* DEBUG */
 static unsigned int bulletNumber;
@@ -150,7 +151,7 @@ static void initPlayer(void)
 	stage.fighterTail->next = player;
 	stage.fighterTail = player;
 
-	player->health = 3;
+	player->health = PLAYER_MAX_HEALTH;
 	player->side = SIDE_PLAYER;
 	player->x = 100;
 	player->y = 100;
@@ -192,9 +193,9 @@ static void doPlayer(void)
 		{
 			switch (rand() % 3)
 			{
-			//case 1:
-			//	r = 255;
-			//	break;
+				//case 1:
+				//	r = 255;
+				//	break;
 			case 0:
 				r = 255;
 				g = 128;
@@ -217,7 +218,7 @@ static void doPlayer(void)
 
 			trailerColourModifierCount = 4;
 		}
-		
+
 
 		if (trailerAlpha > 0 && (!app.keyboard[SDL_SCANCODE_RIGHT] || !app.keyboard[SDL_SCANCODE_UP] || app.keyboard[SDL_SCANCODE_DOWN])) trailerAlpha -= 5;
 
@@ -231,8 +232,8 @@ static void doPlayer(void)
 		}
 		if (app.keyboard[SDL_SCANCODE_DOWN])
 		{
-		player->dy = PLAYER_SPEED;
-		if (trailerAlpha <= SDL_MAX_UINT8 - 10) trailerAlpha += 10;
+			player->dy = PLAYER_SPEED;
+			if (trailerAlpha <= SDL_MAX_UINT8 - 10) trailerAlpha += 10;
 		}
 		if (app.keyboard[SDL_SCANCODE_LEFT]) player->dx = -PLAYER_SPEED;
 		if (app.keyboard[SDL_SCANCODE_RIGHT])
@@ -339,7 +340,7 @@ static int bulletHitFighter(Entity* b)
 			hitCount++;
 			b->health = 0;
 			e->health--;
-			
+
 			if (e == player)
 			{
 				if (player->health <= 0)
@@ -782,14 +783,41 @@ static void drawExplosions(void)
 
 static void drawHud(void)
 {
-	drawText(10, 10, 255, 255, 255, "SCORE: %03d", stage.score);
+	double healthRatio;
+
+
+	drawText(10, 10, 255, 255, 255, 0.5, "SCORE: %03d", stage.score);
 
 	if (stage.score > 0 && stage.score == highscore)
 	{
-		drawText(960, 10, 0, 255, 0, "HIGH SCORE: %03d", highscore);
+		drawText(960, 10, 0, 255, 0, 0.5, "HIGH SCORE: %03d", highscore);
 	}
 	else
 	{
-		drawText(960, 10, 255, 255, 255, "HIGH SCORE: %03d", highscore);
+		drawText(960, 10, 255, 255, 255, 0.5, "HIGH SCORE: %03d", highscore);
 	}
+
+	if (player)
+	{
+		healthRatio = ((double)(player->health) / (double)PLAYER_MAX_HEALTH) * 100.0;
+
+		if (healthRatio == 100)
+		{
+			drawText(10, 40, 0, 255, 0, 0.5, "HEALTH: %3.0f \%", healthRatio);
+		}
+		else if (healthRatio >= 34 && healthRatio <= 67)
+		{
+			drawText(10, 40, 255, 128, 0, 0.5, "HEALTH: %3.0f \%", healthRatio);
+		}
+		else
+		{
+			hudBlinkCounter++;
+			if (hudBlinkCounter < FPS)
+			{
+				drawText(10, 40, 255, 0, 0, 0.5, "HEALTH: %3.0f \%", healthRatio);
+			}
+			if (hudBlinkCounter > FPS * 2) hudBlinkCounter = 0;
+		}
+	}
+
 }
