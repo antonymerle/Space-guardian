@@ -1,11 +1,12 @@
 #include "main.h"
+//#include "stage.h"
 
-static void capFramerate(unsigned int* topChrono, float* remainder);
+static void capFramerate(uint32_t* topChrono, double* remainder);
 
 int main(int argc, char* argv[])
 {
-	unsigned int topChrono;
-	float remainder;
+	uint32_t topChrono;
+	double remainder;
 
 	memset(&app, 0, sizeof(App));
 
@@ -36,25 +37,29 @@ int main(int argc, char* argv[])
 	return 0;
 }
 
-/* 
+/*
 * 1000 ms / 60 = 16.6667 ms
 * si nécessaire, attend jusqu'à 16.667 ms pour produire une image,
-* avec comme objectif 60 images/s 
+* avec comme objectif 60 images/s
 */
-static void capFramerate(unsigned int* topChrono, float* remainder)
+static void capFramerate(uint32_t* topChrono, double* remainder)
 {
-	unsigned int objectifTemporelPourProduireUneImageMs;		
-	unsigned int intervalleDepuisDernierChrono;
-	unsigned int attente;
+	uint32_t objectifTemporelPourProduireUneImageMs;
+	uint32_t intervalleDepuisDernierChrono;
+	/* attente pour limiter le framerate */
+	uint32_t attente;
 
-	objectifTemporelPourProduireUneImageMs = (unsigned int)(16 + *remainder);
-	*remainder -= (unsigned int)*remainder;
+	objectifTemporelPourProduireUneImageMs = (uint32_t)(16 + *remainder);
+	*remainder -= (int)*remainder;
 	intervalleDepuisDernierChrono = SDL_GetTicks() - *topChrono;
 	attente = objectifTemporelPourProduireUneImageMs - intervalleDepuisDernierChrono;
 	if (attente < 1) attente = 1;
 
-	SDL_Delay(attente);
 
-	*remainder += (float)0.667;
+	SDL_Delay(attente);
+	//printf("DEBUG : %u attente\n", attente);
+	printf("DEBUG : %u FPS\n", objectifTemporelPourProduireUneImageMs - attente ? 1000 / (objectifTemporelPourProduireUneImageMs - attente) : 1000);
+
+	*remainder += 0.667;
 	*topChrono = SDL_GetTicks();
 }

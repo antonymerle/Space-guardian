@@ -10,5 +10,6 @@ extern void presentScene(void);
 extern void initSounds(void);
 extern void initFonts(void);
 
+
 App app;
 Stage stage;

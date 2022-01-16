@@ -62,6 +62,7 @@ static uint32_t hudBlinkCounter;
 /* DEBUG */
 static unsigned int bulletNumber;
 static unsigned int hitCount;
+static uint32_t topChrono;
 
 void initStage(void)
 {
@@ -95,6 +96,8 @@ void initStage(void)
 	hitCount = 0;
 
 	backgroundX = 0;
+
+	topChrono = SDL_GetTicks();
 
 	resetStage();
 }
@@ -803,8 +806,15 @@ static void drawHud(void)
 {
 	/* TODO : indiquer le nombre de FPS */
 	double healthRatio;
+	uint32_t intervalleChrono;
+
 
 	drawText(10, 10, 255, 255, 255, 0.5, "SCORE: %03d", stage.score);
+
+	intervalleChrono = SDL_GetTicks() - topChrono;
+	drawText(10, SCREEN_HEIGHT - 50, 255, 255, 255, 0.5, "FPS : %u", 1000 / intervalleChrono);
+	topChrono = SDL_GetTicks();
+
 
 	if (stage.score > 0 && stage.score == highscore)
 	{
@@ -904,7 +914,7 @@ static void addPointsPod(int x, int y)
 	Entity* e;
 
 	e = malloc(sizeof(Entity));
-	memset(e, 0, sizeof(Entity));
+	if (e != NULL) memset(e, 0, sizeof(Entity));
 
 	stage.pointTail->next = e;
 	stage.pointTail = e;

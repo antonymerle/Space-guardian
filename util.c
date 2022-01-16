@@ -27,3 +27,4 @@ void calcAzimut(int srcX, int srcY, int destX, int destY, float* dx, float* dy)
 	*dy = srcY - destY;
 	*dy /= steps;
 }
+
