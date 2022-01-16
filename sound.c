@@ -29,6 +29,9 @@ static void loadSounds(void)
 
 	sounds[SND_ALIEN_DIE] = Mix_LoadWAV("sound/10 Guage Shotgun-SoundBible.com-74120584.ogg");
 	if (sounds[SND_ALIEN_DIE] != 0) SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "[SON] Chargement de sound/10 Guage Shotgun-SoundBible.com-74120584.ogg\n");
+
+	sounds[SND_POINTS] = Mix_LoadWAV("sound/342749__rhodesmas__notification-01.ogg");
+	if (sounds[SND_POINTS] != 0) SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "[SON] Chargement de sound/342749__rhodesmas__notification-01.ogg");
 }
 
 void loadMusic(char const* filename)

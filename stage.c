@@ -30,6 +30,9 @@ static void drawDebris(void);
 static void drawExplosions(void);
 static void addDebris(Entity* e);
 static void drawHud(void);
+static void doPointsPods(void);
+static void addPointsPod(int x, int y);
+static void drawPointsPods(void);
 
 
 
@@ -42,6 +45,7 @@ static SDL_Texture* megaShot;
 static SDL_Texture* background;
 static SDL_Texture* explosionTexture;
 static SDL_Texture* trailerTexture;
+static SDL_Texture* pointTexture;
 
 static Star stars[MAX_STARS];
 
@@ -70,6 +74,7 @@ void initStage(void)
 	stage.bulletTail = &stage.bulletHead;
 	stage.explosionTail = &stage.explosionHead;
 	stage.debrisTail = &stage.debrisHead;
+	stage.pointTail = &stage.pointHead;
 
 	initPlayer();
 
@@ -81,6 +86,7 @@ void initStage(void)
 	background = loadTexture("gfx/background.png");
 	explosionTexture = loadTexture("gfx/explosion.png");
 	trailerTexture = loadTexture("gfx/trailerPlayer.png");
+	pointTexture = loadTexture("gfx/points.png");
 
 	loadMusic("music/Mercury.ogg");
 	playMusic(1);
@@ -96,6 +102,7 @@ void initStage(void)
 static void resetStage(void)
 {
 	Entity* e;
+	Entity* p;
 	Explosion* ex;
 	Debris* d;
 
@@ -128,12 +135,20 @@ static void resetStage(void)
 		free(d);
 	}
 
+	while (stage.pointHead.next)
+	{
+		p = stage.pointHead.next;
+		stage.pointHead.next = p->next;
+		free(p);
+	}
+
 	memset(&stage, 0, sizeof(Stage));
 	stage.score = 0;								/* Est-ce bien nécessaire ? cf memset*/
 	stage.fighterTail = &stage.fighterHead;
 	stage.bulletTail = &stage.bulletHead;
 	stage.explosionTail = &stage.explosionHead;
 	stage.debrisTail = &stage.debrisHead;
+	stage.pointTail = &stage.pointHead;
 
 	initPlayer();
 
@@ -171,10 +186,11 @@ static void logic(void)
 	doEnemies();
 	doFighters();
 	doBullets();
+	doExplosions();
 	doDebris();
+	doPointsPods();
 	spawnEnemies();
 	cadrePlayer();
-	doExplosions();
 	if (player == NULL && --stageResetTimer <= 0) resetStage();
 }
 
@@ -354,6 +370,7 @@ static int bulletHitFighter(Entity* b)
 			}
 			else
 			{
+				addPointsPod(e->x + e->w / 2, e->y + e->h / 2);
 				playSound(SND_ALIEN_DIE, CH_EXPLOSION);
 				stage.score++;
 				highscore = MAX(stage.score, highscore);
@@ -369,6 +386,7 @@ static void draw(void)
 {
 	drawBackground();
 	drawStarfield();
+	drawPointsPods();
 	drawFighters();
 	drawDebris();
 	drawExplosions();
@@ -783,8 +801,8 @@ static void drawExplosions(void)
 
 static void drawHud(void)
 {
+	/* TODO : indiquer le nombre de FPS */
 	double healthRatio;
-
 
 	drawText(10, 10, 255, 255, 255, 0.5, "SCORE: %03d", stage.score);
 
@@ -820,4 +838,98 @@ static void drawHud(void)
 		}
 	}
 
+}
+
+static void doPointsPods(void)
+{
+	Entity* e;
+	Entity* prev;
+
+	prev = &stage.pointHead;
+
+	for (e = stage.pointHead.next; e != NULL; e = e->next)
+	{
+		if (e->x < 0)
+		{
+			e->x = 0;
+			e->dx = -e->dx;
+		}
+
+		if (e->x + e->w > SCREEN_WIDTH)
+		{
+			e->x = SCREEN_WIDTH - e->w;
+			e->dx = -e->dx;
+		}
+
+		if (e->y < 0)
+		{
+			e->y = 0;
+			e->dy = -e->dy;
+		}
+
+		if (e->y + e->h > SCREEN_HEIGHT)
+		{
+			e->y = SCREEN_HEIGHT - e->h;
+			e->dy = -e->dy;
+		}
+
+		e->x += e->dx;
+		e->y += e->dy;
+
+		if (player != NULL && collision(e->x, e->y, e->w, e->h, player->x, player->y, player->w, player->h))
+		{
+			e->health = 0;
+			stage.score++;
+			highscore = MAX(stage.score, highscore);
+			playSound(SND_POINTS, CH_POINTS);
+		}
+
+		if (--e->health <= 0)
+		{
+			if (e == stage.pointTail)
+			{
+				stage.pointTail = prev;
+			}
+
+			prev->next = e->next;
+			free(e);
+			e = prev;
+		}
+		prev = e;
+	}
+}
+
+static void addPointsPod(int x, int y)
+{
+	Entity* e;
+
+	e = malloc(sizeof(Entity));
+	memset(e, 0, sizeof(Entity));
+
+	stage.pointTail->next = e;
+	stage.pointTail = e;
+
+	e->x = x;
+	e->y = y;
+
+	e->dx = -(rand() % 5);
+	e->dy = (rand() % 5 - rand() % 5);
+
+	SDL_QueryTexture(pointTexture, NULL, NULL, &e->w, &e->h);
+
+	e->x -= e->w / 2;
+	e->y -= e->h / 2;
+
+	e->health = FPS * 10;
+	e->texture = pointTexture;
+}
+
+static void drawPointsPods(void)
+{
+	Entity* e;
+
+	for (e = stage.pointHead.next; e != NULL; e = e->next)
+	{
+		blit(pointTexture, e->x, e->y);
+	}
 }
