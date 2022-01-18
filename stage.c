@@ -373,7 +373,7 @@ static int bulletHitFighter(Entity* b)
 			}
 			else
 			{
-				addPointsPod(e->x + e->w / 2, e->y + e->h / 2);
+				if(e->x % 2) addPointsPod(e->x + e->w / 2, e->y + e->h / 2);
 				playSound(SND_ALIEN_DIE, CH_EXPLOSION);
 				stage.score++;
 				highscore = MAX(stage.score, highscore);
@@ -889,8 +889,7 @@ static void doPointsPods(void)
 		if (player != NULL && collision(e->x, e->y, e->w, e->h, player->x, player->y, player->w, player->h))
 		{
 			e->health = 0;
-			stage.score++;
-			highscore = MAX(stage.score, highscore);
+			if (player->health < PLAYER_MAX_HEALTH) player->health++;
 			playSound(SND_POINTS, CH_POINTS);
 		}
 
