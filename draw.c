@@ -3,6 +3,7 @@
 
 void prepareScene(void)
 {
+	// TODO : supprimer cette couleur ?
 	SDL_SetRenderDrawColor(app.renderer, 171, 208, 188, 255);
 	SDL_RenderClear(app.renderer);
 }

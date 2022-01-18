@@ -59,10 +59,12 @@ static uint8_t trailerColourModifierCount = FPS;
 static uint32_t highscore;
 static uint32_t hudBlinkCounter;
 
+extern uint32_t objectifTemporelPourProduireUneImageMs;
+extern uint32_t attente;
+
 /* DEBUG */
 static unsigned int bulletNumber;
 static unsigned int hitCount;
-static uint32_t topChrono;
 
 void initStage(void)
 {
@@ -96,8 +98,6 @@ void initStage(void)
 	hitCount = 0;
 
 	backgroundX = 0;
-
-	topChrono = SDL_GetTicks();
 
 	resetStage();
 }
@@ -804,17 +804,10 @@ static void drawExplosions(void)
 
 static void drawHud(void)
 {
-	/* TODO : indiquer le nombre de FPS */
 	double healthRatio;
-	uint32_t intervalleChrono;
-
 
 	drawText(10, 10, 255, 255, 255, 0.5, "SCORE: %03d", stage.score);
-
-	intervalleChrono = SDL_GetTicks() - topChrono;
-	drawText(10, SCREEN_HEIGHT - 50, 255, 255, 255, 0.5, "FPS : %u", 1000 / intervalleChrono);
-	topChrono = SDL_GetTicks();
-
+	drawText(10, SCREEN_HEIGHT - 50, 255, 255, 255, 0.5, "FPS : %u", objectifTemporelPourProduireUneImageMs - attente ? 1000 / (objectifTemporelPourProduireUneImageMs - attente) : 1000);
 
 	if (stage.score > 0 && stage.score == highscore)
 	{

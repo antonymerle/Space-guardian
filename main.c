@@ -3,6 +3,10 @@
 
 static void capFramerate(uint32_t* topChrono, double* remainder);
 
+uint32_t objectifTemporelPourProduireUneImageMs;
+uint32_t intervalleDepuisDernierChrono;
+uint32_t attente;
+
 int main(int argc, char* argv[])
 {
 	uint32_t topChrono;
@@ -44,20 +48,14 @@ int main(int argc, char* argv[])
 */
 static void capFramerate(uint32_t* topChrono, double* remainder)
 {
-	uint32_t objectifTemporelPourProduireUneImageMs;
-	uint32_t intervalleDepuisDernierChrono;
-	/* attente pour limiter le framerate */
-	uint32_t attente;
-
 	objectifTemporelPourProduireUneImageMs = (uint32_t)(16 + *remainder);
 	*remainder -= (int)*remainder;
 	intervalleDepuisDernierChrono = SDL_GetTicks() - *topChrono;
 	attente = objectifTemporelPourProduireUneImageMs - intervalleDepuisDernierChrono;
 	if (attente < 1) attente = 1;
 
-
+	/* attente pour limiter le framerate */
 	SDL_Delay(attente);
-	//printf("DEBUG : %u attente\n", attente);
 	printf("DEBUG : %u FPS\n", objectifTemporelPourProduireUneImageMs - attente ? 1000 / (objectifTemporelPourProduireUneImageMs - attente) : 1000);
 
 	*remainder += 0.667;
