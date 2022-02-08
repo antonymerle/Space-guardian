@@ -2,7 +2,6 @@
 
 static void logic(void);
 static void draw(void);
-static void drawPlayer(void);
 static void drawBullets(void);
 static void initPlayer(void);
 static void doPlayer(void);
@@ -212,9 +211,6 @@ static void doPlayer(void)
 		{
 			switch (rand() % 3)
 			{
-				//case 1:
-				//	r = 255;
-				//	break;
 			case 0:
 				r = 255;
 				g = 128;
