@@ -233,7 +233,7 @@ static void doPlayer(void)
 			SDL_SetRenderDrawBlendMode(app.renderer, SDL_BLENDMODE_ADD);
 			SDL_SetTextureBlendMode(trailerTexture, SDL_BLENDMODE_ADD);
 			SDL_SetTextureColorMod(trailerTexture, r, g, b);
-			SDL_SetTextureBlendMode(app.renderer, SDL_BLENDMODE_NONE);
+			SDL_SetRenderDrawBlendMode(app.renderer, SDL_BLENDMODE_NONE);
 
 			trailerColourModifierCount = 4;
 		}
