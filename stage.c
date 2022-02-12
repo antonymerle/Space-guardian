@@ -85,7 +85,7 @@ void initStage(void)
 	enemyTexture = loadTexture("gfx/enemy.png");
 	alienBulletTexture = loadTexture("gfx/alienBullet.png");
 	megaShot = loadTexture("gfx/MegaShot.png");
-	background = loadTexture("gfx/background.png");
+	background = loadTexture("gfx/Blue Nebula 1 - 512x512.png");
 	explosionTexture = loadTexture("gfx/explosion.png");
 	trailerTexture = loadTexture("gfx/trailerPlayer.png");
 	pointTexture = loadTexture("gfx/points.png");
@@ -596,7 +596,9 @@ static void initStarField(void)
 
 static void doBackground(void)
 {
-	if (--backgroundX < -SCREEN_WIDTH) backgroundX = 0;
+	int w;
+	SDL_QueryTexture(background, NULL, NULL, &w, NULL);
+	if (--backgroundX < -w) backgroundX = 0;
 }
 
 static void doStarfield(void)
@@ -746,17 +748,23 @@ static void drawBackground(void)
 {
 	SDL_Rect dest;
 	int x;
+	int y;
 
-	for (x = backgroundX; x < SCREEN_WIDTH; x += SCREEN_WIDTH)
+	SDL_QueryTexture(background, NULL, NULL, &dest.w, &dest.h);
+
+	for (x = backgroundX; x < SCREEN_WIDTH; x+= dest.w)
 	{
-		dest.x = x;
-		dest.y = 0;
-		dest.w = SCREEN_WIDTH;
-		dest.h = SCREEN_HEIGHT;
+		for (y = 0; y < SCREEN_HEIGHT; y+= dest.h)
+		{
+			dest.x = x;
+			dest.y = y;
+			SDL_RenderCopy(app.renderer, background, NULL, &dest);
 
-		SDL_RenderCopy(app.renderer, background, NULL, &dest);
+		}
 	}
 }
+
+
 
 static void drawStarfield(void)
 {
