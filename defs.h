@@ -13,6 +13,7 @@
 
 #define MIN(a,b)				(((a)<(b))?(a):(b))
 #define MAX(a,b)				(((a)>(b))?(a):(b))
+#define STRNCPY(dest, src, n)	strncpy(dest, src, n); dest[n - 1] = '\0'
 
 #define FPS						60
 #define ALIEN_BULLET_SPEED		6
@@ -22,6 +23,10 @@
 #define MAX_SND_CHANNELS		16
 
 #define MAX_STR_LENGTH			1024
+
+#define NUM_HIGHSCORES			8
+#define MAX_NAME_LENGTH			32
+
 
 
 enum

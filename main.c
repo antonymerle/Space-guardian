@@ -13,16 +13,14 @@ int main(int argc, char* argv[])
 	double remainder;
 
 	memset(&app, 0, sizeof(App));
+	app.textureTail = &app.textureHead;
 
 	initSDL();
 
 	atexit(cleanup);
 
-	initSounds();
-
-	initStage();
-
-	initFonts();
+	initGame();
+	initHighscores();
 
 	topChrono = SDL_GetTicks();
 	remainder = 0;

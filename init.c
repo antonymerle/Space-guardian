@@ -45,6 +45,18 @@ void initSDL(void)
 
 }
 
+void initGame(void)
+{
+	initBackground();
+	initStarfield();
+	initSounds();
+	initFonts();
+	initHighscoreTable();
+	loadMusic("music/Mercury.ogg");
+	playMusic(1);
+}
+
+
 void cleanup(void)
 {
 	SDL_DestroyRenderer(app.renderer);
