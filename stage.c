@@ -32,6 +32,7 @@ static void drawHud(void);
 static void doPointsPods(void);
 static void addPointsPod(int x, int y);
 static void drawPointsPods(void);
+static int bulletHitPoint(Entity* b);
 
 
 
@@ -329,7 +330,7 @@ static void doBullets(void)
 		b->x += b->dx;
 		b->y += b->dy;
 
-		if (bulletHitFighter(b) || b->x > SCREEN_WIDTH || b->x <= 0 || b->y > SCREEN_HEIGHT || b->y <= 0/*-b->h*/ || (b->dx == 0) && (b->dy == 0))
+		if (bulletHitFighter(b) || bulletHitPoint(b) || b->x > SCREEN_WIDTH || b->x <= 0 || b->y > SCREEN_HEIGHT || b->y <= 0 || (b->dx == 0) && (b->dy == 0))
 		{
 			if (b == stage.bulletTail) stage.bulletTail = prev;
 
@@ -339,6 +340,7 @@ static void doBullets(void)
 
 			bulletNumber--;
 		}
+
 		prev = b;
 	}
 }
@@ -378,8 +380,11 @@ static int bulletHitFighter(Entity* b)
 			return 1;
 		}
 	}
+
 	return 0;
 }
+
+
 
 static void draw(void)
 {
@@ -765,7 +770,6 @@ static void drawBackground(void)
 }
 
 
-
 static void drawStarfield(void)
 {
 	int i;
@@ -847,6 +851,22 @@ static void drawHud(void)
 
 }
 
+static int bulletHitPoint(Entity* b)
+{
+	Entity* e;
+	for (e = stage.pointHead.next; e != NULL; e = e->next)
+	{
+		if (collision(e->x, e->y, e->w, e->h, b->x, b->y, b->w, b->h))
+		{
+			b->health = 0;
+			e->health = 0;
+			playSound(SND_POINT_DIE, CH_POINTS);
+		return 1;
+		}
+	}
+	return 0;
+}
+
 static void doPointsPods(void)
 {
 	Entity* e;
@@ -856,6 +876,7 @@ static void doPointsPods(void)
 
 	for (e = stage.pointHead.next; e != NULL; e = e->next)
 	{
+
 		if (e->x < 0)
 		{
 			e->x = 0;
@@ -914,6 +935,8 @@ static void addPointsPod(int x, int y)
 
 	stage.pointTail->next = e;
 	stage.pointTail = e;
+
+	e->side = SIDE_POD;
 
 	e->x = x;
 	e->y = y;

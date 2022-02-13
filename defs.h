@@ -9,6 +9,7 @@
 
 #define SIDE_PLAYER				0
 #define SIDE_ALIEN				1
+#define SIDE_POD				2
 
 #define MIN(a,b)				(((a)<(b))?(a):(b))
 #define MAX(a,b)				(((a)>(b))?(a):(b))
@@ -40,5 +41,6 @@ enum
 	SND_PLAYER_DIE,
 	SND_ALIEN_DIE,
 	SND_POINTS,
+	SND_POINT_DIE,
 	SND_MAX
 };

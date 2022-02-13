@@ -16,22 +16,32 @@ void initSounds(void)
 static void loadSounds(void)
 {
 	sounds[SND_PLAYER_FIRE] = Mix_LoadWAV("sound/334227__jradcoolness__laser.ogg");
-	if (sounds[SND_PLAYER_FIRE] != 0) SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "[SON] Chargement de sound/334227__jradcoolness__laser.ogg\n");
+	if (sounds[SND_PLAYER_FIRE] != 0) 
+		SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "[SON] Chargement de sound/334227__jradcoolness__laser.ogg\n");
 
 	sounds[SND_ALIEN_FIRE] = Mix_LoadWAV("sound/196914__dpoggioli__laser-gun.ogg");
-	if (sounds[SND_ALIEN_FIRE] != 0) SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "[SON] Chargement de sound/196914__dpoggioli__laser-gun.ogg\n");
+	if (sounds[SND_ALIEN_FIRE] != 0) 
+		SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "[SON] Chargement de sound/196914__dpoggioli__laser-gun.ogg\n");
 
 	sounds[SND_PLAYER_TAKE_DAMAGE] = Mix_LoadWAV("sound/270306__littlerobotsoundfactory__explosion-02.wav");
-	if (sounds[SND_ALIEN_FIRE] != 0) SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "[SON] Chargement de sound/270306__littlerobotsoundfactory__explosion-02.wav\n");
+	if (sounds[SND_ALIEN_FIRE] != 0) 
+		SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "[SON] Chargement de sound/270306__littlerobotsoundfactory__explosion-02.wav\n");
 
 	sounds[SND_PLAYER_DIE] = Mix_LoadWAV("sound/270328__littlerobotsoundfactory__hero-death-00.wav");
-	if (sounds[SND_PLAYER_DIE] != 0) SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "[SON] Chargement de sound/270328__littlerobotsoundfactory__hero-death-00.wav\n");
+	if (sounds[SND_PLAYER_DIE] != 0) 
+		SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "[SON] Chargement de sound/270328__littlerobotsoundfactory__hero-death-00.wav\n");
 
 	sounds[SND_ALIEN_DIE] = Mix_LoadWAV("sound/10 Guage Shotgun-SoundBible.com-74120584.ogg");
-	if (sounds[SND_ALIEN_DIE] != 0) SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "[SON] Chargement de sound/10 Guage Shotgun-SoundBible.com-74120584.ogg\n");
+	if (sounds[SND_ALIEN_DIE] != 0) 
+		SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "[SON] Chargement de sound/10 Guage Shotgun-SoundBible.com-74120584.ogg\n");
 
 	sounds[SND_POINTS] = Mix_LoadWAV("sound/342749__rhodesmas__notification-01.ogg");
-	if (sounds[SND_POINTS] != 0) SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "[SON] Chargement de sound/342749__rhodesmas__notification-01.ogg");
+	if (sounds[SND_POINTS] != 0) 
+		SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "[SON] Chargement de sound/342749__rhodesmas__notification-01.ogg");
+
+	sounds[SND_POINT_DIE] = Mix_LoadWAV("sound/254756__jagadamba__ceramic-bell-02.wav");
+	if (sounds[SND_POINT_DIE] != 0)
+		SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "[SON] Chargement de sound/254756__jagadamba__ceramic-bell-02.wav");
 }
 
 void loadMusic(char const* filename)
