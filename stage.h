@@ -10,7 +10,7 @@ extern void calcAzimut(int srcX, int srcY, int destX, int destY, float* dx, floa
 extern void loadMusic(char const* filename);
 extern void playMusic(int loop);
 extern void playSound(int id, int channel);
-extern void drawText(int x, int y, int r, int g, int b, double scale, char* textToFormat, ...);
+extern void drawText(int x, int y, int r, int g, int b, double scale, int align, char* textToFormat, ...);
 
 extern void doBackground(void);
 extern void doStarfield(void);
@@ -18,7 +18,7 @@ extern void drawBackground(void);
 extern void drawStarfield(void);
 extern void initStage(void);
 
-extern void drawText(int x, int y, int r, int g, int b, double scale, char* textToFormat, ...);
+extern void drawText(int x, int y, int r, int g, int b, double scale, int align, char* textToFormat, ...);
 
 extern void addHighscore(int score);
 extern void initHighscores(void);

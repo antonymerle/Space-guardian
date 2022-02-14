@@ -20,8 +20,9 @@ typedef struct {
 	SDL_Renderer* renderer;
 	SDL_Window* window;
 	Delegate delegate;
-	int keyboard[MAX_KEYBOARD_KEYS];
 	Texture textureHead, *textureTail;
+	int keyboard[MAX_KEYBOARD_KEYS];
+	char inputText[MAX_LINE_LENGTH];
 } App;
 
 struct Entity {
@@ -83,6 +84,7 @@ typedef struct {
 typedef struct {
 	int recent;
 	int score;
+	char name[MAX_SCORE_NAME_LENGTH];
 } Highscore;
 
 typedef struct {

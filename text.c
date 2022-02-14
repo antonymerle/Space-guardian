@@ -1,14 +1,14 @@
 #include "text.h"
 
 static SDL_Texture* fontTexture;
-static char drawTextBuffer[MAX_STR_LENGTH];
+static char drawTextBuffer[MAX_LINE_LENGTH];
 
 void initFonts(void)
 {
 	fontTexture = loadTexture("gfx/font.png");
 }
 
-void drawText(int x, int y, int r, int g, int b, double scale, char* textToFormat, ...)
+void drawText(int x, int y, int r, int g, int b, double scale, int align, char* textToFormat, ...)
 {
 	int i, len, c;
 	SDL_Rect rect;				/* to specify what region of the texture to use */
@@ -21,6 +21,16 @@ void drawText(int x, int y, int r, int g, int b, double scale, char* textToForma
 	va_end(args);
 
 	len = strlen(drawTextBuffer);
+
+	switch (align)
+	{
+	case TEXT_RIGHT:
+		x -= (len * GLYPH_WIDTH);
+		break;
+	case TEXT_CENTER:
+		x -= (len * GLYPH_WIDTH) / 2;
+		break;
+	}
 
 	rect.w = GLYPH_WIDTH;
 	rect.h = GLYPH_HEIGHT;

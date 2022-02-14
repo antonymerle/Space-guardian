@@ -738,16 +738,16 @@ static void drawHud(void)
 {
 	double healthRatio;
 
-	drawText(10, 10, 255, 255, 255, 0.5, "SCORE: %03d", stage.score);
-	drawText(10, SCREEN_HEIGHT - 50, 255, 255, 255, 0.5, "FPS : %u", objectifTemporelPourProduireUneImageMs - attente ? 1000 / (objectifTemporelPourProduireUneImageMs - attente) : 1000);
+	drawText(10, 10, 255, 255, 255, 0.5, TEXT_LEFT, "SCORE: %03d", stage.score);
+	drawText(10, SCREEN_HEIGHT - 50, 255, 255, 255, 0.5, TEXT_LEFT, "FPS : %u", objectifTemporelPourProduireUneImageMs - attente ? 1000 / (objectifTemporelPourProduireUneImageMs - attente) : 1000);
 
 	if (stage.score > 0 && stage.score == highscore)
 	{
-		drawText(960, 10, 0, 255, 0, 0.5, "HIGH SCORE: %03d", highscore);
+		drawText(960, 10, 0, 255, 0, 0.5, TEXT_LEFT, "HIGH SCORE: %03d", highscore);
 	}
 	else
 	{
-		drawText(960, 10, 255, 255, 255, 0.5, "HIGH SCORE: %03d", highscore);
+		drawText(960, 10, 255, 255, 255, 0.5, TEXT_LEFT, "HIGH SCORE: %03d", highscore);
 	}
 
 	if (player)
@@ -756,18 +756,18 @@ static void drawHud(void)
 
 		if (healthRatio == 100)
 		{
-			drawText(10, 40, 0, 255, 0, 0.5, "HEALTH: %3.0f \%", healthRatio);
+			drawText(10, 40, 0, 255, 0, 0.5, TEXT_LEFT, "HEALTH: %3.0f \%", healthRatio);
 		}
 		else if (healthRatio >= 34 && healthRatio <= 67)
 		{
-			drawText(10, 40, 255, 128, 0, 0.5, "HEALTH: %3.0f \%", healthRatio);
+			drawText(10, 40, 255, 128, 0, 0.5, TEXT_LEFT, "HEALTH: %3.0f \%", healthRatio);
 		}
 		else
 		{
 			hudBlinkCounter++;
 			if (hudBlinkCounter < FPS)
 			{
-				drawText(10, 40, 255, 0, 0, 0.5, "HEALTH: %3.0f \%", healthRatio);
+				drawText(10, 40, 255, 0, 0, 0.5, TEXT_LEFT, "HEALTH: %3.0f \%", healthRatio);
 			}
 			if (hudBlinkCounter > FPS * 2) hudBlinkCounter = 0;
 		}
