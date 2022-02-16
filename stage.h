@@ -28,4 +28,4 @@ extern void initHighscores(void);
 
 extern App app;
 extern Stage stage;
-extern Highscore highscores;
+extern Highscores highscores;

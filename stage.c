@@ -368,7 +368,7 @@ static int bulletHitFighter(Entity* b)
 				playSound(SND_ALIEN_DIE, CH_EXPLOSION);
 				// TODO : correct bug : increment score when alien ship die, not when it's hit
 				//stage.score++;
-				highscore = MAX(stage.score, highscore);
+				//highscore = MAX(stage.score, highscore);
 			}
 
 			return 1;
@@ -456,7 +456,8 @@ static void doFighters(void)
 			{
 				addDebris(e);
 				addExplosions(e->x, e->y, 32);
-				stage.score++;
+				if (e->side == SIDE_ALIEN)
+					stage.score++;
 			}
 
 
@@ -745,13 +746,13 @@ static void drawHud(void)
 	drawText(10, 10, 255, 255, 255, 0.5, TEXT_LEFT, "SCORE: %03d", stage.score);
 	drawText(10, SCREEN_HEIGHT - 50, 255, 255, 255, 0.5, TEXT_LEFT, "FPS : %u", objectifTemporelPourProduireUneImageMs - attente ? 1000 / (objectifTemporelPourProduireUneImageMs - attente) : 1000);
 
-	if (stage.score > 0 && stage.score == highscore)
+	if (stage.score < highscores.highscore[0].score)
 	{
-		drawText(960, 10, 0, 255, 0, 0.5, TEXT_LEFT, "HIGH SCORE: %03d", highscore);
+		drawText(SCREEN_WIDTH - 10, 10, 0, 255, 0, 0.5, TEXT_RIGHT, "HIGH SCORE: %03d", highscores.highscore[0].score);
 	}
 	else
 	{
-		drawText(960, 10, 255, 255, 255, 0.5, TEXT_LEFT, "HIGH SCORE: %03d", highscore);
+		drawText(SCREEN_WIDTH - 10, 10, 0, 255, 0, 0.5, TEXT_RIGHT, "HIGH SCORE: %03d", stage.score);
 	}
 
 	if (player)
