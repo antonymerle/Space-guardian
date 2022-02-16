@@ -7,12 +7,70 @@ static void drawHighscores(void);
 static void doNameInput(void);
 static void drawNameInput(void);
 
+// read scores from file
+static int parseScores(void);
+
 static Highscore* newHighscore;
 static int cursorBlink;
+
+/* 
+Parses and populate highscores table. 
+If error parsing file, returns -1
+If file does not exist, returns 0
+If file correctly parsed, returns 1
+*/
+static int parseScores(void)
+{
+	FILE* fp;
+
+	//const int bufferLength = MAX_SCORE_NAME_LENGTH + 1 + 10;		/* name + delim + int32 max 2'147'483'647 */
+	char buffer[MAX_LINE_LENGTH];
+	char* lines[NUM_HIGHSCORES];
+	const char delim[2] = "\t";
+	char* token;
+	int i = 0;
+	//Highscore highscore;
+
+
+	fp = fopen(HIGHSCORES_FILE_PATH, "r");
+	if (fp == NULL)
+	{
+		printf("Impossible d'ouvrir %s\n", HIGHSCORES_FILE_PATH);
+		return 0;
+	}
+
+	memset(&highscores, 0, sizeof(Highscores));
+
+	while (fgets(buffer, MAX_LINE_LENGTH, fp))
+	{
+		//printf("%s", buffer);
+		//memset(&newHighscore, 0, sizeof(Highscore));
+		//newHighscore->recent = 0;
+		highscores.highscore[i].recent = 0;
+		char* token1 = strtok(buffer, delim);
+		STRNCPY(highscores.highscore[i].name, token1, MAX_SCORE_NAME_LENGTH);
+		token1 = strtok(NULL, delim);
+
+
+		int test = atoi(strtok(token1, delim));
+		highscores.highscore[i].score = test;
+		i++;
+	}
+
+	fclose(fp);
+	return 1;
+
+	// TODO : probleme de parsing à implémenter
+	//fclose(fp);
+	//return -1;
+}
 
 void initHighscoreTable(void)
 {
 	int i;
+	int code;
+
+	code = parseScores();
 
 	memset(&highscores, 0, sizeof(Highscores));
 

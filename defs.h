@@ -23,16 +23,16 @@
 #define MAX_SND_CHANNELS		16
 
 #define MAX_LINE_LENGTH			1024
-#define MAX_SCORE_NAME_LENGTH    16
-#define MAX_NAME_LENGTH          32			
+#define MAX_SCORE_NAME_LENGTH   16
+#define MAX_NAME_LENGTH         32			
 
 #define NUM_HIGHSCORES			8
-#define MAX_NAME_LENGTH			32
+#define HIGHSCORES_FILE_PATH	"scores/hs.ini"
 
 #define GLYPH_HEIGHT			28
 #define GLYPH_WIDTH				18
 
-
+#define L
 
 enum
 {

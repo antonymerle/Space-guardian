@@ -460,7 +460,6 @@ static void doFighters(void)
 					stage.score++;
 			}
 
-
 			prev->next = e->next;
 			free(e);
 			e = prev;
