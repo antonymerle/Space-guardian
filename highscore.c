@@ -18,7 +18,7 @@ void initHighscoreTable(void)
 
 	for (i = 0; i < NUM_HIGHSCORES; i++)
 	{
-		highscores.highscore[i].score = NUM_HIGHSCORES - i;
+		highscores.highscore[i].score = 0;
 		STRNCPY(highscores.highscore[i].name, "ANONYMOUS", MAX_SCORE_NAME_LENGTH);
 	}
 	newHighscore = NULL;

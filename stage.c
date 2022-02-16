@@ -364,7 +364,8 @@ static int bulletHitFighter(Entity* b)
 			{
 				if(e->x % 2) addPointsPod(e->x + e->w / 2, e->y + e->h / 2);
 				playSound(SND_ALIEN_DIE, CH_EXPLOSION);
-				stage.score++;
+				// TODO : correct bug : increment score when alien ship die, not when it's hit
+				//stage.score++;
 				highscore = MAX(stage.score, highscore);
 			}
 
@@ -453,6 +454,7 @@ static void doFighters(void)
 			{
 				addDebris(e);
 				addExplosions(e->x, e->y, 32);
+				stage.score++;
 			}
 
 
