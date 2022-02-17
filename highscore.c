@@ -8,8 +8,36 @@ static void doNameInput(void);
 static void drawNameInput(void);
 static int isWellFormattedLine(const char* str);
 
-// read scores from file
+// score ini file I/O
 static int parseScores(void);
+static int writeScores(void);
+
+static int writeScores(void)
+{
+	FILE* fp;
+	char line[MAX_LINE_LENGTH];
+
+	fp = fopen(HIGHSCORES_FILE_PATH, "w");
+	if (fp == NULL)
+	{
+		printf("Impossible d'ouvrir %s\n", HIGHSCORES_FILE_PATH);
+		return 1;
+	}
+
+	for (size_t i = 0; i < NUM_HIGHSCORES; i++)
+	{
+		//STRNCPY(line, highscores.highscore[i].name, MAX_LINE_LENGTH);
+		//strcat(line, sprintf(line, "\t%03d\n", highscores.highscore[i].score));
+		
+		sprintf(line, "%s\t%03d\n", highscores.highscore[i].name, highscores.highscore[i].score);
+		fputs(line, fp);
+		memset(line, '\0', sizeof(MAX_LINE_LENGTH));
+	}
+
+	fclose(fp);
+	return 0;
+}
+
 
 static Highscore* newHighscore;
 static int cursorBlink;
@@ -44,9 +72,24 @@ static int parseScores(void)
 		highscores.highscore[i].recent = 0;
 		STRNCPY(highscores.highscore[i].name, strtok(buffer, delim), MAX_SCORE_NAME_LENGTH);
 		highscores.highscore[i].score = atoi(strtok(NULL, delim));
+		//if (highscores.highscore[i].score == 0)
+		//{
+
+		//	memset(&highscores.highscore[i], 0, sizeof(Highscore));
+		//	return -1;
+		//}
+	}
+
+	for (size_t i = 0; i < NUM_HIGHSCORES; i++)
+	{
+		if (highscores.highscore[i].score == 0)
+		{
+			STRNCPY(highscores.highscore[i].name, "ANONYMOUS", MAX_SCORE_NAME_LENGTH);
+		}
 	}
 
 	// TODO : sort table
+	qsort(highscores.highscore, NUM_HIGHSCORES, sizeof(Highscore), highscoreComparator);
 
 	fclose(fp);
 	return 1;
@@ -89,6 +132,7 @@ static void logic(void)
 	if (newHighscore != NULL)
 	{
 		doNameInput();
+		writeScores();
 	}
 	else
 	{
@@ -172,6 +216,8 @@ void addHighscore(int score)
 			newHighscore = &highscores.highscore[i];
 		}
 	}
+
+	//writeScores();
 }
 
 static int highscoreComparator(const void* a, const void* b)
@@ -212,6 +258,8 @@ static void doNameInput(void)
 		}
 		newHighscore = NULL;
 	}
+
+	//writeScores();
 }
 
 static void drawNameInput(void)
