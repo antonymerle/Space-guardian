@@ -56,9 +56,9 @@ static int cursorBlink;
 /* 
 * TODO : changer codes retour : 0 quand fonctionne
 Parses and populate highscores table. 
-If error parsing file, returns -1
-If file does not exist, returns 0
-If file correctly parsed, returns 1
+If file correctly parsed, returns 0
+If file does not exist, returns -1
+If error parsing file, returns 1
 */
 static int parseScores(void)
 {
@@ -72,7 +72,7 @@ static int parseScores(void)
 	if (fp == NULL)
 	{
 		printf("Impossible d'ouvrir %s\n", HIGHSCORES_FILE_PATH);
-		return 0;
+		return -1;
 	}
 
 	for (size_t i = 0; i < NUM_HIGHSCORES; i++)
@@ -80,7 +80,7 @@ static int parseScores(void)
 		if(!(fgets(buffer, MAX_LINE_LENGTH, fp)))
 			break;
 		if (isWellFormattedLine(buffer) == 0)
-			return -1;
+			return 1;
 		highscores.highscore[i].recent = 0;
 		STRNCPY(highscores.highscore[i].name, strtok(buffer, delim), MAX_SCORE_NAME_LENGTH);
 		highscores.highscore[i].score = atoi(strtok(NULL, delim));
@@ -99,7 +99,7 @@ static int parseScores(void)
 	highscores.currentHighscore = getCurrentHighscore();
 
 	fclose(fp);
-	return 1;
+	return 0;
 }
 
 void initHighscoreTable(void)
@@ -109,7 +109,7 @@ void initHighscoreTable(void)
 
 	code = parseScores();
 	
-	if (code != 1)
+	if (code != 0)
 	{
 		for (i = 0; i < NUM_HIGHSCORES; i++)
 		{
