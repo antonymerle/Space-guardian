@@ -185,7 +185,8 @@ static void logic(void)
 	cadrePlayer();
 	if (player == NULL && --stageResetTimer <= 0)
 	{
-		addHighscore(stage.score);
+		if(stage.score > highscores.currentHighscore)
+			addHighscore(stage.score);
 		initHighscores();
 	}
 }

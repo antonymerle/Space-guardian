@@ -7,6 +7,21 @@ static void drawHighscores(void);
 static void doNameInput(void);
 static void drawNameInput(void);
 static int isWellFormattedLine(const char* str);
+static int getCurrentHighscore(void);
+
+static int getCurrentHighscore(void)
+{
+	int maxScore = 0;
+
+	for (size_t i = 0; i < NUM_HIGHSCORES; i++)
+	{
+		if (highscores.highscore[i].score > maxScore)
+		{
+			maxScore = highscores.highscore[i].score;
+		}
+	}
+	return maxScore;
+}
 
 // score ini file I/O
 static int parseScores(void);
@@ -43,6 +58,7 @@ static Highscore* newHighscore;
 static int cursorBlink;
 
 /* 
+* TODO : changer codes retour : 0 quand fonctionne
 Parses and populate highscores table. 
 If error parsing file, returns -1
 If file does not exist, returns 0
@@ -88,8 +104,9 @@ static int parseScores(void)
 		}
 	}
 
-	// TODO : sort table
 	qsort(highscores.highscore, NUM_HIGHSCORES, sizeof(Highscore), highscoreComparator);
+
+	highscores.currentHighscore = getCurrentHighscore();
 
 	fclose(fp);
 	return 1;
@@ -110,7 +127,6 @@ void initHighscoreTable(void)
 			STRNCPY(highscores.highscore[i].name, "ANONYMOUS", MAX_SCORE_NAME_LENGTH);
 		}
 	}
-
 
 	newHighscore = NULL;
 	cursorBlink = 0;
@@ -133,6 +149,7 @@ static void logic(void)
 	{
 		doNameInput();
 		writeScores();
+		highscores.currentHighscore = getCurrentHighscore();
 	}
 	else
 	{
