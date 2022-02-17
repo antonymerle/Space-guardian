@@ -8,37 +8,6 @@ static void doNameInput(void);
 static void drawNameInput(void);
 static int isWellFormattedLine(const char* str);
 
-static int isWellFormattedLine(const char* str)
-{
-	char* c = str;
-	int isTab = 0;
-
-	while (*c != '\n')
-	{
-		while (*c != '\t' && isTab == 0)			/* check name */
-		{
-			if (*c < ' ' && *c > 'Z')
-			{
-				return 0;
-			}
-			c++;
-		}
-
-		if (*c == '\t' && isTab == 0)				/* pass tab delimiter */
-		{
-			c++;			
-			isTab = 1;
-		}
-
-		if (*c < '0' || *c > '9')					/* check score */
-		{
-			return 0;
-		}
-		c++;
-	}
-	return 1;
-}
-
 // read scores from file
 static int parseScores(void);
 
@@ -57,6 +26,8 @@ static int parseScores(void)
 	char buffer[MAX_LINE_LENGTH];
 	const char delim[2] = "\t";
 
+	memset(&highscores, 0, sizeof(Highscores));
+
 	fp = fopen(HIGHSCORES_FILE_PATH, "r");
 	if (fp == NULL)
 	{
@@ -64,25 +35,21 @@ static int parseScores(void)
 		return 0;
 	}
 
-	memset(&highscores, 0, sizeof(Highscores));
-
 	for (size_t i = 0; i < NUM_HIGHSCORES; i++)
 	{
 		if(!(fgets(buffer, MAX_LINE_LENGTH, fp)))
 			break;
-		if (!isWellFormattedLine(buffer))
+		if (isWellFormattedLine(buffer) == 0)
 			return -1;
 		highscores.highscore[i].recent = 0;
 		STRNCPY(highscores.highscore[i].name, strtok(buffer, delim), MAX_SCORE_NAME_LENGTH);
 		highscores.highscore[i].score = atoi(strtok(NULL, delim));
 	}
 
+	// TODO : sort table
+
 	fclose(fp);
 	return 1;
-
-	// TODO : probleme de parsing à implémenter
-	//fclose(fp);
-	//return -1;
 }
 
 void initHighscoreTable(void)
@@ -91,14 +58,17 @@ void initHighscoreTable(void)
 	int code;
 
 	code = parseScores();
-
-	memset(&highscores, 0, sizeof(Highscores));
-
-	for (i = 0; i < NUM_HIGHSCORES; i++)
+	
+	if (code != 1)
 	{
-		highscores.highscore[i].score = 0;
-		STRNCPY(highscores.highscore[i].name, "ANONYMOUS", MAX_SCORE_NAME_LENGTH);
+		for (i = 0; i < NUM_HIGHSCORES; i++)
+		{
+			highscores.highscore[i].score = 0;
+			STRNCPY(highscores.highscore[i].name, "ANONYMOUS", MAX_SCORE_NAME_LENGTH);
+		}
 	}
+
+
 	newHighscore = NULL;
 	cursorBlink = 0;
 }
@@ -263,4 +233,35 @@ static void drawNameInput(void)
 		SDL_RenderFillRect(app.renderer, &r);
 	}
 	drawText(SCREEN_WIDTH / 2, 625, 255, 255, 255, 1, TEXT_CENTER, "PRESS ENTER WHEN FINISHED");
+}
+
+static int isWellFormattedLine(const char* str)
+{
+	char* c = str;
+	int isTab = 0;
+
+	while (*c != '\n' && *c != '\0')
+	{
+		while (*c != '\t' && isTab == 0)			/* check name */
+		{
+			if (*c < ' ' && *c > 'Z')
+			{
+				return 0;
+			}
+			c++;
+		}
+
+		if (*c == '\t' && isTab == 0)				/* pass tab delimiter */
+		{
+			c++;
+			isTab = 1;
+		}
+
+		if (*c < '0' || *c > '9')					/* check score */
+		{
+			return 0;
+		}
+		c++;
+	}
+	return 1;
 }
