@@ -6,6 +6,38 @@ static int highscoreComparator(const void* a, const void* b);
 static void drawHighscores(void);
 static void doNameInput(void);
 static void drawNameInput(void);
+static int isWellFormattedLine(const char* str);
+
+static int isWellFormattedLine(const char* str)
+{
+	char* c = str;
+	int isTab = 0;
+
+	while (*c != '\n')
+	{
+		while (*c != '\t' && isTab == 0)			/* check name */
+		{
+			if (*c < ' ' && *c > 'Z')
+			{
+				return 0;
+			}
+			c++;
+		}
+
+		if (*c == '\t' && isTab == 0)				/* pass tab delimiter */
+		{
+			c++;			
+			isTab = 1;
+		}
+
+		if (*c < '0' || *c > '9')					/* check score */
+		{
+			return 0;
+		}
+		c++;
+	}
+	return 1;
+}
 
 // read scores from file
 static int parseScores(void);
@@ -22,15 +54,8 @@ If file correctly parsed, returns 1
 static int parseScores(void)
 {
 	FILE* fp;
-
-	//const int bufferLength = MAX_SCORE_NAME_LENGTH + 1 + 10;		/* name + delim + int32 max 2'147'483'647 */
 	char buffer[MAX_LINE_LENGTH];
-	char* lines[NUM_HIGHSCORES];
 	const char delim[2] = "\t";
-	char* token;
-	int i = 0;
-	//Highscore highscore;
-
 
 	fp = fopen(HIGHSCORES_FILE_PATH, "r");
 	if (fp == NULL)
@@ -41,20 +66,15 @@ static int parseScores(void)
 
 	memset(&highscores, 0, sizeof(Highscores));
 
-	while (fgets(buffer, MAX_LINE_LENGTH, fp))
+	for (size_t i = 0; i < NUM_HIGHSCORES; i++)
 	{
-		//printf("%s", buffer);
-		//memset(&newHighscore, 0, sizeof(Highscore));
-		//newHighscore->recent = 0;
+		if(!(fgets(buffer, MAX_LINE_LENGTH, fp)))
+			break;
+		if (!isWellFormattedLine(buffer))
+			return -1;
 		highscores.highscore[i].recent = 0;
-		char* token1 = strtok(buffer, delim);
-		STRNCPY(highscores.highscore[i].name, token1, MAX_SCORE_NAME_LENGTH);
-		token1 = strtok(NULL, delim);
-
-
-		int test = atoi(strtok(token1, delim));
-		highscores.highscore[i].score = test;
-		i++;
+		STRNCPY(highscores.highscore[i].name, strtok(buffer, delim), MAX_SCORE_NAME_LENGTH);
+		highscores.highscore[i].score = atoi(strtok(NULL, delim));
 	}
 
 	fclose(fp);
