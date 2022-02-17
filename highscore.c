@@ -54,7 +54,6 @@ static Highscore* newHighscore;
 static int cursorBlink;
 
 /* 
-* TODO : changer codes retour : 0 quand fonctionne
 Parses and populate highscores table. 
 If file correctly parsed, returns 0
 If file does not exist, returns -1
