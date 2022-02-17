@@ -187,6 +187,7 @@ static void logic(void)
 	{
 		if(stage.score > highscores.currentHighscore)
 			addHighscore(stage.score);
+
 		initHighscores();
 	}
 }

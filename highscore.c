@@ -8,6 +8,8 @@ static void doNameInput(void);
 static void drawNameInput(void);
 static int isWellFormattedLine(const char* str);
 static int getCurrentHighscore(void);
+static int parseScores(void);
+static int writeScores(void);
 
 static int getCurrentHighscore(void)
 {
@@ -23,9 +25,6 @@ static int getCurrentHighscore(void)
 	return maxScore;
 }
 
-// score ini file I/O
-static int parseScores(void);
-static int writeScores(void);
 
 static int writeScores(void)
 {
@@ -41,9 +40,6 @@ static int writeScores(void)
 
 	for (size_t i = 0; i < NUM_HIGHSCORES; i++)
 	{
-		//STRNCPY(line, highscores.highscore[i].name, MAX_LINE_LENGTH);
-		//strcat(line, sprintf(line, "\t%03d\n", highscores.highscore[i].score));
-		
 		sprintf(line, "%s\t%03d\n", highscores.highscore[i].name, highscores.highscore[i].score);
 		fputs(line, fp);
 		memset(line, '\0', sizeof(MAX_LINE_LENGTH));
@@ -88,12 +84,6 @@ static int parseScores(void)
 		highscores.highscore[i].recent = 0;
 		STRNCPY(highscores.highscore[i].name, strtok(buffer, delim), MAX_SCORE_NAME_LENGTH);
 		highscores.highscore[i].score = atoi(strtok(NULL, delim));
-		//if (highscores.highscore[i].score == 0)
-		//{
-
-		//	memset(&highscores.highscore[i], 0, sizeof(Highscore));
-		//	return -1;
-		//}
 	}
 
 	for (size_t i = 0; i < NUM_HIGHSCORES; i++)
@@ -233,8 +223,6 @@ void addHighscore(int score)
 			newHighscore = &highscores.highscore[i];
 		}
 	}
-
-	//writeScores();
 }
 
 static int highscoreComparator(const void* a, const void* b)
@@ -275,8 +263,6 @@ static void doNameInput(void)
 		}
 		newHighscore = NULL;
 	}
-
-	//writeScores();
 }
 
 static void drawNameInput(void)
