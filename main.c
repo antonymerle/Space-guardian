@@ -20,7 +20,8 @@ int main(int argc, char* argv[])
 	atexit(cleanup);
 
 	initGame();
-	initHighscores();
+	initTitle();
+	//initHighscores();
 
 	topChrono = SDL_GetTicks();
 	remainder = 0;

@@ -7,22 +7,27 @@ static void drawHighscores(void);
 static void doNameInput(void);
 static void drawNameInput(void);
 static int isWellFormattedLine(const char* str);
-static int getCurrentHighscore(void);
+static int getCurrentMinHighscore(void);
 static int parseScores(void);
 static int writeScores(void);
 
-static int getCurrentHighscore(void)
+static int timeout;
+static Highscore* newHighscore;
+
+static int getCurrentMinHighscore(void)
 {
-	int maxScore = 0;
+
+	int minScore = 1<<32 - 1;
 
 	for (size_t i = 0; i < NUM_HIGHSCORES; i++)
 	{
-		if (highscores.highscore[i].score > maxScore)
+		if (highscores.highscore[i].score < minScore && highscores.highscore[i].score > 0)
 		{
-			maxScore = highscores.highscore[i].score;
+			minScore = highscores.highscore[i].score;
 		}
 	}
-	return maxScore;
+
+	return minScore;
 }
 
 
@@ -95,7 +100,7 @@ static int parseScores(void)
 
 	qsort(highscores.highscore, NUM_HIGHSCORES, sizeof(Highscore), highscoreComparator);
 
-	highscores.currentHighscore = getCurrentHighscore();
+	highscores.currentMinHighscore = getCurrentMinHighscore();
 
 	fclose(fp);
 	return 0;
@@ -127,6 +132,8 @@ void initHighscores(void)
 	app.delegate.draw = draw;
 
 	memset(app.keyboard, 0, sizeof(int) * MAX_KEYBOARD_KEYS);
+
+	timeout = FPS * 10;
 }
 
 static void logic(void)
@@ -138,10 +145,14 @@ static void logic(void)
 	{
 		doNameInput();
 		writeScores();
-		highscores.currentHighscore = getCurrentHighscore();
+		highscores.currentMinHighscore = getCurrentMinHighscore();
 	}
 	else
 	{
+		if (--timeout <= 0)
+		{
+			initTitle();
+		}
 		if (app.keyboard[SDL_SCANCODE_SPACE])
 		{
 			initStage();
@@ -164,6 +175,11 @@ static void draw(void)
 	else
 	{
 		drawHighscores();
+
+		if (timeout % 40 < 20)
+		{
+			drawText(SCREEN_WIDTH / 2, 600, 255, 255, 255, 1, TEXT_CENTER, "PRESS SPACE TO PLAY !");
+		}
 	}
 }
 
@@ -191,7 +207,10 @@ static void drawHighscores(void)
 		y += 50;
 	}
 
-	drawText(SCREEN_WIDTH / 2, 600, 255, 255, 255, 1, 1, "PRESS SPACE TO PLAY !");
+	if (timeout % 40 < 20)
+	{
+		drawText(SCREEN_WIDTH / 2, 600, 255, 255, 255, 1, 1, "PRESS SPACE TO PLAY !");
+	}
 }
 
 void addHighscore(int score)

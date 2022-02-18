@@ -10,6 +10,7 @@ extern void presentScene(void);
 extern void initSounds(void);
 extern void initFonts(void);
 extern void initHighscores(void);
+extern void initTitle(void);
 
 
 App app;

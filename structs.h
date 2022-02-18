@@ -88,6 +88,6 @@ typedef struct {
 } Highscore;
 
 typedef struct {
-	int currentHighscore;
+	int currentMinHighscore;
 	Highscore highscore[NUM_HIGHSCORES];
 } Highscores;
