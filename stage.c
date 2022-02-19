@@ -894,6 +894,7 @@ static void drawPointsPods(void)
 
 	for (e = stage.pointHead.next; e != NULL; e = e->next)
 	{
-		blit(pointTexture, e->x, e->y);
+		if(e->health > (FPS * 2) || e->health % 12 < 6)
+			blit(pointTexture, e->x, e->y);
 	}
 }
