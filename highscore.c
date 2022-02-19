@@ -307,6 +307,7 @@ static void drawNameInput(void)
 static int isWellFormattedLine(const char* str)
 {
 	char* c = str;
+	size_t counter = 0;
 	int isTab = 0;
 
 	while (*c != '\n' && *c != '\0')
@@ -322,6 +323,8 @@ static int isWellFormattedLine(const char* str)
 
 		if (*c == '\t' && isTab == 0)				/* pass tab delimiter */
 		{
+			if (counter == 0)						/* name is void, malformed */
+				return 0;
 			c++;
 			isTab = 1;
 		}
@@ -331,6 +334,7 @@ static int isWellFormattedLine(const char* str)
 			return 0;
 		}
 		c++;
+		counter++;
 	}
 	return 1;
 }
