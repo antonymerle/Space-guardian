@@ -45,7 +45,7 @@ static int writeScores(void)
 
 	for (size_t i = 0; i < NUM_HIGHSCORES; i++)
 	{
-		sprintf(line, "%s\t%03d\n", highscores.highscore[i].name, highscores.highscore[i].score);
+		sprintf(line, "%s\t%03d\n", strlen(highscores.highscore[i].name) == 0 ? "ANON" : highscores.highscore[i].name, highscores.highscore[i].score);
 		fputs(line, fp);
 		memset(line, '\0', sizeof(MAX_LINE_LENGTH));
 	}
@@ -281,6 +281,16 @@ static void doNameInput(void)
 		}
 		newHighscore = NULL;
 	}
+	//else
+	//{
+	//	if (strlen(newHighscore->name) == 0)
+	//	{
+	//		STRNCPY(newHighscore->name, "ANON", MAX_SCORE_NAME_LENGTH);
+	//		newHighscore = NULL;
+	//	}
+	//}
+
+	
 }
 
 static void drawNameInput(void)
@@ -319,6 +329,7 @@ static int isWellFormattedLine(const char* str)
 				return 0;
 			}
 			c++;
+			counter++;
 		}
 
 		if (*c == '\t' && isTab == 0)				/* pass tab delimiter */
@@ -326,6 +337,7 @@ static int isWellFormattedLine(const char* str)
 			if (counter == 0)						/* name is void, malformed */
 				return 0;
 			c++;
+			counter++;
 			isTab = 1;
 		}
 
