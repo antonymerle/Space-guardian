@@ -536,10 +536,15 @@ static void doEnemies(void)
 
 	for (e = stage.fighterHead.next; e != NULL; e = e->next)
 	{
-		if (e != player && player != NULL && --(e->reload) <= 0)
+		if (e != player)
 		{
-			fireAlienBullet(e);
-			playSound(SND_ALIEN_FIRE, CH_ALIEN_FIRE);
+			e->y = MIN(MAX(e->y, 0), SCREEN_HEIGHT - e->h);
+
+			if (player != NULL && --(e->reload) <= 0)
+			{
+				fireAlienBullet(e);
+				playSound(SND_ALIEN_FIRE, CH_ALIEN_FIRE);
+			}
 		}
 	}
 }
