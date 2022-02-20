@@ -6,7 +6,8 @@ static void drawTitle(void);
 
 static SDL_Texture* titleTexture;
 
-static int reveal = 0;
+static int revealH = 200;
+static int revealW = 200;
 static int timeout;
 
 void initTitle(void)
@@ -18,7 +19,7 @@ void initTitle(void)
 
 	titleTexture = loadTexture("gfx/title.png");
 	
-	timeout = FPS * 10;
+	timeout = FPS * 15;
 }
 
 static void logic(void)
@@ -26,9 +27,14 @@ static void logic(void)
 	doBackground();
 	doStarfield();
 
-	if (reveal < SCREEN_HEIGHT)
+	if (revealH < SCREEN_HEIGHT)
 	{
-		reveal++;
+		revealH++;
+	}
+
+	if (revealW < SCREEN_WIDTH)
+	{
+		revealW += 4;
 	}
 
 	if (--timeout <= 0)
@@ -63,7 +69,8 @@ static void drawTitle(void)
 
 	SDL_QueryTexture(titleTexture, NULL, NULL, &r.w, &r.h);
 
-	r.h = MIN(reveal, r.h);
+	r.w = MIN(revealW, r.w);
+	r.h = MIN(revealH, r.h);
 
 	blitRect(titleTexture, &r, (SCREEN_WIDTH / 2) - (r.w / 2), 100);
 }

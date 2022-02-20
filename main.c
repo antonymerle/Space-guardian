@@ -55,8 +55,9 @@ static void capFramerate(uint32_t* topChrono, double* remainder)
 
 	/* attente pour limiter le framerate */
 	SDL_Delay(attente);
+#if _DEBUG
 	printf("DEBUG : %u FPS\n", objectifTemporelPourProduireUneImageMs - attente ? 1000 / (objectifTemporelPourProduireUneImageMs - attente) : 1000);
-
+#endif
 	*remainder += 0.667;
 	*topChrono = SDL_GetTicks();
 }
