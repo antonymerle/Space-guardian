@@ -52,9 +52,9 @@ SDL_Texture* loadTexture(char* filename)
 
 	if (texture == NULL)
 	{
-#if _DEBUG
+
 		SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "[TEXTURE] Chargement de %s", filename);
-#endif
+
 		texture = IMG_LoadTexture(app.renderer, filename);
 		addTextureToCache(filename, texture);
 	}
