@@ -9,7 +9,7 @@ extern void initHighscoreTable(void);
 extern void initSounds(void);
 extern void initStarfield(void);
 extern void loadMusic(char* filename);
-extern void playMusic(int loop);
+extern void playMusic(int loop, int volume);
 
 extern App app;
 extern Entity player;

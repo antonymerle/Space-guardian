@@ -52,8 +52,8 @@ void initGame(void)
 	initSounds();
 	initFonts();
 	initHighscoreTable();
-	loadMusic("music/Mercury.ogg");
-	playMusic(1);
+	loadMusic("music/396960__orginaljun__chiptune-loop-episode-01.wav");
+	playMusic(1, 128);
 }
 
 

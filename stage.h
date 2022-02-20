@@ -8,7 +8,7 @@ void blitRectScale(SDL_Texture* texture, SDL_Rect* src, int x, int y, double sca
 extern int collision(int x1, int y1, int w1, int h1, int x2, int y2, int w2, int h2);
 extern void calcAzimut(int srcX, int srcY, int destX, int destY, float* dx, float* dy);
 extern void loadMusic(char const* filename);
-extern void playMusic(int loop);
+extern void playMusic(int loop, int volume);
 extern void playSound(int id, int channel);
 extern void drawText(int x, int y, int r, int g, int b, double scale, int align, char* textToFormat, ...);
 

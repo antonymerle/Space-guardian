@@ -66,9 +66,10 @@ void loadMusic(char const* filename)
 
 }
 
-void playMusic(int loop)
+// The volume to use from 0 to MIX_MAX_VOLUME(128).
+void playMusic(int loop, int volume)
 {
-	Mix_VolumeMusic(MIX_MAX_VOLUME / 4);
+	Mix_VolumeMusic(volume);
 	Mix_PlayMusic(music, loop ? -1 : 0);
 }
 
@@ -77,17 +78,17 @@ void playSound(int id, int channel)
 	switch (channel)
 	{
 	case CH_ALIEN_FIRE:
-		Mix_Volume(channel, 10);
+		Mix_Volume(channel, 60);
 		Mix_PlayChannel(channel, sounds[id], 0);
 		break;
 
 	case CH_EXPLOSION:
-		Mix_Volume(channel, 10);
+		Mix_Volume(channel, 60);
 		Mix_PlayChannel(channel, sounds[id], 0);
 		break;
 
 	default:
-		Mix_Volume(channel, 30);
+		Mix_Volume(channel, MIX_MAX_VOLUME);
 		Mix_PlayChannel(channel, sounds[id], 0);
 		break;
 	}

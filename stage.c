@@ -82,6 +82,9 @@ void initStage(void)
 	trailerTexture = loadTexture("gfx/trailerPlayer.png");
 	pointTexture = loadTexture("gfx/points.png");
 
+	loadMusic("music/battle.wav");
+	playMusic(1, 64);
+
 	memset(app.keyboard, 0, sizeof(int) * MAX_KEYBOARD_KEYS);
 
 	//loadMusic("music/Mercury.ogg");

@@ -131,6 +131,9 @@ void initHighscores(void)
 	app.delegate.logic = logic;
 	app.delegate.draw = draw;
 
+	loadMusic("music/meet-the-princess.wav");
+	playMusic(1, 128);
+
 	memset(app.keyboard, 0, sizeof(int) * MAX_KEYBOARD_KEYS);
 
 	timeout = FPS * 10;
