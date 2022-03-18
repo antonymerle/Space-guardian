@@ -55,7 +55,8 @@ static int writeScores(void)
 }
 
 
-static Highscore* newHighscore;
+// TODO wtf doublon ?
+//static Highscore* newHighscore;
 static int cursorBlink;
 
 /* 
