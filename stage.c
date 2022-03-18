@@ -36,7 +36,7 @@ static Entity* player;
 static SDL_Texture* playerTexture;
 static SDL_Texture* bulletTexture;
 static SDL_Texture* enemyTexture;
-static SDL_Texture* alienBulletTexture;
+static SDL_Texture* enemyShootTexture;
 static SDL_Texture* megaShot;
 static SDL_Texture* explosionTexture;
 static SDL_Texture* trailerTexture;
@@ -76,7 +76,7 @@ void initStage(void)
 	playerTexture = loadTexture("gfx/player.png");
 	bulletTexture = loadTexture("gfx/playerBullet.png");
 	enemyTexture = loadTexture("gfx/enemy.png");
-	alienBulletTexture = loadTexture("gfx/alienBullet.png");
+	enemyShootTexture = loadTexture("gfx/enemyShoot.png");
 	megaShot = loadTexture("gfx/MegaShot.png");
 	explosionTexture = loadTexture("gfx/explosion.png");
 	trailerTexture = loadTexture("gfx/trailerPlayer.png");
@@ -569,7 +569,7 @@ static void fireAlienBullet(Entity* e)
 		bullet->health = 1;
 		if (e->shotMode == normal)
 		{
-			bullet->texture = alienBulletTexture;
+			bullet->texture = enemyShootTexture;
 			SDL_QueryTexture(bullet->texture, NULL, NULL, &bullet->w, &bullet->h);
 			calcAzimut(player->x + (player->w / 2), player->y + (player->h / 2), bullet->x, bullet->y, &bullet->dx, &bullet->dy);
 			bullet->dx *= 3 + (rand() % ALIEN_BULLET_SPEED);
