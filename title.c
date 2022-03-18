@@ -54,7 +54,7 @@ static void draw(void)
 	drawStarfield();
 	drawTitle();
 
-	if (timeout % 40 < 20)						// blink text
+	if (timeout % 40 < 20)						// texte clignote
 	{
 		drawText(SCREEN_WIDTH / 2, 600, 255, 255, 255, 1, TEXT_CENTER, "PRESS SPACE TO PLAY!");
 	}
