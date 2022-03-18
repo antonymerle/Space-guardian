@@ -74,7 +74,7 @@ void initStage(void)
 
 
 	playerTexture = loadTexture("gfx/player.png");
-	bulletTexture = loadTexture("gfx/playerBullet.png");
+	bulletTexture = loadTexture("gfx/playerShoot.png");
 	enemyTexture = loadTexture("gfx/enemy.png");
 	enemyShootTexture = loadTexture("gfx/enemyShoot.png");
 	megaShot = loadTexture("gfx/MegaShot.png");
