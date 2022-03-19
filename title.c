@@ -19,7 +19,7 @@ void initTitle(void)
 
 	memset(app.keyboard, 0, sizeof(int) * MAX_KEYBOARD_KEYS);
 
-	titleTexture = loadTexture("gfx/title2.png");
+	titleTexture = loadTexture("gfx/title.png");
 	
 	timeout = FPS * 60;
 }
