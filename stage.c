@@ -50,7 +50,8 @@ static int stageResetTimer;
 static uint8_t trailerAlpha;
 static uint8_t trailerColourModifierCount = FPS;
 static uint8_t animationCounter;
-static size_t spriteIndex;					// 0-1-2-3
+static size_t spriteTrailerIndex;					// 4 -> 0-1-2-3
+static size_t spriteCoinIndex;						// 9 -> 0-1-2-3-4-5-6-7-8
 
 static uint32_t highscore;
 static uint32_t hudBlinkCounter;
@@ -79,12 +80,12 @@ void initStage(void)
 	playerTexture = loadTexture("gfx/player.png");
 	bulletTexture = loadTexture("gfx/playerShoot.png");
 	enemyTexture = loadTexture("gfx/enemy.png");
-	enemyShootTexture = loadTexture("gfx/enemyShoot.png");
+	enemyShootTexture = loadTexture("gfx/enemyShot.png");
 	megaShot = loadTexture("gfx/MegaShot.png");
 	explosionTexture = loadTexture("gfx/explosion.png");
 	trailerPlayerTexture = loadTexture("gfx/trailerPlayer.png");
 	trailerAlienTexture = loadTexture("gfx/trailerAlien.png");
-	pointTexture = loadTexture("gfx/points.png");
+	pointTexture = loadTexture("gfx/coin.png");
 
 	loadMusic("music/battle.wav");
 	playMusic(1, 64);
@@ -513,7 +514,7 @@ static void drawFighters(void)
 
 	for (e = stage.fighterHead.next; e != NULL; e = e->next)
 	{
-		SDL_Rect srcRect = { spriteIndex * SPRITE_TRAILER_WIDTH, 0, SPRITE_TRAILER_WIDTH, SPRITE_TRAILER_HEIGHT };
+		SDL_Rect srcRect = { spriteTrailerIndex * SPRITE_TRAILER_WIDTH, 0, SPRITE_TRAILER_WIDTH, SPRITE_TRAILER_HEIGHT };
 		blit(e->texture, e->x, e->y);
 		if (e->side == SIDE_ALIEN)
 		{
@@ -533,10 +534,10 @@ static void drawFighters(void)
 
 	if (animationCounter % 8 == 0)
 	{
-		spriteIndex++;
-		if (spriteIndex > 3)
+		spriteTrailerIndex++;
+		if (spriteTrailerIndex > 3)
 		{
-			spriteIndex = 0;
+			spriteTrailerIndex = 0;
 		}
 	}
 	
@@ -921,9 +922,25 @@ static void drawPointsPods(void)
 {
 	Entity* e;
 
+	SDL_Rect srcRect = { spriteCoinIndex * SPRITE_COIN_WIDTH, 0, SPRITE_COIN_WIDTH, SPRITE_COIN_HEIGHT };
+
+
 	for (e = stage.pointHead.next; e != NULL; e = e->next)
 	{
 		if(e->health > (FPS * 2) || e->health % 12 < 6)
-			blit(pointTexture, e->x, e->y);
+			blitRect(pointTexture, &srcRect, e->x, e->y);
+	}
+
+	// réalisation de l'animation trailer toutes les 8 frames on change de texture
+
+	//animationCounter++;
+
+	if (animationCounter % 8 == 0)
+	{
+		spriteCoinIndex++;
+		if (spriteCoinIndex > 8)
+		{
+			spriteCoinIndex = 0;
+		}
 	}
 }
