@@ -50,7 +50,9 @@ static int stageResetTimer;
 static uint8_t trailerAlpha;
 static uint8_t trailerColourModifierCount = FPS;
 static uint8_t animationCounter;
+static size_t spriteAlienShotIndex;						// 4 -> 0-1-2-3 
 static size_t spriteTrailerIndex;					// 4 -> 0-1-2-3
+
 static size_t spriteCoinIndex;						// 9 -> 0-1-2-3-4-5-6-7-8
 
 static uint32_t highscore;
@@ -406,9 +408,35 @@ static void drawBullets(void)
 {
 	Entity* b;
 
+	SDL_Rect srcRect = { spriteAlienShotIndex * SPRITE_ALIEN_SHOT_WIDTH, 0, SPRITE_ALIEN_SHOT_WIDTH, SPRITE_ALIEN_SHOT_HEIGHT };
+
 	for (b = stage.bulletHead.next; b != NULL; b = b->next)
 	{
-		blit(b->texture, b->x, b->y);
+		if (b->side == SIDE_ALIEN && b->shotMode == NORMAL)
+		{
+			blitRect(b->texture, &srcRect, b->x, b->y);
+		}
+		else
+		{
+			//blitRect(b->texture, &srcRect, b->x, b->y);
+
+			blit(b->texture, b->x, b->y);
+		}
+		//blit(b->texture, b->x, b->y);
+
+	}
+
+	// réalisation de l'animation shot toutes les 8 frames on change de texture
+
+	//animationCounter++;
+
+	if (animationCounter % 8 == 0)
+	{
+		spriteAlienShotIndex++;
+		if (spriteAlienShotIndex > 3)
+		{
+			spriteAlienShotIndex = 0;
+		}
 	}
 }
 
@@ -503,7 +531,7 @@ void spawnEnemies(void)
 		flipCoin = rand() % 2;
 		enemy->dy = (float)(flipCoin ? -1.0 : 1.0);
 		enemy->reload = (FPS * (1 + (rand() % 3)));
-		enemy->shotMode = flipCoin;
+		enemy->shotMode = flipCoin ? NORMAL : MEGASHOT;
 		enemySpawnTimer = 30 + (rand() % 60); /* creates an enemy every 30 <-> 90 ms */
 	}
 }
@@ -594,8 +622,9 @@ static void fireAlienBullet(Entity* e)
 		bullet->y = e->y + (e->h / 2);
 
 		bullet->health = 1;
-		if (e->shotMode == normal)
+		if (e->shotMode == NORMAL)
 		{
+			bullet->shotMode = NORMAL;
 			bullet->texture = enemyShootTexture;
 			SDL_QueryTexture(bullet->texture, NULL, NULL, &bullet->w, &bullet->h);
 			calcAzimut(player->x + (player->w / 2), player->y + (player->h / 2), bullet->x, bullet->y, &bullet->dx, &bullet->dy);
@@ -604,6 +633,7 @@ static void fireAlienBullet(Entity* e)
 		}
 		else
 		{
+			bullet->shotMode = MEGASHOT;
 			bullet->texture = megaShot;
 			SDL_QueryTexture(bullet->texture, NULL, NULL, &bullet->w, &bullet->h);
 			bullet->dx = -(ALIEN_BULLET_SPEED * 2);

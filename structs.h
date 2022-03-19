@@ -3,7 +3,7 @@ typedef struct Entity Entity;
 typedef struct Explosion Explosion;
 typedef struct Debris Debris;
 typedef struct Texture Texture;
-typedef enum { normal, powerful } ShotMode;
+typedef enum { NORMAL, MEGASHOT } ShotMode;
 
 struct Texture {
 	char name[MAX_NAME_LENGTH];
