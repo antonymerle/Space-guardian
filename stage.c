@@ -39,7 +39,8 @@ static SDL_Texture* enemyTexture;
 static SDL_Texture* enemyShootTexture;
 static SDL_Texture* megaShot;
 static SDL_Texture* explosionTexture;
-static SDL_Texture* trailerTexture;
+static SDL_Texture* trailerPlayerTexture;
+static SDL_Texture* trailerAlienTexture;
 static SDL_Texture* pointTexture;
 
 
@@ -81,7 +82,8 @@ void initStage(void)
 	enemyShootTexture = loadTexture("gfx/enemyShoot.png");
 	megaShot = loadTexture("gfx/MegaShot.png");
 	explosionTexture = loadTexture("gfx/explosion.png");
-	trailerTexture = loadTexture("gfx/trailerPlayer.png");
+	trailerPlayerTexture = loadTexture("gfx/trailerPlayer.png");
+	trailerAlienTexture = loadTexture("gfx/trailerAlien.png");
 	pointTexture = loadTexture("gfx/points.png");
 
 	loadMusic("music/battle.wav");
@@ -169,7 +171,7 @@ static void initPlayer(void)
 	player->y = 100;
 
 	player->texture = playerTexture;
-	player->trailer = trailerTexture;
+	player->trailer = trailerPlayerTexture;
 
 	SDL_QueryTexture(player->texture, NULL, NULL, &player->w, &player->h);
 
@@ -228,8 +230,8 @@ static void doPlayer(void)
 			}
 
 			SDL_SetRenderDrawBlendMode(app.renderer, SDL_BLENDMODE_ADD);
-			SDL_SetTextureBlendMode(trailerTexture, SDL_BLENDMODE_ADD);
-			SDL_SetTextureColorMod(trailerTexture, r, g, b);
+			SDL_SetTextureBlendMode(trailerPlayerTexture, SDL_BLENDMODE_ADD);
+			SDL_SetTextureColorMod(trailerPlayerTexture, r, g, b);
 			SDL_SetRenderDrawBlendMode(app.renderer, SDL_BLENDMODE_NONE);
 
 			trailerColourModifierCount = 4;
@@ -489,6 +491,7 @@ void spawnEnemies(void)
 		stage.fighterTail = enemy;
 
 		enemy->texture = enemyTexture;
+		enemy->trailer = trailerAlienTexture;
 		SDL_QueryTexture(enemy->texture, NULL, NULL, &enemy->w, &enemy->h);
 
 		enemy->side = SIDE_ALIEN;
@@ -508,17 +511,20 @@ static void drawFighters(void)
 {
 	Entity* e;
 
-
-
 	for (e = stage.fighterHead.next; e != NULL; e = e->next)
 	{
-		// TODO : trailer pour ennemis
 		SDL_Rect srcRect = { spriteIndex * SPRITE_TRAILER_WIDTH, 0, SPRITE_TRAILER_WIDTH, SPRITE_TRAILER_HEIGHT };
 		blit(e->texture, e->x, e->y);
-		blitRect(e->trailer, &srcRect, e->x - ((e->w / 2) + 4), e->y + 4);
-		blitRect(e->trailer, &srcRect, e->x - ((e->w / 2) + 4), e->y + 17);
-		//blit(e->trailer, e->x - ((e->w / 2) + 4), e->y + 4);
-		//blit(e->trailer, e->x - ((e->w / 2) + 4), e->y + 17);
+		if (e->side == SIDE_ALIEN)
+		{
+			blitRect(e->trailer, &srcRect, e->x + e->w - 6, e->y - 2);
+			blitRect(e->trailer, &srcRect, e->x + e->w - 6, e->y + 13);
+		}
+		else
+		{
+			blitRect(e->trailer, &srcRect, e->x - ((e->w / 2) + 4), e->y + 4);
+			blitRect(e->trailer, &srcRect, e->x - ((e->w / 2) + 4), e->y + 17);
+		}
 	}
 
 	// réalisation de l'animation trailer toutes les 8 frames on change de texture
