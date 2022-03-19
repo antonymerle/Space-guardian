@@ -509,10 +509,10 @@ static void drawFighters(void)
 	for (e = stage.fighterHead.next; e != NULL; e = e->next)
 	{
 		blit(e->texture, e->x, e->y);
-		blit(e->trailer, e->x - ((e->w / 2) + 8), e->y - 5);
-		blit(e->trailer, e->x - ((e->w / 2) + 8), e->y + 7);
-		blit(e->trailer, e->x - ((e->w / 2) + 8), e->y + (e->h / 2) + 2);
-		blit(e->trailer, e->x - ((e->w / 2) + 8), e->y + (e->h / 2) + 14);
+		blit(e->trailer, e->x - ((e->w / 2) + 4), e->y + 4);
+		blit(e->trailer, e->x - ((e->w / 2) + 4), e->y + 17);
+		//blit(e->trailer, e->x - ((e->w / 2) + 8), e->y + (e->h / 2) + 2);
+		//blit(e->trailer, e->x - ((e->w / 2) + 8), e->y + (e->h / 2) + 14);
 	}
 }
 
