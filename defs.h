@@ -32,7 +32,8 @@
 #define GLYPH_HEIGHT			28
 #define GLYPH_WIDTH				18
 
-#define L
+#define SPRITE_TRAILER_WIDTH	32
+#define SPRITE_TRAILER_HEIGHT	32
 
 enum
 {

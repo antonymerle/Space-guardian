@@ -48,6 +48,8 @@ static int stageResetTimer;
 
 static uint8_t trailerAlpha;
 static uint8_t trailerColourModifierCount = FPS;
+static uint8_t animationCounter;
+static size_t spriteIndex;					// 0-1-2-3
 
 static uint32_t highscore;
 static uint32_t hudBlinkCounter;
@@ -506,14 +508,32 @@ static void drawFighters(void)
 {
 	Entity* e;
 
+
+
 	for (e = stage.fighterHead.next; e != NULL; e = e->next)
 	{
+		// TODO : trailer pour ennemis
+		SDL_Rect srcRect = { spriteIndex * SPRITE_TRAILER_WIDTH, 0, SPRITE_TRAILER_WIDTH, SPRITE_TRAILER_HEIGHT };
 		blit(e->texture, e->x, e->y);
-		blit(e->trailer, e->x - ((e->w / 2) + 4), e->y + 4);
-		blit(e->trailer, e->x - ((e->w / 2) + 4), e->y + 17);
-		//blit(e->trailer, e->x - ((e->w / 2) + 8), e->y + (e->h / 2) + 2);
-		//blit(e->trailer, e->x - ((e->w / 2) + 8), e->y + (e->h / 2) + 14);
+		blitRect(e->trailer, &srcRect, e->x - ((e->w / 2) + 4), e->y + 4);
+		blitRect(e->trailer, &srcRect, e->x - ((e->w / 2) + 4), e->y + 17);
+		//blit(e->trailer, e->x - ((e->w / 2) + 4), e->y + 4);
+		//blit(e->trailer, e->x - ((e->w / 2) + 4), e->y + 17);
 	}
+
+	// réalisation de l'animation trailer toutes les 8 frames on change de texture
+
+	animationCounter++;
+
+	if (animationCounter % 8 == 0)
+	{
+		spriteIndex++;
+		if (spriteIndex > 3)
+		{
+			spriteIndex = 0;
+		}
+	}
+	
 }
 
 static int testVesselsCollision(Entity* e)
