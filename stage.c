@@ -89,7 +89,7 @@ void initStage(void)
 	trailerAlienTexture = loadTexture("gfx/trailerAlien.png");
 	pointTexture = loadTexture("gfx/coin.png");
 
-	loadMusic("music/battle.wav");
+	loadMusic("music/battle.opus");
 	playMusic(1, 64);
 
 	memset(app.keyboard, 0, sizeof(int) * MAX_KEYBOARD_KEYS);

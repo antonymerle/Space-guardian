@@ -36,7 +36,7 @@ static void logic(void)
 
 	if (revealW < SCREEN_WIDTH)
 	{
-		revealW += 4;
+		revealW += 6;
 	}
 
 	if (--timeout <= 0)

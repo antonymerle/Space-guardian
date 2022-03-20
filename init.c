@@ -52,7 +52,7 @@ void initGame(void)
 	initSounds();
 	initFonts();
 	initHighscoreTable();
-	loadMusic("music/396960__orginaljun__chiptune-loop-episode-01.wav");
+	loadMusic("music/title-theme.opus");
 	playMusic(1, 128);
 }
 
