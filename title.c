@@ -64,15 +64,7 @@ static void draw(void)
 
 static void drawTitle(void)
 {
-	//SDL_Rect r;
-
 	SDL_Rect srcRect = { spriteTitleIndex * SPRITE_TITLE_WIDTH, 0, SPRITE_TITLE_WIDTH, SPRITE_TITLE_HEIGHT };
-
-
-	//r.x = 0;
-	//r.y = 0;
-
-	//SDL_QueryTexture(titleTexture, NULL, NULL, &r.w, &r.h);
 
 	srcRect.w = MIN(revealW, srcRect.w);
 	srcRect.h = MIN(revealH, srcRect.h);

@@ -16,8 +16,6 @@ static void resetStage(void);
 static void doEnemies(void);
 static void fireAlienBullet(Entity* e);
 static void cadrePlayer(void);
-static void initStarField(void);
-
 static void doExplosions(void);
 static void doDebris(void);
 static void addExplosions(int x, int y, int num);
@@ -50,10 +48,9 @@ static int stageResetTimer;
 static uint8_t trailerAlpha;
 static uint8_t trailerColourModifierCount = FPS;
 static uint8_t animationCounter;
-static size_t spriteAlienShotIndex;						// 4 -> 0-1-2-3 
-static size_t spriteTrailerIndex;					// 4 -> 0-1-2-3
-
-static size_t spriteCoinIndex;						// 9 -> 0-1-2-3-4-5-6-7-8
+static size_t spriteAlienShotIndex;							// 4 -> 0-1-2-3 
+static size_t spriteTrailerIndex;							// 4 -> 0-1-2-3
+static size_t spriteCoinIndex;								// 9 -> 0-1-2-3-4-5-6-7-8
 
 static uint32_t highscore;
 static uint32_t hudBlinkCounter;
@@ -61,9 +58,6 @@ static uint32_t hudBlinkCounter;
 extern uint32_t objectifTemporelPourProduireUneImageMs;
 extern uint32_t attente;
 
-/* DEBUG */
-static unsigned int bulletNumber;
-static unsigned int hitCount;
 
 void initStage(void)
 {
@@ -94,18 +88,12 @@ void initStage(void)
 
 	memset(app.keyboard, 0, sizeof(int) * MAX_KEYBOARD_KEYS);
 
-	//loadMusic("music/Mercury.ogg");
-	//playMusic(1);
 	resetStage();
 	stage.score = 0;
 	initPlayer();
 
 	enemySpawnTimer = 0;
 	stageResetTimer = FPS * 3;
-
-	// DEBUG
-	bulletNumber = 0;
-	hitCount = 0;
 }
 
 static void resetStage(void)
@@ -127,7 +115,6 @@ static void resetStage(void)
 		e = stage.bulletHead.next;
 		stage.bulletHead.next = e->next;
 		free(e);
-		bulletNumber--;
 	}
 
 	while (stage.explosionHead.next)
@@ -305,7 +292,6 @@ static void fireBullet(void)
 	bulletL->health = 1;
 	bulletL->texture = bulletTexture;
 	SDL_QueryTexture(bulletL->texture, NULL, NULL, &bulletL->w, &bulletL->h);
-	bulletNumber++;
 
 	bulletR->side = SIDE_PLAYER;
 	bulletR->x = player->x + player->w / 2;
@@ -316,8 +302,6 @@ static void fireBullet(void)
 	bulletR->texture = bulletTexture;
 	bulletR->w = bulletL->w;
 	bulletR->h = bulletL->h;
-	bulletNumber++;
-
 
 	/* 8 frames (approx 0.133333 seconds) must pass before we can fire again. */
 	player->reload = 8;
@@ -342,8 +326,6 @@ static void doBullets(void)
 			prev->next = b->next;
 			free(b);
 			b = prev;
-
-			bulletNumber--;
 		}
 
 		prev = b;
@@ -359,7 +341,6 @@ static int bulletHitFighter(Entity* b)
 		if (e->side != b->side
 			&& collision(e->x, e->y, e->w, e->h, b->x, b->y, b->w, b->h))
 		{
-			hitCount++;
 			b->health = 0;
 			e->health--;
 
@@ -378,9 +359,6 @@ static int bulletHitFighter(Entity* b)
 			{
 				if(e->x % 2) addPointsPod(e->x + e->w / 2, e->y + e->h / 2);
 				playSound(SND_ALIEN_DIE, CH_EXPLOSION);
-				// TODO : correct bug : increment score when alien ship die, not when it's hit
-				//stage.score++;
-				//highscore = MAX(stage.score, highscore);
 			}
 
 			return 1;
@@ -418,18 +396,11 @@ static void drawBullets(void)
 		}
 		else
 		{
-			//blitRect(b->texture, &srcRect, b->x, b->y);
-
 			blit(b->texture, b->x, b->y);
 		}
-		//blit(b->texture, b->x, b->y);
-
 	}
 
 	// réalisation de l'animation shot toutes les 8 frames on change de texture
-
-	//animationCounter++;
-
 	if (animationCounter % 8 == 0)
 	{
 		spriteAlienShotIndex++;
@@ -643,8 +614,6 @@ static void fireAlienBullet(Entity* e)
 		bullet->side = SIDE_ALIEN;
 
 		e->reload = (rand() % FPS * 2);
-
-		bulletNumber++;
 	}
 }
 
@@ -962,8 +931,6 @@ static void drawPointsPods(void)
 	}
 
 	// réalisation de l'animation trailer toutes les 8 frames on change de texture
-
-	//animationCounter++;
 
 	if (animationCounter % 8 == 0)
 	{

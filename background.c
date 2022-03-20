@@ -5,7 +5,6 @@ static int backgroundX;
 static SDL_Texture* background;
 
 
-
 void initBackground(void)
 {
 	background = loadTexture("gfx/Blue Nebula 1 - 512x512.png");
@@ -64,7 +63,6 @@ void drawBackground(void)
 			dest.x = x;
 			dest.y = y;
 			SDL_RenderCopy(app.renderer, background, NULL, &dest);
-
 		}
 	}
 }
