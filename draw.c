@@ -15,6 +15,8 @@ void presentScene(void)
 	SDL_RenderPresent(app.renderer);
 }
 
+
+/* Returns returns NULL if the texture is already cached, else returns a pointer to the texture */
 static SDL_Texture* getTexture(char* name)
 {
 	Texture* t;
@@ -50,12 +52,19 @@ SDL_Texture* loadTexture(char* filename)
 
 	texture = getTexture(filename);
 
-	if (texture == NULL)
+	if (texture == NULL)		// the texture is not already cached
 	{
 
 		SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "[TEXTURE] Chargement de %s", filename);
 
 		texture = IMG_LoadTexture(app.renderer, filename);
+
+		if (texture == NULL)
+		{
+			printf("Error, cannot load texture %s : %s", filename, SDL_GetError());
+			exit(1);
+		}
+
 		addTextureToCache(filename, texture);
 	}
 
