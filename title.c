@@ -19,7 +19,7 @@ void initTitle(void)
 
 	memset(app.keyboard, 0, sizeof(int) * MAX_KEYBOARD_KEYS);
 
-	titleTexture = loadTexture("gfx/title2.png");
+	titleTexture = loadTexture("gfx/title.png");
 	
 	timeout = FPS * 60;
 }
@@ -85,9 +85,9 @@ static void drawTitle(void)
 	if (animationCounter % 128 == 0 && revealW > SCREEN_WIDTH - 8)
 	{
 		spriteTitleIndex++;
-		if (spriteTitleIndex > 7)
+		if (spriteTitleIndex > 5)
 		{
-			spriteTitleIndex = 7;
+			spriteTitleIndex = 5;
 		}
 	}
 }
