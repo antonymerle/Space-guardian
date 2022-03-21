@@ -12,4 +12,4 @@ extern void loadMusic(char* filename);
 extern void playMusic(int loop, int volume);
 
 extern App app;
-extern Entity player;
+extern Stage stage;

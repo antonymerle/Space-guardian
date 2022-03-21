@@ -55,7 +55,7 @@ SDL_Texture* loadTexture(char* filename)
 	if (texture == NULL)		// the texture is not already cached
 	{
 
-		SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "[TEXTURE] Chargement de %s", filename);
+		//SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "[TEXTURE] Chargement de %s", filename);
 
 		texture = IMG_LoadTexture(app.renderer, filename);
 

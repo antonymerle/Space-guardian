@@ -107,8 +107,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>W:\vclibs\SDL2-2.0.18\include;W:\vclibs\SDL2_image-2.0.5\include;$(ExternalIncludePath);;W:\vclibs\SDL2_mixer-2.0.4\include;W:\vclibs\SDL2_mixer-2.0.4\include;W:\vclibs\SDL2_mixer-2.0.4\include</IncludePath>
-    <LibraryPath>W:\vclibs\SDL2-2.0.18\lib\x64;W:\vclibs\SDL2_image-2.0.5\lib\x64;$(LibraryPath);W:\vclibs\SDL2_mixer-2.0.4\lib\x64;W:\vclibs\SDL2_mixer-2.0.4\lib\x64;W:\vclibs\SDL2_mixer-2.0.4\lib</LibraryPath>
+    <IncludePath>W:\vclibs\SDL2-2.0.20\include;W:\vclibs\SDL2_image-2.0.5\include;$(ExternalIncludePath);;W:\vclibs\SDL2_mixer-2.0.4\include;W:\vclibs\SDL2_mixer-2.0.4\include;W:\vclibs\SDL2_mixer-2.0.4\include</IncludePath>
+    <LibraryPath>W:\vclibs\SDL2-2.0.20\lib\x64;W:\vclibs\SDL2_image-2.0.5\lib\x64;$(LibraryPath);W:\vclibs\SDL2_mixer-2.0.4\lib\x64;W:\vclibs\SDL2_mixer-2.0.4\lib\x64;W:\vclibs\SDL2_mixer-2.0.4\lib</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>

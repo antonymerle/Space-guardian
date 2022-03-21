@@ -52,6 +52,7 @@ void initGame(void)
 	initSounds();
 	initFonts();
 	initHighscoreTable();
+	memset(&stage, 0, sizeof(Stage));
 	loadMusic("music/title-theme.opus");
 	playMusic(1, 128);
 }

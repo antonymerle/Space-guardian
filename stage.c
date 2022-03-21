@@ -64,7 +64,7 @@ void initStage(void)
 	app.delegate.logic = logic;
 	app.delegate.draw = draw;
 
-	memset(&stage, 0, sizeof(Stage));
+	//memset(&stage, 0, sizeof(Stage));
 
 	stage.fighterTail = &stage.fighterHead;
 	stage.bulletTail = &stage.bulletHead;
