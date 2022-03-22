@@ -54,7 +54,7 @@ static void draw(void)
 {
 	drawBackground();
 	drawStarfield();
-	drawTitle();
+	//drawTitle();
 
 	if (timeout % 40 < 20)						// texte clignote
 	{

@@ -99,7 +99,6 @@ void initStage(void)
 static void resetStage(void)
 {
 	Entity* e;
-	Entity* p;
 	Explosion* ex;
 	Debris* d;
 
@@ -133,13 +132,13 @@ static void resetStage(void)
 
 	while (stage.pointHead.next)
 	{
-		p = stage.pointHead.next;
-		stage.pointHead.next = p->next;
-		free(p);
+		e = stage.pointHead.next;
+		stage.pointHead.next = e->next;
+		free(e);
 	}
 
 	memset(&stage, 0, sizeof(Stage));
-	stage.score = 0;								/* Est-ce bien nécessaire ? cf memset*/
+	//stage.score = 0;								/* Est-ce bien nécessaire ? cf memset*/
 	stage.fighterTail = &stage.fighterHead;
 	stage.bulletTail = &stage.bulletHead;
 	stage.explosionTail = &stage.explosionHead;

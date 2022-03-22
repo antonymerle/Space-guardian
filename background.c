@@ -7,7 +7,7 @@ static SDL_Texture* background;
 
 void initBackground(void)
 {
-	background = loadTexture("gfx/Blue Nebula 1 - 512x512.png");
+	background = loadTexture("gfx/BlueNebula-1-512x512.png");
 	backgroundX = 0;
 }
 
@@ -42,7 +42,7 @@ void doStarfield(void)
 		stars[i].x -= stars[i].speed;
 		if (stars[i].x < 0)
 		{
-			stars[i].x += SCREEN_WIDTH;
+			stars[i].x += SCREEN_WIDTH + stars[i].x;
 		}
 	}
 }
