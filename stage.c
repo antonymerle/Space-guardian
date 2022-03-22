@@ -846,9 +846,9 @@ static void doPointsPods(void)
 			e->dx = -e->dx;
 		}
 
-		if (e->x + e->w > SCREEN_WIDTH)
+		if (e->x + SPRITE_COIN_WIDTH > SCREEN_WIDTH)
 		{
-			e->x = SCREEN_WIDTH - e->w;
+			e->x = SCREEN_WIDTH - SPRITE_COIN_WIDTH;
 			e->dx = -e->dx;
 		}
 
@@ -867,7 +867,7 @@ static void doPointsPods(void)
 		e->x += e->dx;
 		e->y += e->dy;
 
-		if (player != NULL && collision(e->x, e->y, e->w, e->h, player->x, player->y, player->w, player->h))
+		if (player != NULL && collision(e->x, e->y, SPRITE_COIN_WIDTH, e->h, player->x, player->y, player->w, player->h))
 		{
 			e->health = 0;
 			if (player->health < PLAYER_MAX_HEALTH) player->health++;
@@ -903,11 +903,13 @@ static void addPointsPod(int x, int y)
 
 	e->x = x;
 	e->y = y;
+	e->w = SPRITE_COIN_WIDTH;
+	e->h = SPRITE_COIN_HEIGHT;
 
 	e->dx = -(rand() % 5);
 	e->dy = (rand() % 5 - rand() % 5);
 
-	SDL_QueryTexture(pointTexture, NULL, NULL, &e->w, &e->h);
+	//SDL_QueryTexture(pointTexture, NULL, NULL, &e->w, &e->h);
 
 	e->x -= e->w / 2;
 	e->y -= e->h / 2;
