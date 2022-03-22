@@ -54,7 +54,7 @@ static void draw(void)
 {
 	drawBackground();
 	drawStarfield();
-	//drawTitle();
+	drawTitle();
 
 	if (timeout % 40 < 20)						// texte clignote
 	{
@@ -64,22 +64,28 @@ static void draw(void)
 
 static void drawTitle(void)
 {
-	SDL_Rect srcRect = { spriteTitleIndex * SPRITE_TITLE_WIDTH, 0, SPRITE_TITLE_WIDTH, SPRITE_TITLE_HEIGHT };
+	//SDL_Rect srcRect = { spriteTitleIndex * SPRITE_TITLE_WIDTH, 0, SPRITE_TITLE_WIDTH, SPRITE_TITLE_HEIGHT };
+	SDL_Rect srcRect;
 
-	srcRect.w = MIN(revealW, srcRect.w);
-	srcRect.h = MIN(revealH, srcRect.h);
+	srcRect.x = 0;
+	srcRect.y = 0;
+
+	SDL_QueryTexture(titleTexture, NULL, NULL, &srcRect.w, &srcRect.h);
+
+	//srcRect.w = MIN(revealW, srcRect.w);
+	//srcRect.h = MIN(revealH, srcRect.h);
 
 	blitRect(titleTexture, &srcRect, (SCREEN_WIDTH / 2) - (SPRITE_TITLE_WIDTH / 2), 100);
 
-	animationCounter++;
+	//animationCounter++;
 
 
-	if (animationCounter % 128 == 0 && revealW > SCREEN_WIDTH - 8)
-	{
-		spriteTitleIndex++;
-		if (spriteTitleIndex > 5)
-		{
-			spriteTitleIndex = 5;
-		}
-	}
+	//if (animationCounter % 128 == 0 && revealW > SCREEN_WIDTH - 8)
+	//{
+	//	spriteTitleIndex++;
+	//	if (spriteTitleIndex > 5)
+	//	{
+	//		spriteTitleIndex = 5;
+	//	}
+	//}
 }
