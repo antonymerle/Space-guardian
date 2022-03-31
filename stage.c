@@ -24,8 +24,8 @@ static void drawExplosions(void);
 static void addDebris(Entity* e);
 static void drawHud(void);
 static void doPointsPods(void);
-static void addPointsPod(int x, int y);
-static void drawPointsPods(void);
+static void addCoins(int x, int y);
+static void drawCoins(void);
 static int bulletHitPoint(Entity* b);
 
 
@@ -359,7 +359,7 @@ static int bulletHitFighter(Entity* b)
 			}
 			else
 			{
-				if(e->x % 2) addPointsPod(e->x + e->w / 2, e->y + e->h / 2);
+				if(e->x % 2) addCoins(e->x + e->w / 2, e->y + e->h / 2);
 				playSound(SND_ALIEN_DIE, CH_EXPLOSION);
 			}
 
@@ -376,7 +376,7 @@ static void draw(void)
 {
 	drawBackground();
 	drawStarfield();
-	drawPointsPods();
+	drawCoins();
 	drawFighters();
 	drawDebris();
 	drawExplosions();
@@ -873,7 +873,11 @@ static void doPointsPods(void)
 		if (player != NULL && collision(e->x, e->y, SPRITE_COIN_WIDTH, e->h, player->x, player->y, player->w, player->h))
 		{
 			e->health = 0;
-			if (player->health < PLAYER_MAX_HEALTH) player->health++;
+			if (player->health < PLAYER_MAX_HEALTH)
+			{
+				player->health++;
+			}
+			stage.score += 10;
 			playSound(SND_POINTS, CH_POINTS);
 		}
 
@@ -892,7 +896,7 @@ static void doPointsPods(void)
 	}
 }
 
-static void addPointsPod(int x, int y)
+static void addCoins(int x, int y)
 {
 	Entity* e;
 
@@ -921,7 +925,7 @@ static void addPointsPod(int x, int y)
 	e->texture = pointTexture;
 }
 
-static void drawPointsPods(void)
+static void drawCoins(void)
 {
 	Entity* e;
 

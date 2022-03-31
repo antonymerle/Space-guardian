@@ -1,7 +1,7 @@
 #include "draw.h"
 
-static SDL_Texture* getTexture(char* name);
-static void addTextureToCache(char* name, SDL_Texture* sdlTexture);
+//static SDL_Texture* getTexture(char* name);
+//static void addTextureToCache(char* name, SDL_Texture* sdlTexture);
 
 void prepareScene(void)
 {
@@ -55,7 +55,7 @@ SDL_Texture* loadTexture(char* filename)
 	if (texture == NULL)		// the texture is not already cached
 	{
 
-		//SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "[TEXTURE] Chargement de %s", filename);
+		SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "[TEXTURE] Chargement de %s", filename);
 
 		texture = IMG_LoadTexture(app.renderer, filename);
 
@@ -101,13 +101,13 @@ void blitRectScale(SDL_Texture* texture, SDL_Rect* src, int x, int y, double sca
 
 	if (scale < 0)
 	{
-		scale = abs(scale);
+		scale = fabs(scale);
 	}
 
 	dest.x = x;
 	dest.y = y;
-	dest.w = src->w * scale;
-	dest.h = src->h * scale;
+	dest.w = (int)(src->w * scale);
+	dest.h = (int)(src->h * scale);
 
 	SDL_RenderCopy(app.renderer, texture, src, &dest);
 }
