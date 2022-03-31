@@ -6,8 +6,7 @@ On ne retient que les events où la touche a été pressée pour la 1ere fois.
 */
 void doKeyDown(SDL_KeyboardEvent* event)
 {
-	if (event->keysym.scancode >= MAX_KEYBOARD_KEYS || event->keysym.scancode <= SDL_SCANCODE_UNKNOWN) return;
-	if (event->repeat == 0)
+	if (event->repeat == 0 && event->keysym.scancode >= 0 && event->keysym.scancode < MAX_KEYBOARD_KEYS)
 	{
 		app.keyboard[event->keysym.scancode] = 1;
 	}
@@ -16,8 +15,7 @@ void doKeyDown(SDL_KeyboardEvent* event)
 
 void doKeyUp(SDL_KeyboardEvent* event)
 {
-	if (event->keysym.scancode >= MAX_KEYBOARD_KEYS || event->keysym.scancode <= SDL_SCANCODE_UNKNOWN) return;
-	if (event->repeat == 0)
+	if (event->repeat == 0 && event->keysym.scancode >= 0 && event->keysym.scancode < MAX_KEYBOARD_KEYS)
 	{
 		app.keyboard[event->keysym.scancode] = 0;
 	}
