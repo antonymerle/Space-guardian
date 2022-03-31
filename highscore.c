@@ -129,6 +129,9 @@ void initHighscoreTable(void)
 
 void initHighscores(void)
 {
+	memset(&app.delegate.logic, 0, sizeof(app.delegate.logic));
+	memset(&app.delegate.draw, 0, sizeof(app.delegate.draw));
+
 	app.delegate.logic = logic;
 	app.delegate.draw = draw;
 

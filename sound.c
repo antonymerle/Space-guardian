@@ -10,7 +10,6 @@ void initSounds(void)
 	memset(sounds, 0, sizeof(Mix_Chunk*) * SND_MAX);
 	music = NULL;
 	loadSounds();
-
 }
 
 static void loadSounds(void)
