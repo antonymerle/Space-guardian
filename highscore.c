@@ -6,7 +6,7 @@ static int highscoreComparator(const void* a, const void* b);
 static void drawHighscores(void);
 static void doNameInput(void);
 static void drawNameInput(void);
-static int isWellFormattedLine(const char* str);
+static int isWellFormattedLine(char* str);
 static int getCurrentMinHighscore(void);
 static int parseScores(void);
 static int writeScores(void);
@@ -17,7 +17,7 @@ static Highscore* newHighscore;
 static int getCurrentMinHighscore(void)
 {
 
-	int minScore = 1<<32 - 1;
+	int minScore = INT_MAX;
 
 	for (size_t i = 0; i < NUM_HIGHSCORES; i++)
 	{
@@ -129,8 +129,8 @@ void initHighscoreTable(void)
 
 void initHighscores(void)
 {
-	memset(&app.delegate.logic, 0, sizeof(app.delegate.logic));
-	memset(&app.delegate.draw, 0, sizeof(app.delegate.draw));
+	//memset(&app.delegate.logic, 0, sizeof(app.delegate.logic));
+	//memset(&app.delegate.draw, 0, sizeof(app.delegate.draw));
 
 	app.delegate.logic = logic;
 	app.delegate.draw = draw;
@@ -138,7 +138,7 @@ void initHighscores(void)
 	loadMusic("music/highscore.opus");
 	playMusic(1, 128);
 
-	memset(app.keyboard, 0, sizeof(int) * MAX_KEYBOARD_KEYS);
+	memset(&app.keyboard, 0, sizeof(int) * MAX_KEYBOARD_KEYS);
 
 	timeout = FPS * 10;
 }
@@ -263,7 +263,7 @@ static void doNameInput(void)
 	int i, n;
 	char c;
 
-	n = strlen(newHighscore->name);
+	n = (int)strlen(newHighscore->name);
 
 	for (i = 0; i < strlen(app.inputText); i++)
 	{
@@ -288,16 +288,6 @@ static void doNameInput(void)
 		}
 		newHighscore = NULL;
 	}
-	//else
-	//{
-	//	if (strlen(newHighscore->name) == 0)
-	//	{
-	//		STRNCPY(newHighscore->name, "ANON", MAX_SCORE_NAME_LENGTH);
-	//		newHighscore = NULL;
-	//	}
-	//}
-
-	
 }
 
 static void drawNameInput(void)
@@ -310,7 +300,7 @@ static void drawNameInput(void)
 
 	if (cursorBlink < FPS / 2)
 	{
-		r.x = ((SCREEN_WIDTH / 2) + (strlen(newHighscore->name) * GLYPH_WIDTH) / 2) + 5;
+		r.x = ((SCREEN_WIDTH / 2) + ((int)strlen(newHighscore->name) * GLYPH_WIDTH) / 2) + 5;
 		r.y = 250;
 		r.w = GLYPH_WIDTH;
 		r.h = GLYPH_HEIGHT;
@@ -321,11 +311,13 @@ static void drawNameInput(void)
 	drawText(SCREEN_WIDTH / 2, 625, 255, 255, 255, 1, TEXT_CENTER, "PRESS ENTER WHEN FINISHED");
 }
 
-static int isWellFormattedLine(const char* str)
+static int isWellFormattedLine(char* str)
 {
 	char* c = str;
+
 	size_t counter = 0;
 	int isTab = 0;
+
 
 	while (*c != '\n' && *c != '\0')
 	{

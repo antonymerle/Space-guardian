@@ -6,5 +6,6 @@
 #include <string.h>
 #include <math.h>
 #include <ctype.h>
+#include <limits.h>
 #include "defs.h"
 #include "structs.h"

@@ -23,10 +23,11 @@ static void drawDebris(void);
 static void drawExplosions(void);
 static void addDebris(Entity* e);
 static void drawHud(void);
-static void doPointsPods(void);
+static void doCoins(void);
 static void addCoins(int x, int y);
 static void drawCoins(void);
 static int bulletHitPoint(Entity* b);
+static int testVesselsCollision(Entity* e);
 
 
 
@@ -61,8 +62,8 @@ extern uint32_t attente;
 
 void initStage(void)
 {
-	memset(&app.delegate.logic, 0, sizeof(app.delegate.logic));
-	memset(&app.delegate.draw, 0, sizeof(app.delegate.draw));
+	//memset(&app.delegate.logic, 0, sizeof(app.delegate.logic));
+	//memset(&app.delegate.draw, 0, sizeof(app.delegate.draw));
 
 	app.delegate.logic = logic;
 	app.delegate.draw = draw;
@@ -89,7 +90,7 @@ void initStage(void)
 	loadMusic("music/battle.opus");
 	playMusic(1, 64);
 
-	memset(app.keyboard, 0, sizeof(int) * MAX_KEYBOARD_KEYS);
+	memset(&app.keyboard, 0, sizeof(int) * MAX_KEYBOARD_KEYS);
 
 	resetStage();
 	stage.score = 0;
@@ -179,7 +180,7 @@ static void logic(void)
 	doBullets();
 	doExplosions();
 	doDebris();
-	doPointsPods();
+	doCoins();
 	spawnEnemies();
 	cadrePlayer();
 	if (player == NULL && --stageResetTimer <= 0)
@@ -388,7 +389,7 @@ static void drawBullets(void)
 {
 	Entity* b;
 
-	SDL_Rect srcRect = { spriteAlienShotIndex * SPRITE_ALIEN_SHOT_WIDTH, 0, SPRITE_ALIEN_SHOT_WIDTH, SPRITE_ALIEN_SHOT_HEIGHT };
+	SDL_Rect srcRect = { (int)spriteAlienShotIndex * SPRITE_ALIEN_SHOT_WIDTH, 0, SPRITE_ALIEN_SHOT_WIDTH, SPRITE_ALIEN_SHOT_HEIGHT };
 
 	for (b = stage.bulletHead.next; b != NULL; b = b->next)
 	{
@@ -515,7 +516,7 @@ static void drawFighters(void)
 
 	for (e = stage.fighterHead.next; e != NULL; e = e->next)
 	{
-		SDL_Rect srcRect = { spriteTrailerIndex * SPRITE_TRAILER_WIDTH, 0, SPRITE_TRAILER_WIDTH, SPRITE_TRAILER_HEIGHT };
+		SDL_Rect srcRect = { (int)spriteTrailerIndex * SPRITE_TRAILER_WIDTH, 0, SPRITE_TRAILER_WIDTH, SPRITE_TRAILER_HEIGHT };
 		blit(e->texture, e->x, e->y);
 		if (e->side == SIDE_ALIEN)
 		{
@@ -798,18 +799,18 @@ static void drawHud(void)
 
 		if (healthRatio == 100)
 		{
-			drawText(10, 40, 0, 255, 0, 0.5, TEXT_LEFT, "HEALTH: %3.0f \%", healthRatio);
+			drawText(10, 40, 0, 255, 0, 0.5, TEXT_LEFT, "HEALTH: %3.0f", healthRatio);
 		}
 		else if (healthRatio >= 34 && healthRatio <= 67)
 		{
-			drawText(10, 40, 255, 128, 0, 0.5, TEXT_LEFT, "HEALTH: %3.0f \%", healthRatio);
+			drawText(10, 40, 255, 128, 0, 0.5, TEXT_LEFT, "HEALTH: %3.0f", healthRatio);
 		}
 		else
 		{
 			hudBlinkCounter++;
 			if (hudBlinkCounter < FPS)
 			{
-				drawText(10, 40, 255, 0, 0, 0.5, TEXT_LEFT, "HEALTH: %3.0f \%", healthRatio);
+				drawText(10, 40, 255, 0, 0, 0.5, TEXT_LEFT, "HEALTH: %3.0f", healthRatio);
 			}
 			if (hudBlinkCounter > FPS * 2) hudBlinkCounter = 0;
 		}
@@ -833,7 +834,7 @@ static int bulletHitPoint(Entity* b)
 	return 0;
 }
 
-static void doPointsPods(void)
+static void doCoins(void)
 {
 	Entity* e;
 	Entity* prev;
@@ -901,7 +902,7 @@ static void addCoins(int x, int y)
 	Entity* e;
 
 	e = malloc(sizeof(Entity));
-	if (e != NULL) memset(e, 0, sizeof(Entity));
+	if (e) memset(e, 0, sizeof(Entity));
 
 	stage.pointTail->next = e;
 	stage.pointTail = e;
@@ -929,7 +930,7 @@ static void drawCoins(void)
 {
 	Entity* e;
 
-	SDL_Rect srcRect = { spriteCoinIndex * SPRITE_COIN_WIDTH, 0, SPRITE_COIN_WIDTH, SPRITE_COIN_HEIGHT };
+	SDL_Rect srcRect = { (int)spriteCoinIndex * SPRITE_COIN_WIDTH, 0, SPRITE_COIN_WIDTH, SPRITE_COIN_HEIGHT };
 
 
 	for (e = stage.pointHead.next; e != NULL; e = e->next)

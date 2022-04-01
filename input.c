@@ -25,7 +25,7 @@ void doInput(void)
 {
 	SDL_Event event;
 
-	memset(app.inputText, '\0', MAX_LINE_LENGTH);
+	memset(&app.inputText, '\0', MAX_LINE_LENGTH);
 
 	while (SDL_PollEvent(&event))
 	{

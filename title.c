@@ -14,13 +14,13 @@ static size_t spriteTitleIndex;
 
 void initTitle(void)
 {
-	memset(&app.delegate.logic, 0, sizeof(app.delegate.logic));
-	memset(&app.delegate.draw, 0, sizeof(app.delegate.draw));
+	//memset(&app.delegate.logic, 0, sizeof(app.delegate.logic));
+	//memset(&app.delegate.draw, 0, sizeof(app.delegate.draw));
 
 	app.delegate.logic = logic;
 	app.delegate.draw = draw;
 
-	memset(app.keyboard, 0, sizeof(int) * MAX_KEYBOARD_KEYS);
+	memset(&app.keyboard, 0, sizeof(int) * MAX_KEYBOARD_KEYS);
 
 	titleTexture = loadTexture("gfx/title.png");
 	
