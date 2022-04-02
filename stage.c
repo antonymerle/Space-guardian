@@ -252,7 +252,7 @@ static void doPlayer(void)
 			player->dx = PLAYER_SPEED;
 			if (trailerAlpha <= SDL_MAX_UINT8 - 10) trailerAlpha += 10;
 		}
-		if (app.keyboard[SDL_SCANCODE_LCTRL] && player->reload == 0)
+		if ((app.keyboard[SDL_SCANCODE_LCTRL] ||app.keyboard[SDL_SCANCODE_SPACE]) && player->reload == 0)
 		{
 			fireBullet();
 			playSound(SND_PLAYER_FIRE, CH_PLAYER);

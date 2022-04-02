@@ -102,6 +102,7 @@ void doInput(void)
 		{
 		case SDL_KEYDOWN:
 			doKeyDown(&event.key);
+            if (app.keyboard[SDL_SCANCODE_ESCAPE]) exit(0);
 			break;
 
 		case SDL_KEYUP:
