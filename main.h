@@ -16,3 +16,4 @@ extern void initTitle(void);
 App app;
 Stage stage;
 Highscores highscores;
+SDL_DisplayMode displayMode;

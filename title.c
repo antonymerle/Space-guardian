@@ -32,12 +32,12 @@ static void logic(void)
 	doBackground();
 	doStarfield();
 
-	if (revealH < SCREEN_HEIGHT)
+	if (revealH < displayMode.h)
 	{
 		revealH++;
 	}
 
-	if (revealW < SCREEN_WIDTH)
+	if (revealW < displayMode.w)
 	{
 		revealW += 6;
 	}
@@ -61,7 +61,7 @@ static void draw(void)
 
 	if (timeout % 40 < 20)						// texte clignote
 	{
-		drawText(SCREEN_WIDTH / 2, 600, 255, 255, 255, 1, TEXT_CENTER, "PRESS SPACE TO PLAY!");
+		drawText(displayMode.w / 2, 600, 255, 255, 255, 1, TEXT_CENTER, "PRESS SPACE TO PLAY!");
 	}
 }
 
@@ -78,12 +78,12 @@ static void drawTitle(void)
 	//srcRect.w = MIN(revealW, srcRect.w);
 	//srcRect.h = MIN(revealH, srcRect.h);
 
-	blitRect(titleTexture, &srcRect, (SCREEN_WIDTH / 2) - (SPRITE_TITLE_WIDTH / 2), 100);
+	blitRect(titleTexture, &srcRect, (displayMode.w / 2) - (SPRITE_TITLE_WIDTH / 2), 100);
 
 	//animationCounter++;
 
 
-	//if (animationCounter % 128 == 0 && revealW > SCREEN_WIDTH - 8)
+	//if (animationCounter % 128 == 0 && revealW > displayMode.w - 8)
 	//{
 	//	spriteTitleIndex++;
 	//	if (spriteTitleIndex > 5)

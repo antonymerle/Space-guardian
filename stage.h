@@ -29,3 +29,4 @@ extern void initHighscores(void);
 extern App app;
 extern Stage stage;
 extern Highscores highscores;
+extern SDL_DisplayMode displayMode;

@@ -13,3 +13,4 @@ extern void playMusic(int loop, int volume);
 
 extern App app;
 extern Stage stage;
+extern SDL_DisplayMode displayMode;

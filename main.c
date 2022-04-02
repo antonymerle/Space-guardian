@@ -28,6 +28,7 @@ int main(int argc, char* argv[])
 
 	while (1)
 	{
+
 		prepareScene();
 		doInput();
 		app.delegate.logic();

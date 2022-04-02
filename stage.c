@@ -266,8 +266,8 @@ static void cadrePlayer(void)
 	{
 		if (player->x < 0) player->x = 0;
 		if (player->y < 0) player->y = 0;
-		if (player->x > SCREEN_WIDTH / 2) player->x = SCREEN_WIDTH / 2;
-		if (player->y > SCREEN_HEIGHT - player->h) player->y = SCREEN_HEIGHT - player->h;
+		if (player->x > displayMode.w / 2) player->x = displayMode.w / 2;
+		if (player->y > displayMode.h - player->h) player->y = displayMode.h - player->h;
 	}
 }
 
@@ -322,7 +322,7 @@ static void doBullets(void)
 		b->x += b->dx;
 		b->y += b->dy;
 
-		if (bulletHitFighter(b) || bulletHitPoint(b) || b->x > SCREEN_WIDTH || b->x <= 0 || b->y > SCREEN_HEIGHT || b->y <= 0 || (b->dx == 0) && (b->dy == 0))
+		if (bulletHitFighter(b) || bulletHitPoint(b) || b->x > displayMode.w || b->x <= 0 || b->y > displayMode.h || b->y <= 0 || (b->dx == 0) && (b->dy == 0))
 		{
 			if (b == stage.bulletTail) stage.bulletTail = prev;
 
@@ -435,7 +435,7 @@ static void doFighters(void)
 
 	for (e = stage.fighterHead.next; e != NULL; e = e->next)
 	{
-		if ((e->side == SIDE_ALIEN && (e->y >= (SCREEN_HEIGHT - e->h)) || (e->side == SIDE_ALIEN && e->y == 0)))
+		if ((e->side == SIDE_ALIEN && (e->y >= (displayMode.h - e->h)) || (e->side == SIDE_ALIEN && e->y == 0)))
 		{
 			e->dy *= -1;
 		}
@@ -499,8 +499,8 @@ void spawnEnemies(void)
 
 		enemy->side = SIDE_ALIEN;
 		enemy->health = 3;
-		enemy->x = SCREEN_WIDTH;
-		enemy->y = (float)(10 + (rand() % SCREEN_HEIGHT - enemy->h));
+		enemy->x = displayMode.w;
+		enemy->y = (float)(10 + (rand() % displayMode.h - enemy->h));
 		enemy->dx = (float)(-(2 + (rand() % 4)));
 		flipCoin = rand() % 2;
 		enemy->dy = (float)(flipCoin ? -1.0 : 1.0);
@@ -570,7 +570,7 @@ static void doEnemies(void)
 	{
 		if (e != player)
 		{
-			e->y = MIN(MAX(e->y, 0), SCREEN_HEIGHT - e->h);
+			e->y = MIN(MAX(e->y, 0), displayMode.h - e->h);
 
 			if (player != NULL && --(e->reload) <= 0)
 			{
@@ -782,15 +782,15 @@ static void drawHud(void)
 	double healthRatio;
 
 	drawText(10, 10, 255, 255, 255, 0.5, TEXT_LEFT, "SCORE: %03d", stage.score);
-	drawText(10, SCREEN_HEIGHT - 50, 255, 255, 255, 0.5, TEXT_LEFT, "FPS : %u", objectifTemporelPourProduireUneImageMs - attente ? 1000 / (objectifTemporelPourProduireUneImageMs - attente) : 1000);
+	drawText(10, displayMode.h - 50, 255, 255, 255, 0.5, TEXT_LEFT, "FPS : %u", objectifTemporelPourProduireUneImageMs - attente ? 1000 / (objectifTemporelPourProduireUneImageMs - attente) : 1000);
 
 	if (stage.score < highscores.highscore[0].score)
 	{
-		drawText(SCREEN_WIDTH - 10, 10, 0, 255, 0, 0.5, TEXT_RIGHT, "HIGH SCORE: %03d", highscores.highscore[0].score);
+		drawText(displayMode.w - 10, 10, 0, 255, 0, 0.5, TEXT_RIGHT, "HIGH SCORE: %03d", highscores.highscore[0].score);
 	}
 	else
 	{
-		drawText(SCREEN_WIDTH - 10, 10, 0, 255, 0, 0.5, TEXT_RIGHT, "HIGH SCORE: %03d", stage.score);
+		drawText(displayMode.w - 10, 10, 0, 255, 0, 0.5, TEXT_RIGHT, "HIGH SCORE: %03d", stage.score);
 	}
 
 	if (player)
@@ -850,9 +850,9 @@ static void doCoins(void)
 			e->dx = -e->dx;
 		}
 
-		if (e->x + SPRITE_COIN_WIDTH > SCREEN_WIDTH)
+		if (e->x + SPRITE_COIN_WIDTH > displayMode.w)
 		{
-			e->x = SCREEN_WIDTH - SPRITE_COIN_WIDTH;
+			e->x = displayMode.w - SPRITE_COIN_WIDTH;
 			e->dx = -e->dx;
 		}
 
@@ -862,9 +862,9 @@ static void doCoins(void)
 			e->dy = -e->dy;
 		}
 
-		if (e->y + e->h > SCREEN_HEIGHT)
+		if (e->y + e->h > displayMode.h)
 		{
-			e->y = SCREEN_HEIGHT - e->h;
+			e->y = displayMode.h - e->h;
 			e->dy = -e->dy;
 		}
 

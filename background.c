@@ -18,8 +18,8 @@ void initStarfield(void)
 
 	for (i = 0; i < MAX_STARS; i++)
 	{
-		stars[i].x = rand() % SCREEN_WIDTH;
-		stars[i].y = rand() % SCREEN_HEIGHT;
+		stars[i].x = rand() % displayMode.w;
+		stars[i].y = rand() % displayMode.h;
 		stars[i].speed = 1 + rand() % 8;
 	}
 }
@@ -42,7 +42,7 @@ void doStarfield(void)
 		stars[i].x -= stars[i].speed;
 		if (stars[i].x < 0)
 		{
-			stars[i].x += SCREEN_WIDTH + stars[i].x;
+			stars[i].x += displayMode.w + stars[i].x;
 		}
 	}
 }
@@ -56,9 +56,9 @@ void drawBackground(void)
 
 	SDL_QueryTexture(background, NULL, NULL, &dest.w, &dest.h);
 
-	for (x = backgroundX; x < SCREEN_WIDTH; x += dest.w)
+	for (x = backgroundX; x < displayMode.w; x += dest.w)
 	{
-		for (y = 0; y < SCREEN_HEIGHT; y += dest.h)
+		for (y = 0; y < displayMode.h; y += dest.h)
 		{
 			dest.x = x;
 			dest.y = y;

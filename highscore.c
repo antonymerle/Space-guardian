@@ -185,7 +185,7 @@ static void draw(void)
 
 		if (timeout % 40 < 20)
 		{
-			drawText(SCREEN_WIDTH / 2, 600, 255, 255, 255, 1, TEXT_CENTER, "PRESS SPACE TO PLAY !");
+			drawText(displayMode.w / 2, 600, 255, 255, 255, 1, TEXT_CENTER, "PRESS SPACE TO PLAY !");
 		}
 	}
 }
@@ -196,7 +196,7 @@ static void drawHighscores(void)
 
 	y = 150;
 
-	drawText(SCREEN_WIDTH / 2, 70, 255, 255, 255, 1, TEXT_CENTER, "HIGHSCORES");
+	drawText(displayMode.w / 2, 70, 255, 255, 255, 1, TEXT_CENTER, "HIGHSCORES");
 
 	for (i = 0; i < NUM_HIGHSCORES; i++)
 	{
@@ -209,14 +209,14 @@ static void drawHighscores(void)
 			b = 0;
 		}
 
-		drawText(SCREEN_WIDTH / 2, y, r, g, b, 1, TEXT_CENTER, "#%d. %-15s ...... %03d", (i + 1), highscores.highscore[i].name, highscores.highscore[i].score);
+		drawText(displayMode.w / 2, y, r, g, b, 1, TEXT_CENTER, "#%d. %-15s ...... %03d", (i + 1), highscores.highscore[i].name, highscores.highscore[i].score);
 
 		y += 50;
 	}
 
 	if (timeout % 40 < 20)
 	{
-		drawText(SCREEN_WIDTH / 2, 600, 255, 255, 255, 1, 1, "PRESS SPACE TO PLAY !");
+		drawText(displayMode.w / 2, 600, 255, 255, 255, 1, 1, "PRESS SPACE TO PLAY !");
 	}
 }
 
@@ -294,13 +294,13 @@ static void drawNameInput(void)
 {
 	SDL_Rect r;
 
-	drawText(SCREEN_WIDTH / 2, 70, 255, 255, 255, 1, TEXT_CENTER, "CONGRATULATIONS, YOU REACHED A NEW HIGHSCORE !");
-	drawText(SCREEN_WIDTH / 2, 120, 255, 255, 255, 1, TEXT_CENTER, "PILOT, ENTER YOUR NAME :");
-	drawText(SCREEN_WIDTH / 2, 250, 128, 255, 128, 1, TEXT_CENTER, newHighscore->name);
+	drawText(displayMode.w / 2, 70, 255, 255, 255, 1, TEXT_CENTER, "CONGRATULATIONS, YOU REACHED A NEW HIGHSCORE !");
+	drawText(displayMode.w / 2, 120, 255, 255, 255, 1, TEXT_CENTER, "PILOT, ENTER YOUR NAME :");
+	drawText(displayMode.w / 2, 250, 128, 255, 128, 1, TEXT_CENTER, newHighscore->name);
 
 	if (cursorBlink < FPS / 2)
 	{
-		r.x = ((SCREEN_WIDTH / 2) + ((int)strlen(newHighscore->name) * GLYPH_WIDTH) / 2) + 5;
+		r.x = ((displayMode.w / 2) + ((int)strlen(newHighscore->name) * GLYPH_WIDTH) / 2) + 5;
 		r.y = 250;
 		r.w = GLYPH_WIDTH;
 		r.h = GLYPH_HEIGHT;
@@ -308,7 +308,7 @@ static void drawNameInput(void)
 		SDL_SetRenderDrawColor(app.renderer, 0, 255, 0, 255);
 		SDL_RenderFillRect(app.renderer, &r);
 	}
-	drawText(SCREEN_WIDTH / 2, 625, 255, 255, 255, 1, TEXT_CENTER, "PRESS ENTER WHEN FINISHED");
+	drawText(displayMode.w / 2, 625, 255, 255, 255, 1, TEXT_CENTER, "PRESS ENTER WHEN FINISHED");
 }
 
 static int isWellFormattedLine(char* str)
