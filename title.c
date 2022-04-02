@@ -61,8 +61,11 @@ static void draw(void)
 
 	if (timeout % 40 < 20)						// texte clignote
 	{
-		drawText(displayMode.w / 2, 600, 255, 255, 255, 1, TEXT_CENTER, "PRESS SPACE TO PLAY!");
+		drawText(displayMode.w / 2, ((displayMode.h / 6) + SPRITE_TITLE_HEIGHT + 100), 255, 255, 255, 1, TEXT_CENTER, "PRESS SPACE TO PLAY!");
 	}
+
+	drawText(displayMode.w / 2, displayMode.h - 50, 255, 255, 255, 0.5, TEXT_CENTER, "ANTONY MERLE, 2022");
+
 }
 
 static void drawTitle(void)
@@ -78,7 +81,7 @@ static void drawTitle(void)
 	//srcRect.w = MIN(revealW, srcRect.w);
 	//srcRect.h = MIN(revealH, srcRect.h);
 
-	blitRect(titleTexture, &srcRect, (displayMode.w / 2) - (SPRITE_TITLE_WIDTH / 2), 100);
+	blitRect(titleTexture, &srcRect, (displayMode.w / 2) - (SPRITE_TITLE_WIDTH / 2), displayMode.h / 6);
 
 	//animationCounter++;
 

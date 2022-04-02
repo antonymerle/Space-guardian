@@ -185,7 +185,7 @@ static void draw(void)
 
 		if (timeout % 40 < 20)
 		{
-			drawText(displayMode.w / 2, 600, 255, 255, 255, 1, TEXT_CENTER, "PRESS SPACE TO PLAY !");
+			drawText(displayMode.w / 2, displayMode.h - 150, 255, 255, 255, 1, TEXT_CENTER, "PRESS SPACE TO PLAY !");
 		}
 	}
 }
@@ -194,9 +194,10 @@ static void drawHighscores(void)
 {
 	int i, y, r, g, b;
 
-	y = 150;
 
-	drawText(displayMode.w / 2, 70, 255, 255, 255, 1, TEXT_CENTER, "HIGHSCORES");
+	y = displayMode.h / 4;
+
+	drawText(displayMode.w / 2, y - 70, 255, 255, 255, 1, TEXT_CENTER, "HIGHSCORES");
 
 	for (i = 0; i < NUM_HIGHSCORES; i++)
 	{
@@ -214,10 +215,10 @@ static void drawHighscores(void)
 		y += 50;
 	}
 
-	if (timeout % 40 < 20)
+	/*if (timeout % 40 < 20)
 	{
 		drawText(displayMode.w / 2, 600, 255, 255, 255, 1, 1, "PRESS SPACE TO PLAY !");
-	}
+	}*/
 }
 
 void addHighscore(int score)
