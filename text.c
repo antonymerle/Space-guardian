@@ -44,9 +44,7 @@ void drawText(int x, int y, int r, int g, int b, double scale, int align, char* 
 
 		if (c >= ' ' && c <= 'Z')
 		{
-			/* This is because a space is the first character in font texture
-			and therefore has an x position of 0. */
-			rect.x = (c - ' ') * GLYPH_WIDTH;
+			rect.x = (c - ' ') * GLYPH_WIDTH;					/* L'espace a la première position dans la texture des glyphes, valeur 0. */
 			blitRectScale(fontTexture, &rect, x, y, scale);
 
 			x += GLYPH_WIDTH;

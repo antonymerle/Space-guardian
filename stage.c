@@ -62,20 +62,14 @@ extern uint32_t attente;
 
 void initStage(void)
 {
-	//memset(&app.delegate.logic, 0, sizeof(app.delegate.logic));
-	//memset(&app.delegate.draw, 0, sizeof(app.delegate.draw));
-
 	app.delegate.logic = logic;
 	app.delegate.draw = draw;
-
-	//memset(&stage, 0, sizeof(Stage));
 
 	stage.fighterTail = &stage.fighterHead;
 	stage.bulletTail = &stage.bulletHead;
 	stage.explosionTail = &stage.explosionHead;
 	stage.debrisTail = &stage.debrisHead;
 	stage.pointTail = &stage.pointHead;
-
 
 	playerTexture = loadTexture("gfx/player.png");
 	bulletTexture = loadTexture("gfx/playerShoot.png");
@@ -142,7 +136,6 @@ static void resetStage(void)
 	}
 
 	memset(&stage, 0, sizeof(Stage));
-	//stage.score = 0;								/* Est-ce bien nécessaire ? cf memset*/
 	stage.fighterTail = &stage.fighterHead;
 	stage.bulletTail = &stage.bulletHead;
 	stage.explosionTail = &stage.explosionHead;
@@ -530,8 +523,7 @@ static void drawFighters(void)
 		}
 	}
 
-	// réalisation de l'animation trailer toutes les 8 frames on change de texture
-
+	/* réalisation de l'animation trailer toutes les 8 frames on change de texture. */
 	animationCounter++;
 
 	if (animationCounter % 8 == 0)
@@ -917,8 +909,6 @@ static void addCoins(int x, int y)
 	e->dx = -(rand() % 5);
 	e->dy = (rand() % 5 - rand() % 5);
 
-	//SDL_QueryTexture(pointTexture, NULL, NULL, &e->w, &e->h);
-
 	e->x -= e->w / 2;
 	e->y -= e->h / 2;
 
@@ -932,7 +922,6 @@ static void drawCoins(void)
 
 	SDL_Rect srcRect = { (int)spriteCoinIndex * SPRITE_COIN_WIDTH, 0, SPRITE_COIN_WIDTH, SPRITE_COIN_HEIGHT };
 
-
 	for (e = stage.pointHead.next; e != NULL; e = e->next)
 	{
 		if(e->health > (FPS * 2) || e->health % 12 < 6)
@@ -940,7 +929,6 @@ static void drawCoins(void)
 	}
 
 	// réalisation de l'animation trailer toutes les 8 frames on change de texture
-
 	if (animationCounter % 8 == 0)
 	{
 		spriteCoinIndex++;

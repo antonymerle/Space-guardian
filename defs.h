@@ -32,8 +32,7 @@
 #define GLYPH_HEIGHT				28
 #define GLYPH_WIDTH					18
 
-// Animations sprites
-#define SPRITE_TRAILER_WIDTH		32
+#define SPRITE_TRAILER_WIDTH		32					/* Animations sprites */
 #define SPRITE_TRAILER_HEIGHT		32
 #define SPRITE_COIN_WIDTH			20
 #define SPRITE_COIN_HEIGHT			20

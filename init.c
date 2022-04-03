@@ -21,13 +21,12 @@ void initSDL(void)
 		int should_be_zero = SDL_GetCurrentDisplayMode(i, &displayMode);
 
 		if (should_be_zero != 0)
-			// In case of error...
+			// En cas d'erreur...
 			SDL_Log("Could not get display mode for video display #%d: %s", i, SDL_GetError());
 
 		else
-			// On success, print the current display mode.
+			// En cas de succès, affiche le mode d'affichage courant.
 			SDL_Log("Display #%d: current display mode is %dx%dpx @ %dhz.", i, displayMode.w, displayMode.h, displayMode.refresh_rate);
-
 	}
 
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) == -1)
@@ -37,7 +36,6 @@ void initSDL(void)
 	}
 
 	Mix_AllocateChannels(MAX_SND_CHANNELS);
-	
 
 	app.window = SDL_CreateWindow("Space Guardian", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, displayMode.w, displayMode.h, SDL_WINDOW_FULLSCREEN_DESKTOP);
 

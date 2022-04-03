@@ -1,12 +1,7 @@
 #include "draw.h"
 
-//static SDL_Texture* getTexture(char* name);
-//static void addTextureToCache(char* name, SDL_Texture* sdlTexture);
-
 void prepareScene(void)
 {
-	// TODO : supprimer cette couleur ?
-	//SDL_SetRenderDrawColor(app.renderer, 171, 208, 188, 255);
 	SDL_RenderClear(app.renderer);
 }
 
@@ -15,8 +10,7 @@ void presentScene(void)
 	SDL_RenderPresent(app.renderer);
 }
 
-
-/* Returns returns NULL if the texture is already cached, else returns a pointer to the texture */
+/* Returns NULL if the texture is already cached, else returns a pointer to the texture */
 static SDL_Texture* getTexture(char* name)
 {
 	Texture* t;
@@ -32,6 +26,7 @@ static SDL_Texture* getTexture(char* name)
 	return NULL;
 }
 
+/* Adds texture to app.textureTail linked list. */
 static void addTextureToCache(char* name, SDL_Texture* sdlTexture)
 {
 	Texture* texture;
@@ -45,7 +40,7 @@ static void addTextureToCache(char* name, SDL_Texture* sdlTexture)
 	texture->texture = sdlTexture;
 }
 
-/* load an image and return it as a texture */
+/* loads an image, cache it if necessary and returns it as a texture */
 SDL_Texture* loadTexture(char* filename)
 {
 	SDL_Texture* texture;
@@ -83,6 +78,10 @@ void blit(SDL_Texture* texture, int x, int y)
 	SDL_RenderCopy(app.renderer, texture, NULL, &dest);
 }
 
+/* 
+ * SDL_RenderCopy wrapper.
+ * Copy a portion of the texture to the current rendering target.
+ */
 void blitRect(SDL_Texture* texture, SDL_Rect* src, int x, int y)
 {
 	SDL_Rect dest;
@@ -95,6 +94,10 @@ void blitRect(SDL_Texture* texture, SDL_Rect* src, int x, int y)
 	SDL_RenderCopy(app.renderer, texture, src, &dest);
 }
 
+/*
+ * SDL_RenderCopy wrapper.
+ * Copy a portion of the texture to the current rendering target and scales it.
+ */
 void blitRectScale(SDL_Texture* texture, SDL_Rect* src, int x, int y, double scale)
 {
 	SDL_Rect dest;

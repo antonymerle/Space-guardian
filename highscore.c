@@ -11,12 +11,12 @@ static int getCurrentMinHighscore(void);
 static int parseScores(void);
 static int writeScores(void);
 
+static int cursorBlink;
 static int timeout;
 static Highscore* newHighscore;
 
 static int getCurrentMinHighscore(void)
 {
-
 	int minScore = INT_MAX;
 
 	for (size_t i = 0; i < NUM_HIGHSCORES; i++)
@@ -55,9 +55,6 @@ static int writeScores(void)
 }
 
 
-// TODO wtf doublon ?
-//static Highscore* newHighscore;
-static int cursorBlink;
 
 /* 
 Parses and populate highscores table. 
@@ -129,9 +126,6 @@ void initHighscoreTable(void)
 
 void initHighscores(void)
 {
-	//memset(&app.delegate.logic, 0, sizeof(app.delegate.logic));
-	//memset(&app.delegate.draw, 0, sizeof(app.delegate.draw));
-
 	app.delegate.logic = logic;
 	app.delegate.draw = draw;
 
@@ -194,7 +188,6 @@ static void drawHighscores(void)
 {
 	int i, y, r, g, b;
 
-
 	y = displayMode.h / 4;
 
 	drawText(displayMode.w / 2, y - 70, 255, 255, 255, 1, TEXT_CENTER, "HIGHSCORES");
@@ -214,11 +207,6 @@ static void drawHighscores(void)
 
 		y += 50;
 	}
-
-	/*if (timeout % 40 < 20)
-	{
-		drawText(displayMode.w / 2, 600, 255, 255, 255, 1, 1, "PRESS SPACE TO PLAY !");
-	}*/
 }
 
 void addHighscore(int score)

@@ -23,9 +23,6 @@ extern void drawText(int x, int y, int r, int g, int b, double scale, int align,
 extern void addHighscore(int score);
 extern void initHighscores(void);
 
-
-
-
 extern App app;
 extern Stage stage;
 extern Highscores highscores;
