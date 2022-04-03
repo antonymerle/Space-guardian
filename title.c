@@ -14,8 +14,8 @@ static size_t spriteTitleIndex;
 
 void initTitle(void)
 {
-	app.delegate.logic = logic;
-	app.delegate.draw = draw;
+	app.subsystem.logic = logic;
+	app.subsystem.draw = draw;
 
 	memset(app.keyboard, 0, sizeof(int) * MAX_KEYBOARD_KEYS);
 

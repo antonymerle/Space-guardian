@@ -25,8 +25,8 @@ int main(int argc, char* argv[])
 
 		prepareScene();
 		doInput();
-		app.delegate.logic();
-		app.delegate.draw();
+		app.subsystem.logic();
+		app.subsystem.draw();
 
 		presentScene();
 		capFramerate(&topChrono, &remainder);

@@ -14,12 +14,12 @@ struct Texture {
 typedef struct {
 	void (*logic)(void);
 	void (*draw)(void);
-} Delegate;
+} Subsystem;
 
 typedef struct {
 	SDL_Renderer* renderer;
 	SDL_Window* window;
-	Delegate delegate;
+	Subsystem subsystem;
 	Texture textureHead, *textureTail;
 	int keyboard[MAX_KEYBOARD_KEYS];
 	char inputText[MAX_LINE_LENGTH];

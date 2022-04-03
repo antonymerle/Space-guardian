@@ -62,8 +62,8 @@ extern uint32_t attente;
 
 void initStage(void)
 {
-	app.delegate.logic = logic;
-	app.delegate.draw = draw;
+	app.subsystem.logic = logic;
+	app.subsystem.draw = draw;
 
 	stage.fighterTail = &stage.fighterHead;
 	stage.bulletTail = &stage.bulletHead;

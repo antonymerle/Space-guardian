@@ -126,8 +126,8 @@ void initHighscoreTable(void)
 
 void initHighscores(void)
 {
-	app.delegate.logic = logic;
-	app.delegate.draw = draw;
+	app.subsystem.logic = logic;
+	app.subsystem.draw = draw;
 
 	loadMusic("music/highscore.opus");
 	playMusic(1, 128);
