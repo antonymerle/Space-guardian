@@ -90,7 +90,7 @@ void initStage(void)
 	loadMusic("music/battle.opus");
 	playMusic(1, 64);
 
-	memset(&app.keyboard, 0, sizeof(int) * MAX_KEYBOARD_KEYS);
+	memset(app.keyboard, 0, sizeof(int) * MAX_KEYBOARD_KEYS);
 
 	resetStage();
 	stage.score = 0;
@@ -782,7 +782,7 @@ static void drawHud(void)
 	double healthRatio;
 
 	drawText(10, 10, 255, 255, 255, 0.5, TEXT_LEFT, "SCORE: %03d", stage.score);
-	drawText(10, displayMode.h - 50, 255, 255, 255, 0.5, TEXT_LEFT, "FPS : %u", objectifTemporelPourProduireUneImageMs - attente ? 1000 / (objectifTemporelPourProduireUneImageMs - attente) : 1000);
+	//drawText(10, displayMode.h - 50, 255, 255, 255, 0.5, TEXT_LEFT, "FPS : %u", objectifTemporelPourProduireUneImageMs - attente ? 1000 / (objectifTemporelPourProduireUneImageMs - attente) : 1000);
 
 	if (stage.score < highscores.highscore[0].score)
 	{

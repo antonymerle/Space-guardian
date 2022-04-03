@@ -14,7 +14,7 @@ void drawText(int x, int y, int r, int g, int b, double scale, int align, char* 
 	SDL_Rect rect;				/* to specify what region of the texture to use */
 	va_list args;
 
-	memset(drawTextBuffer, '\0', sizeof(drawTextBuffer));
+	memset(&drawTextBuffer, '\0', sizeof(drawTextBuffer));
 
 	va_start(args, textToFormat);
 	vsprintf(drawTextBuffer, textToFormat, args);

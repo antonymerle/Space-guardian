@@ -138,7 +138,7 @@ void initHighscores(void)
 	loadMusic("music/highscore.opus");
 	playMusic(1, 128);
 
-	memset(&app.keyboard, 0, sizeof(int) * MAX_KEYBOARD_KEYS);
+	memset(app.keyboard, 0, sizeof(int) * MAX_KEYBOARD_KEYS);
 
 	timeout = FPS * 10;
 }

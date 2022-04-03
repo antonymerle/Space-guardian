@@ -20,7 +20,7 @@ void initTitle(void)
 	app.delegate.logic = logic;
 	app.delegate.draw = draw;
 
-	memset(&app.keyboard, 0, sizeof(int) * MAX_KEYBOARD_KEYS);
+	memset(app.keyboard, 0, sizeof(int) * MAX_KEYBOARD_KEYS);
 
 	titleTexture = loadTexture("gfx/title.png");
 	
