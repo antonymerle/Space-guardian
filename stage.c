@@ -1,33 +1,34 @@
 #include "stage.h"
 
-static void logic(void);
-static void draw(void);
-static void drawBullets(void);
-static void initPlayer(void);
-static void doPlayer(void);
-static void doBullets(void);
-static void fireBullet(void);
-static int bulletHitFighter(Entity* b);
-static int generateRandomNumber(unsigned int top);
-static void doFighters(void);
-static void spawnEnemies(void);
-static void drawFighters(void);
-static void resetStage(void);
-static void doEnemies(void);
-static void fireAlienBullet(Entity* e);
-static void cadrePlayer(void);
-static void doExplosions(void);
-static void doDebris(void);
-static void addExplosions(int x, int y, int num);
-static void drawDebris(void);
-static void drawExplosions(void);
-static void addDebris(Entity* e);
-static void drawHud(void);
-static void doCoins(void);
-static void addCoins(int x, int y);
-static void drawCoins(void);
-static int bulletHitPoint(Entity* b);
-static int testVesselsCollision(Entity* e);
+static void		logic(void);
+static void		draw(void);
+static void		initPlayer(void);
+
+static void		drawBullets(void);
+static void		doPlayer(void);
+static void		doBullets(void);
+static void		fireBullet(void);
+static int		bulletHitFighter(Entity* b);
+static int		generateRandomNumber(unsigned int top);
+static void		doFighters(void);
+static void		spawnEnemies(void);
+static void		drawFighters(void);
+static void		resetStage(void);
+static void		doEnemies(void);
+static void		fireAlienBullet(Entity* e);
+static void		cadrePlayer(void);
+static void		doExplosions(void);
+static void		doDebris(void);
+static void		addExplosions(int x, int y, int num);
+static void		drawDebris(void);
+static void		drawExplosions(void);
+static void		addDebris(Entity* e);
+static void		drawHud(void);
+static void		doCoins(void);
+static void		addCoins(int x, int y);
+static void		drawCoins(void);
+static int		bulletHitPoint(Entity* b);
+static int		testVesselsCollision(Entity* e);
 
 
 
@@ -259,7 +260,7 @@ static void cadrePlayer(void)
 	{
 		if (player->x < 0) player->x = 0;
 		if (player->y < 0) player->y = 0;
-		if (player->x > displayMode.w / 2) player->x = displayMode.w / 2;
+		if (player->x > displayMode.w - player->w) player->x = displayMode.w - player->w;
 		if (player->y > displayMode.h - player->h) player->y = displayMode.h - player->h;
 	}
 }
