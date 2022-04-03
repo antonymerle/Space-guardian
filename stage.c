@@ -396,9 +396,8 @@ static void drawBullets(void)
 			blit(b->texture, b->x, b->y);
 		}
 	}
-
-	// réalisation de l'animation shot toutes les 8 frames on change de texture
-	if (animationCounter % 8 == 0)
+	
+	if (animationCounter % 8 == 0)						/* animation shot toutes les 8 frames on change de texture */
 	{
 		spriteAlienShotIndex++;
 		if (spriteAlienShotIndex > 3)
@@ -408,10 +407,10 @@ static void drawBullets(void)
 	}
 }
 
+
 static int generateRandomNumber(unsigned int top)
 {
-	/* Initializes random number generator */
-	unsigned int seed;
+	unsigned int seed;									/* Initializes random number generator */
 	char randomNegativeSwitch;
 
 	seed = SDL_GetTicks();
@@ -500,7 +499,7 @@ void spawnEnemies(void)
 		enemy->dy = (float)(flipCoin ? -1.0 : 1.0);
 		enemy->reload = (FPS * (1 + (rand() % 3)));
 		enemy->shotMode = flipCoin ? NORMAL : MEGASHOT;
-		enemySpawnTimer = 30 + (rand() % 60); /* creates an enemy every 30 <-> 90 ms */
+		enemySpawnTimer = 30 + (rand() % 60);					/* creates an enemy every 30 <-> 90 ms */
 	}
 }
 
@@ -524,10 +523,10 @@ static void drawFighters(void)
 		}
 	}
 
-	/* réalisation de l'animation trailer toutes les 8 frames on change de texture. */
+	
 	animationCounter++;
 
-	if (animationCounter % 8 == 0)
+	if (animationCounter % 8 == 0)							/* animation trailer toutes les 8 frames on change de texture. */
 	{
 		spriteTrailerIndex++;
 		if (spriteTrailerIndex > 3)
@@ -775,7 +774,6 @@ static void drawHud(void)
 	double healthRatio;
 
 	drawText(10, 10, 255, 255, 255, 0.5, TEXT_LEFT, "SCORE: %03d", stage.score);
-	//drawText(10, displayMode.h - 50, 255, 255, 255, 0.5, TEXT_LEFT, "FPS : %u", objectifTemporelPourProduireUneImageMs - attente ? 1000 / (objectifTemporelPourProduireUneImageMs - attente) : 1000);
 
 	if (stage.score < highscores.highscore[0].score)
 	{
@@ -929,8 +927,7 @@ static void drawCoins(void)
 			blitRect(pointTexture, &srcRect, e->x, e->y);
 	}
 
-	// réalisation de l'animation trailer toutes les 8 frames on change de texture
-	if (animationCounter % 8 == 0)
+	if (animationCounter % 8 == 0)								/* animation trailer toutes les 8 frames on change de texture. */
 	{
 		spriteCoinIndex++;
 		if (spriteCoinIndex > 8)
