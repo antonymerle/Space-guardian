@@ -50,7 +50,7 @@ static int stageResetTimer;
 static uint8_t trailerAlpha;
 static uint8_t trailerColourModifierCount = FPS;
 static uint8_t animationCounter;
-static size_t spriteAlienShotIndex;							// 4 -> 0-1-2-3 
+static size_t spriteAlienShotIndex;							// 4 -> 0-1-2-3
 static size_t spriteTrailerIndex;							// 4 -> 0-1-2-3
 static size_t spriteCoinIndex;								// 9 -> 0-1-2-3-4-5-6-7-8
 
@@ -76,7 +76,7 @@ void initStage(void)
 	bulletTexture = loadTexture("gfx/playerShoot.png");
 	enemyTexture = loadTexture("gfx/enemy.png");
 	enemyShootTexture = loadTexture("gfx/enemyShot.png");
-	megaShot = loadTexture("gfx/MegaShot.png");
+	megaShot = loadTexture("gfx/megaShot.png");
 	explosionTexture = loadTexture("gfx/explosion.png");
 	trailerPlayerTexture = loadTexture("gfx/trailerPlayer.png");
 	trailerAlienTexture = loadTexture("gfx/trailerAlien.png");
@@ -396,7 +396,7 @@ static void drawBullets(void)
 			blit(b->texture, b->x, b->y);
 		}
 	}
-	
+
 	if (animationCounter % 8 == 0)						/* animation shot toutes les 8 frames on change de texture */
 	{
 		spriteAlienShotIndex++;
@@ -523,7 +523,7 @@ static void drawFighters(void)
 		}
 	}
 
-	
+
 	animationCounter++;
 
 	if (animationCounter % 8 == 0)							/* animation trailer toutes les 8 frames on change de texture. */
@@ -534,7 +534,7 @@ static void drawFighters(void)
 			spriteTrailerIndex = 0;
 		}
 	}
-	
+
 }
 
 static int testVesselsCollision(Entity* e)
